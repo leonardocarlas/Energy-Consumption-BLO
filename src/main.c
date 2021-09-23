@@ -8,7 +8,7 @@
 
 
 // First shiftable loads, block
-// MILP functioning, then pso for the UL 
+// When the MILP is functioning, we will then implement a PSO for the UL 
 
 
 void print_error(const char *err);
@@ -22,7 +22,6 @@ void free_instance(instance *inst) {
     free(inst->input_file);
     free(inst->model_type);
     free(inst->nappliances);
-    free(inst->timelimit);
 }
 */
 
@@ -78,7 +77,6 @@ void parse_command_line(int argc, char** argv, instance *inst) {
     //allocate the model type of the struct
     inst->model_type = 0;
     strcpy(inst->input_file, "NULL");
-    //inst->timelimit = 9999999.9;
 
     int help = 0;
 
@@ -91,12 +89,6 @@ void parse_command_line(int argc, char** argv, instance *inst) {
             strcpy( inst->input_file, argv[++i] );
             continue;
         }
-        /*
-        if ( strcmp( argv[i], "-timelimit" ) == 0 ) {
-            strcpy( inst->timelimit, atof(argv[++i]) );
-            continue;
-        }
-        */
         
         if ( strcmp( argv[i], "-help" ) == 0 ) {
             help = 1;
@@ -106,7 +98,6 @@ void parse_command_line(int argc, char** argv, instance *inst) {
     }
 
     printf("Selected file: %s \n", inst->input_file);
-    //printf("Selected timelimit: %lf \n", inst->timelimit);
 
     if (help)
         exit(1);
@@ -121,11 +112,13 @@ void read_input(instance *inst)
     if ( file == NULL )
         print_error("Cannot open the file");
 
-    char line[180];
+    
     char *parameter_name;
-    char *token1;
-    char *token2;
     int number_table;
+
+    char line[180];
+    const char delimiter[2] = ":";
+    char *token;
 
     while ( fgets( line, sizeof(line), file) != NULL )
     {
@@ -139,17 +132,59 @@ void read_input(instance *inst)
 
         if(strchr(line, ':') != NULL) 
         {
-            printf("Tabella trovata \n");
-            parameter_name = strtok(line, ":");
-            number_table = parameter_name[1];
+            //printf("Tabella trovata \n");
+            
+            //Primo token
+            token = strtok(line, ":");
+            //printf( " %s\n", token );
+            parameter_name = token;
+
+            
+            //Secondo token
+            token = strtok(NULL, ":");
+            //printf( " %s\n", token );
+            number_table = atoi( token );
+
+            printf("Table number: %i \n", number_table);
+            continue;
+
         }
 
         if ( number_table == 1 ) {
-            continue;
+
+            //Primo token (numero di intervallo)
+            token = strtok(line, " ");
+            //printf( " %s\n", token );
+            int in = atoi ( token );
+
+            
+            //Secondo token (inizio) 
+            token = strtok(NULL, " ");
+            //printf( " %s\n", token );
+            inst->earliest_interval_sm1[in - 1] = atoi( token );
+            //printf( " %i\n", inst->earliest_interval_sm1[in - 1] );
+            
+
+            //Terzo token (fine)
+            token = strtok(NULL, " ");
+            //printf( " %s\n", token );
+            inst->latest_interval_sm1[in - 1] = atoi( token );
+            //printf( " %i\n", inst->latest_interval_sm1[in - 1] );
+            
+            
+            //Quarto token
+            token = strtok(NULL, " ");
+            //printf( " %s\n", token );
+            inst->price_interval_sm1[in - 1] = atof( token );
+            //printf( " %lf\n", inst->price_interval_sm1[in - 1] );
+            
+            
         }
+
         if ( number_table == 2 ) {
             continue;
         }
+
         if ( number_table == 3 ) {
             continue;
         }
@@ -186,3 +221,7 @@ void print_error(const char *err)
     fflush(NULL);
     exit(1);
 }
+
+
+// O alloco dimanicamente un heap 
+// Oppure sono creo un array di lunghezza fissa (posso farlo avendo dei dati)

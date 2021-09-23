@@ -13,10 +13,17 @@
 typedef struct
 {
     // Input data
-    int appliance_id;
+    int nappliances;
+    // Table SM1, Electricity Prices divided by time intervals
+    //int nof_interval_prices = 12;
+    int earliest_interval_sm1[12];
+    int latest_interval_sm1[12];
+    double price_interval_sm1[12];
+
+
     int *start_appliance; // array di int (starting point)
     int *end_appliance; // array di int (starting point)
-    int nappliances;    
+      
 
     // Parameters
     int model_type;
