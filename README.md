@@ -22,6 +22,6 @@ TO DO LIST:
 
 - implement an dynamic allocation of the memory
 - a method to free the instance
-- the readings of all the tables
+- the readings of all the tables and finishing the instance for the customers
 
 

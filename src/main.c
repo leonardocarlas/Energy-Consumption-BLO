@@ -15,15 +15,16 @@ void print_error(const char *err);
 void read_input(instance *inst);
 void parse_command_line(int argc, char** argv, instance *inst);
 int BLOopt(instance *inst);
+void debug() { printf("Debug \n"); }
 
-/*
+
 void free_instance(instance *inst) {
     
-    free(inst->input_file);
-    free(inst->model_type);
-    free(inst->nappliances);
+    free(inst->earliest_interval_sm1);
+    free(inst->latest_interval_sm1);
+    free(inst->price_interval_sm1);
 }
-*/
+
 
 
 int main(int argc, char **argv) {
@@ -55,7 +56,7 @@ int main(int argc, char **argv) {
 
     printf("\nTime to solve the BLO problem: %lf \n ", difftime(t2, t1));
 
-    //free_instance(&inst);
+    free_instance(&inst);
     return 0;
 
 	//Plot the solution with the passed commands
@@ -114,10 +115,9 @@ void read_input(instance *inst)
 
     
     char *parameter_name;
-    int number_table;
-
+    int value;
+    int active_session = 0;
     char line[180];
-    const char delimiter[2] = ":";
     char *token;
 
     while ( fgets( line, sizeof(line), file) != NULL )
@@ -132,25 +132,86 @@ void read_input(instance *inst)
 
         if(strchr(line, ':') != NULL) 
         {
-            //printf("Tabella trovata \n");
             
-            //Primo token
-            token = strtok(line, ":");
-            //printf( " %s\n", token );
-            parameter_name = token;
+            parameter_name = strtok(line, ":");
+            value = atoi ( strtok(NULL, ":") );
+
+            printf("Parameter: %s, Value: %i \n", parameter_name, value);
+            
+            if ( strncmp(parameter_name, "NUMBER_OF_INTERVAL_PRICES", 26) == 0 ) {
+
+                inst->nof_interval_prices = value;
+                // calloc inizializza già a zero, malloc la inizializza vuota
+                inst->earliest_interval_sm1 = (int *)calloc(inst->nof_interval_prices, sizeof(int));
+                inst->latest_interval_sm1 = (int *)calloc(inst->nof_interval_prices, sizeof(int));
+                inst->price_interval_sm1 = (double *)calloc(inst->nof_interval_prices, sizeof(double));;
+                debug();
+            }
+
+            if ( strncmp(parameter_name, "X_AVARAGE", 10) == 0 ) {
+
+                inst->x_avarage = value;
+            }
+
+            if ( strncmp(parameter_name, "MODEL_TYPE", 11) == 0 ) {
+
+                inst->model_type = value;
+            }
+
+            if ( strncmp(parameter_name, "SUB_PERIODS", 12) == 0 ) {
+
+                inst->nof_subperiods = value;
+                inst->start_subperiod_sm2 = (int *)calloc(inst->nof_subperiods, sizeof(int));
+                inst->end_subperiod_sm2 = (int *)calloc(inst->nof_subperiods, sizeof(int));
+                inst->maximum_prices_sm2 = (double *)calloc(inst->nof_subperiods, sizeof(double));
+                inst->minimum_prices_sm2 = (double *)calloc(inst->nof_subperiods, sizeof(double));
+                
+            }
+
+
+            if ( strncmp(parameter_name, "NUMBER_OF_APPLIANCES", 21) == 0 ) {
+
+                inst->nof_appliances = value;
+                inst->start_appliance = (int *)calloc(inst->nof_appliances, sizeof(int));
+                inst->end_appliance = (int *)calloc(inst->nof_appliances, sizeof(int));
+                
+                inst->power_stage1_sm6 = (int *)calloc(inst->nof_appliances, sizeof(int));
+                inst->power_stage2_sm6 = (int *)calloc(inst->nof_appliances, sizeof(int));
+                inst->power_stage3_sm6 = (int *)calloc(inst->nof_appliances, sizeof(int));
+                inst->power_stage4_sm6 = (int *)calloc(inst->nof_appliances, sizeof(int));
+                inst->power_stage5_sm6 = (int *)calloc(inst->nof_appliances, sizeof(int));
+                inst->power_stage6_sm6 = (int *)calloc(inst->nof_appliances, sizeof(int));
+                inst->power_stage7_sm6 = (int *)calloc(inst->nof_appliances, sizeof(int));
+                inst->power_stage8_sm6 = (int *)calloc(inst->nof_appliances, sizeof(int));
+
+            }
+
+
+            if ( strncmp(parameter_name, "NUMBER_OF_POWER_LEVELS", 23) == 0 ) {
+
+                inst->nof_powerlevels = value;
+                inst->prices_powerlevel_sm3 = (double *)calloc(inst->nof_powerlevels, sizeof(double));
+                inst->maximum_power_sm3 = (int *)calloc(inst->nof_powerlevels, sizeof(int));
+            }
+
+            if ( strncmp(parameter_name, "NUMBER_OF_INTERVAL_POWER_REQUESTED", 35) == 0 ) {
+
+                inst->nof_intervals_power_requested = value;
+                inst->start_interval_pr_sm4 = (int *)calloc(inst->nof_powerlevels, sizeof(int));
+                inst->end_interval_pr_sm4 = (int *)calloc(inst->nof_powerlevels, sizeof(int));
+                inst->power_requested_sm4 = (int *)calloc(inst->nof_powerlevels, sizeof(int));
+            }
 
             
-            //Secondo token
-            token = strtok(NULL, ":");
-            //printf( " %s\n", token );
-            number_table = atoi( token );
 
-            printf("Table number: %i \n", number_table);
-            continue;
+            if ( strncmp(parameter_name, "TABLE_SM", 8) == 0) {
+                active_session = 1;
+                continue;
+            }
 
         }
 
-        if ( number_table == 1 ) {
+        if ( active_session == 1 &&  value == 1 ) {
 
             //Primo token (numero di intervallo)
             token = strtok(line, " ");
@@ -177,35 +238,129 @@ void read_input(instance *inst)
             //printf( " %s\n", token );
             inst->price_interval_sm1[in - 1] = atof( token );
             //printf( " %lf\n", inst->price_interval_sm1[in - 1] );
+
+            if (in == inst->nof_interval_prices) active_session = 0;
             
+        }
+        
+
+        if ( active_session == 1 &&  value == 2 ) {
             
+            //Primo token
+            token = strtok(line, " ");
+            int in = atoi ( token );
+            //printf( " %i\n", in - 1 );
+            
+            token = strtok(NULL, " ");
+            inst->start_subperiod_sm2[in - 1] = atoi( token );
+
+            token = strtok(NULL, " ");
+            inst->end_subperiod_sm2[in - 1] = atoi( token );
+
+            token = strtok(NULL, " ");
+            inst->minimum_prices_sm2[in - 1] = atof( token );
+
+            token = strtok(NULL, " ");
+            inst->maximum_prices_sm2[in - 1] = atof( token );
+
+            //printf("Test: %lf \n", inst->maximum_prices_sm2[in - 1]);
+            if (in == inst->nof_subperiods) active_session = 0;            
         }
 
-        if ( number_table == 2 ) {
+        if ( active_session == 1 && value == 3 ) {
+
+            //Primo token
+            token = strtok(line, " ");
+            int in = atoi ( token );
+            //printf( " %i\n", in - 1 );
+
+            token = strtok(NULL, " ");
+            inst->prices_powerlevel_sm3[in - 1] = atof( token );
+            
+            token = strtok(NULL, " ");
+            inst->maximum_power_sm3[in - 1] = atoi( token );
+
+            if (in == inst->nof_powerlevels) active_session = 0;
+        }
+
+        if ( active_session == 1 && value == 4 ) {
+
+            //Primo token
+            token = strtok(line, " ");
+            int in = atoi ( token );
+            //printf( " %i\n", in - 1 );
+
+            token = strtok(NULL, " ");
+            inst->start_interval_pr_sm4[in - 1] = atoi( token );
+            
+            token = strtok(NULL, " ");
+            inst->end_interval_pr_sm4[in - 1] = atoi( token );
+
+            token = strtok(NULL, " ");
+            inst->power_requested_sm4[in - 1] = atoi( token );
+
+            if (in == inst->nof_powerlevels) active_session = 0;
+        }
+
+        if ( active_session == 1 && value == 5 ) {
+            
+            //Primo token
+            token = strtok(line, " ");
+            int in = atoi ( token );
+            //printf( " %i\n", in - 1 );
+
+            token = strtok(NULL, " ");
+            inst->start_appliance[in - 1] = atoi( token );
+            
+            token = strtok(NULL, " ");
+            inst->end_appliance[in - 1] = atoi( token );
+
+            if (in == inst->nof_appliances) active_session = 0;
+
+        }
+
+        if ( active_session == 1 && value == 6 ) {
+
+            //Primo token
+            token = strtok(line, " ");
+            int in = atoi ( token );
+            //printf( " %i\n", in - 1 );
+
+            token = strtok(NULL, " ");
+            inst->power_stage1_sm6[in - 1] = atoi( token );
+
+            token = strtok(NULL, " ");
+            inst->power_stage2_sm6[in - 1] = atoi( token );
+
+            token = strtok(NULL, " ");
+            inst->power_stage3_sm6[in - 1] = atoi( token );
+
+            token = strtok(NULL, " ");
+            inst->power_stage4_sm6[in - 1] = atoi( token );
+
+            token = strtok(NULL, " ");
+            inst->power_stage5_sm6[in - 1] = atoi( token );
+
+            token = strtok(NULL, " ");
+            inst->power_stage6_sm6[in - 1] = atoi( token );
+
+            token = strtok(NULL, " ");
+            inst->power_stage7_sm6[in - 1] = atoi( token );
+
+            token = strtok(NULL, " ");
+            inst->power_stage8_sm6[in - 1] = atoi( token );
+            
+            
+            if (in == inst->nof_appliances) active_session = 0;
+        }
+
+        if ( value == 7 ) {
+            continue;
+        }
+        if ( value == 8 ) {
             continue;
         }
 
-        if ( number_table == 3 ) {
-            continue;
-        }
-        if ( number_table == 4 ) {
-            continue;
-        }
-        if ( number_table == 5 ) {
-            continue;
-        }
-        if ( number_table == 6 ) {
-            continue;
-        }
-        if ( number_table == 7 ) {
-            continue;
-        }
-        if ( number_table == 8 ) {
-            continue;
-        }
-        if ( number_table == 99 ) {
-            continue;
-        }
 
     }
 
