@@ -1,6 +1,6 @@
 # Energy-Consumption-BLO
 Cplex Project for Master Thesis in Computer Engineering
-
+Linux envinroment
 
 Compile:
 
@@ -20,8 +20,8 @@ Execute with parameters:
 
 TO DO LIST:
 
-- implement an dynamic allocation of the memory
-- a method to free the instance
-- the readings of all the tables and finishing the instance for the customers
+- a method to free all the instance
+- import cplex
+
 
 

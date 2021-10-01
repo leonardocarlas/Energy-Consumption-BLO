@@ -2,9 +2,9 @@
 // definition of an internal variable. If it is undefined, it will be defined. Otherwise not two times (when icluded another time).
 #define BLO_H_
 
+
 #include <stdio.h>
 //#include <cplex.h>
-#include <math.h>
 #include <string.h>
 #include <stdlib.h>
 
@@ -58,7 +58,6 @@ typedef struct
     // Parameters
     int model_type;
     char input_file[1000];
-    //double timelimit; // in seconds
 
     // Global data
     double tstart;
