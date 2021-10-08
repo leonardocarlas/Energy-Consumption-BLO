@@ -11,7 +11,7 @@
 #include "utils.h"
 
 
-// una struct per ogni tabella, poi unu array
+// una struct per ogni tabella, poi un array di struct
 // ordinato con le variabili, prima aggiungo le colonne delle varibili con i bound delle variabili
 // poi i vincoli uno alla volta
 // salvare il file lp, controllare le variabili, controllare che i vincoli che ho aggiunto siano quelli
@@ -48,7 +48,7 @@ int main(int argc, char **argv) {
 
     printf("\nTime to solve the BLO problem: %lf \n ", difftime(end, start));
 
-    free_instance(&inst, 1);
+    free_instance(&inst);
 
     return 0;
 

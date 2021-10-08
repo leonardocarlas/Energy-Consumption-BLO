@@ -2,62 +2,78 @@
 // definition of an internal variable. If it is undefined, it will be defined. Otherwise not two times (when icluded another time).
 #define BLO_H_
 
-
 #include <stdio.h>
-//#include <cplex.h>
 #include <string.h>
 #include <stdlib.h>
 
-// Single data structure that contains all the input of the problem
 
+// Table SM1, electricity prices for each sub-period Pi
+typedef struct {
+    int start_interval;
+    int end_interval;
+    double price_subperiod;
+} TABLE_SM1;
+
+
+// Table SM2, L power level values and prices(euros/day)
+typedef struct {
+    int level;
+    double price_at_day;
+    double watt;
+} TABLE_SM2;
+
+// Table SM3, base load intervals of power required
+typedef struct {
+    int start_interval;
+    int end_interval;
+    int power_required;
+} TABLE_SM3;
+
+// Table SM5, comfort time slots, allowed operations for each appliance
+typedef struct {
+    int start_interval;
+    int end_inteval;
+} TABLE_SM5;
+
+// Table SM6, duration and power required at each stage of appliance operation cycle
+typedef struct {
+    int power_first_interval;
+    int power_second_interval;
+    int power_third_interval;
+    int power_fourth_interval;
+    int power_fifth_interval;
+    int power_sixth_interval;
+    int power_seventh_interval;
+} TABLE_SM6;
+
+// Single data structure that contains all the input of the problem
 typedef struct
 {
-    // Input data
-    int x_avarage;
-
-    // Table SM1, Electricity Prices divided by time intervals
-    int nof_interval_prices;
-    int *earliest_interval_sm1;
-    int *latest_interval_sm1;
-    double *price_interval_sm1;
-
-    //Table SM2, maximum and minimum prices for each sub-periods
-    int nof_subperiods;
-    int *start_subperiod_sm2;
-    int *end_subperiod_sm2;
-    double *minimum_prices_sm2;
-    double *maximum_prices_sm2;
-
-    //Table SM3, Power levels
-    int nof_powerlevels;
-    double *prices_powerlevel_sm3;
-    int *maximum_power_sm3;
-
-    //Table SM4, Power requested from the grid for each interval
-    int nof_intervals_power_requested;
-    int *start_interval_pr_sm4;
-    int *end_interval_pr_sm4;
-    int *power_requested_sm4;
-
-    //Table SM5, comfort time slots, allowe operations for each appliance
-    int nof_appliances;
-    int *start_appliance; // array di int (starting point)
-    int *end_appliance; // array di int (starting point)
-      
-    //Table SM6, Power required by the appliance at each stage of its operation cycle
-    //1, 2, 3, 4, 5, 6, 7, 8-36
-    int *power_stage1_sm6;
-    int *power_stage2_sm6;
-    int *power_stage3_sm6;
-    int *power_stage4_sm6;
-    int *power_stage5_sm6;
-    int *power_stage6_sm6;
-    int *power_stage7_sm6;
-    int *power_stage8_sm6;
-    
     // Parameters
     int model_type;
     char input_file[1000];
+
+    // Table SM1, electricity prices for each sub-period Pi
+    int nof_subperiods;
+    TABLE_SM1* table_sm1;
+
+    //Table SM2, Power levels and prices
+    int nof_powerlevels;
+    TABLE_SM2* table_sm2;
+
+    // Table SM3, base load intervals of power required
+    int nof_baseloadintervals;
+    TABLE_SM3* table_sm3;
+
+    //Table SM5, comfort time slots, allowed operations for each appliance
+    int nof_appliances;
+    TABLE_SM5* table_sm5;
+
+    //Table SM6, duration and power required at each stage of appliance operation cycle
+    int nof_appliancestages;
+    int max_dj;
+    TABLE_SM6* table_sm6;
+
 
     // Global data
     double tstart;
@@ -66,6 +82,8 @@ typedef struct
     double best_lb;
 
 } instance;
+
+
 
 
 #endif /* BLO_H_ */

@@ -6,3 +6,27 @@
 
 #IncludeRegexTransform: 
 
+../include/blo.h
+stdio.h
+-
+string.h
+-
+stdlib.h
+-
+
+../include/utils.h
+blo.h
+../include/blo.h
+
+/home/leonardo/Scrivania/BLO/src/utils.c
+stdio.h
+-
+string.h
+-
+math.h
+-
+errno.h
+-
+utils.h
+/home/leonardo/Scrivania/BLO/src/utils.h
+
