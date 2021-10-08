@@ -20,8 +20,6 @@ Execute with parameters:
 
 TO DO LIST:
 
-- a method to free all the instance
-- import cplex
-
+- declaration of binary variables 
 
 
