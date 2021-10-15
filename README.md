@@ -20,8 +20,8 @@ Execute with parameters:
 
 TO DO LIST:
 
-- a method to free all the instance
-- import cplex
+- dynamic allocation in blo.c of structure
+- correct the indices of the first constraint
 
 
 

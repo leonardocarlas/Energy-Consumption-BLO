@@ -1,9 +1,8 @@
 #include "blo.h"
+#include <ilcplex/cplex.h>
+
 
 void print_error(const char *err);
-
-
-
 
 
 
@@ -17,5 +16,22 @@ void debug();
  */
 void free_instance(instance *inst);
 
+
+
+void build_model(instance *inst, CPXENVptr pCpxenv, CPXLPptr pCpxlp);
+
+
+
+int xpos(int j, int t, instance *inst);
+
+
+
+double powerRequiredShiftable(int j, int t, instance *inst);
+
+
+double powerLevelCost(int l, instance *inst);
+
+
+double powerCostTimet(int t, instance *inst);
 
 

@@ -13,20 +13,38 @@ string.h
 -
 stdlib.h
 -
+ilcplex/cplex.h
+-
 
 ../include/utils.h
 blo.h
 ../include/blo.h
+ilcplex/cplex.h
+-
 
-/home/leonardo/Scrivania/BLO/src/utils.c
-stdio.h
--
-string.h
--
-math.h
--
-errno.h
--
+/home/leonardo/Scrivania/BLO/src/blo.c
+blo.h
+/home/leonardo/Scrivania/BLO/src/blo.h
 utils.h
 /home/leonardo/Scrivania/BLO/src/utils.h
+ilcplex/cplex.h
+-
+
+/opt/ibm/ILOG/CPLEX_Studio201/cplex/include/ilcplex/cplex.h
+cpxconst.h
+/opt/ibm/ILOG/CPLEX_Studio201/cplex/include/ilcplex/cpxconst.h
+cpxconst.h
+/opt/ibm/ILOG/CPLEX_Studio201/cplex/include/ilcplex/cpxconst.h
+
+/opt/ibm/ILOG/CPLEX_Studio201/cplex/include/ilcplex/cpxconst.h
+math.h
+-
+stdint.h
+-
+stdlib.h
+-
+limits.h
+-
+stdio.h
+-
 

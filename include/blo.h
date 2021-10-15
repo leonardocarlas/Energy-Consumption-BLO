@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <ilcplex/cplex.h>
 
 
 // Table SM1, electricity prices for each sub-period Pi
@@ -81,9 +82,28 @@ typedef struct
     double tbest;
     double best_lb;
 
+    int T;
 } instance;
 
 
 
 
 #endif /* BLO_H_ */
+
+
+
+
+/*!
+* Calculate the solution of the problem built into an instance
+* @param	inst is a pointer to the instance where is stored the problem
+* @return	0 if the solution is found. Other values otherwise
+*/
+int BLOopt(instance *inst);
+
+/*!
+* Function that switches the problem's build from a model to another using the type save into the instance
+* @param	inst is a pointer to the instance of the problem created using tsp.h
+* @param	env is the environment of CPLEX
+* @param	lp is the problem written in CPLEX
+*/
+void build_model(instance *inst, CPXENVptr env, CPXLPptr lp);

@@ -12,7 +12,7 @@ add_executable(${PROJECT_NAME} ${SRC})
 
 include_directories(include)
 
-set(CPLEX /home/leonardo/CPLEX_Studio129/cplex)
+set(CPLEX /opt/ibm/ILOG/CPLEX_Studio201/cplex)
 
 include_directories(include)
 target_link_libraries(${PROJECT_NAME} -L${CPLEX}/lib/x86-64_linux/static_pic)

@@ -121,6 +121,11 @@ void read_input(instance *inst)
                 inst->max_dj = value;
             }
 
+            if ( strncmp(parameter_name, "TIME", 4) == 0 ) {
+
+                inst->T = value;
+            }
+
             if ( strncmp(parameter_name, "MODEL_TYPE", 11) == 0 ) {
 
                 inst->model_type = value;
@@ -165,9 +170,9 @@ void read_input(instance *inst)
 
             token = strtok(NULL, " ");
             inst->table_sm2[in - 1].watt= atof( token );
-            //printf("Test: %lf \n", inst->table_sm2[in - 1].watt);
+            //printf("Test: %lf \n", inst->table_sm2[in - 1].price_at_day);
 
-            if (in == inst->nof_subperiods) active_session = 0;
+            if (in == inst->nof_powerlevels) active_session = 0;
         }
 
         if ( active_session == 1 && value == 3 ) {
@@ -184,7 +189,7 @@ void read_input(instance *inst)
             token = strtok(NULL, " ");
             inst->table_sm3[in - 1].power_required = atoi( token );
 
-            if (in == inst->nof_powerlevels) active_session = 0;
+            if (in == inst->nof_baseloadintervals) active_session = 0;
         }
 
 

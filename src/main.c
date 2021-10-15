@@ -41,8 +41,8 @@ int main(int argc, char **argv) {
 	read_input(&inst);
 
 	//Calculate the solution of the problem
-	//printf("\n--------------OPTIMIZATION INFORMATIONS--------------\n");
-	//BLOopt(&inst);
+	printf("\n--------------OPTIMIZATION INFORMATIONS--------------\n\n");
+	BLOopt(&inst);
 
     time_t end = time(NULL);
 

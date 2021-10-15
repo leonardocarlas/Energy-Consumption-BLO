@@ -19,7 +19,7 @@ set(CMAKE_C_COMPILER_ID "GNU")
 # The include file search paths:
 set(CMAKE_C_TARGET_INCLUDE_PATH
   "../include"
-  "/home/leonardo/CPLEX_Studio129/cplex/include"
+  "/opt/ibm/ILOG/CPLEX_Studio201/cplex/include"
   )
 
 # The set of dependency files which are needed:
