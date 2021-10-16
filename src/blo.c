@@ -75,8 +75,8 @@ void build_model(instance *inst, CPXENVptr env, CPXLPptr lp) {
 
 
 
-    /*
-    // contiguos variable for the Power at time t
+
+    // P(t) = contiguos
     for (int t = 0; t < inst->T; t++) {
 
         sprintf( cname[0], "P(%i)", t+1);
@@ -84,24 +84,17 @@ void build_model(instance *inst, CPXENVptr env, CPXLPptr lp) {
         double ub = 2000.0;
         double obj = powerCostTimet(t+1, inst);        // cost
 
-        if (CPXnewcols(env, lp, 1, &obj, &lb, &ub, &integer, cname)) {
+        status = CPXnewcols(env, lp, 1, &obj, &lb, &ub, &integer, cname);
+        if ( status ){
             fprintf (stderr,"CPXnewcols failed on P(t) variables.\n");
         }
 
         pVector[t] = counter;
-        //printf("Posizione variabile P(%i): %i \n ", t+1, pVector[t]);
+        printf("Posizione variabile P(%i): %i \n ", t+1, pVector[t]);
         counter++;
     }
 
 
-
-
-    // Debug del vettore pVector
-    for (int t = 0; t < inst->T; t++) {
-        printf("Valore nel vettore P: %i \n", pVector[t]);
-    }
-
-*/
 
 
 
@@ -144,7 +137,7 @@ void build_model(instance *inst, CPXENVptr env, CPXLPptr lp) {
     char    s_sense[3]  = {'E', 'E', 'E'};
     /* Note - use a trick for rmatbeg by putting the total nonzero count in
               the last element.  This is not required by the CPXaddrows call. */
-    int     s_rmatbeg[4] = {0, 1440, 2880, 4320};
+    int     s_rmatbeg[4] = {0, 10, 20, 30};
     double  s_rmatval[(inst->nof_appliances * inst->T)];
     int s_rmatind[(inst->nof_appliances * inst->T)];
     int k = 0;
@@ -159,10 +152,10 @@ void build_model(instance *inst, CPXENVptr env, CPXLPptr lp) {
             double ub = 1.0;
             double obj = 1.0;
 
-            status = CPXnewcols(env, lp, 1, &obj, &lb, &ub, &binary, cname);
-                if (status) print_error("Error CPXnewcols on s_jt");
-
             if ( t+1 >= inst->table_sm5[j].start_interval && t+1 <= inst->table_sm5[j].end_inteval ) {
+
+                status = CPXnewcols(env, lp, 1, &obj, &lb, &ub, &binary, cname);
+                if (status) print_error("Error CPXnewcols on s_jt");
 
                 s_rmatind[k] = sMatrix[j][t] = counter;
                 s_rmatval[k] = 1.0;
@@ -182,9 +175,13 @@ void build_model(instance *inst, CPXENVptr env, CPXLPptr lp) {
 
 
 
-    /*
 
-    // contiguos variable P(j,t), power fo load j at time t
+
+    // P(j,t) = contiguos
+
+    int pjt_rmatind[(inst->nof_appliances * inst->T)][1];
+    k = 0;
+
     for ( int j = 0; j < inst->nof_appliances; j++) {
         for (int t = 0; t < inst->T; t++) {
 
@@ -194,21 +191,19 @@ void build_model(instance *inst, CPXENVptr env, CPXLPptr lp) {
             double obj = 1.0;
 
             //Creates the columns of the new variable
-            if (CPXnewcols(env, lp, 1, &obj, &lb, &ub, &binary, cname))
+            if (CPXnewcols(env, lp, 1, &obj, &lb, &ub, &integer, cname))
                 print_error("Wrong CPXnewcols on x var.s");
-            if ( t+1 >= inst->table_sm5[j].start_interval && t+1 <= inst->table_sm5[j].end_inteval ) {
-                pMatrix[j][t] = counter;
-                counter++;
-            }
-            else
-                pMatrix[j][t] = -1;
-            printf("Posizione variabile P(%i,%i): %i \n", j+1, t+1, pMatrix[j][t]);
 
+            pjt_rmatind[k][0] = pMatrix[j][t] = counter;
+            counter++;
+
+            printf("Posizione variabile P(%i,%i): %i \n", j+1, t+1, pMatrix[j][t]);
+            k++;
         }
     }
 
 
-    // contiguos variable g(j,r), power for load j at stage r
+    //  g(j, r) = contiguos
     for ( int j = 0; j < inst->nof_appliances; j++) {
         for (int r = 0; r < inst->max_dj; r++) {
 
@@ -260,6 +255,38 @@ void build_model(instance *inst, CPXENVptr env, CPXLPptr lp) {
         fprintf (stderr,"CPXaddrows failed.\n");
         goto TERMINATE;
     }
+
+
+
+    /* Constraint number 3: example, variable P(j, t)
+     *
+     P(2,1) = 0
+     P(2,2) = 0
+     P(2,3) = 0 ... meglio aggiungerli uno alla volta
+    */
+
+    int pjt_matbeg[2] = {0, 1};
+    double pjt_rmatval[1] = {1.0};
+    double test_rhs[1] = {0.0};
+    k = 0;
+    for ( int j = 0; j < inst->nof_appliances; j++ ) {
+        for (int t = 0; t < inst->T; ++t) {
+
+            if( t+1 < inst->table_sm5[j].start_interval || t+1 > inst->table_sm5[j].end_inteval ) {
+
+                status = CPXaddrows (env, lp, 0, 1, 1,
+                                     test_rhs, u_sense, pjt_matbeg, pjt_rmatind[k], pjt_rmatval,
+                                     NULL, NULL);
+                if ( status ) {
+                    fprintf(stderr, "CPXaddrows failed.\n");
+                    goto TERMINATE;
+                }
+            }
+            k++;
+        }
+    }
+
+
 
 
 
