@@ -63,6 +63,8 @@ double powerLevelCost(int l, instance *inst) {
     return cost;
 }
 
+
+
 double powerCostTimet(int t, instance *inst) {
 
     double cost = 0.0;
@@ -71,4 +73,41 @@ double powerCostTimet(int t, instance *inst) {
             cost = inst->table_sm1[i].price_subperiod;
     }
     return cost;
+}
+
+
+/*
+ * Power required by the shiftable load j at its stage r
+ */
+int powerRequiredShiftableStageR(instance *inst, int j, int r) {
+
+    int time_interval = inst->max_dj / inst->nof_appliancestages;   //15
+    int integer_part = r / time_interval;
+    int power_at_stage_r = 0;
+    switch (integer_part)
+    {
+        case 0:
+            power_at_stage_r = inst->table_sm6[j].power_first_interval;
+        break;
+        case 1:
+            power_at_stage_r = inst->table_sm6[j].power_second_interval;
+        break;
+        case 2:
+            power_at_stage_r = inst->table_sm6[j].power_third_interval;
+        break;
+        case 3:
+            power_at_stage_r = inst->table_sm6[j].power_fourth_interval;
+        break;
+        case 4:
+            power_at_stage_r = inst->table_sm6[j].power_fifth_interval;
+        break;
+        case 5:
+            power_at_stage_r = inst->table_sm6[j].power_sixth_interval;
+        break;
+        case 6:
+            power_at_stage_r = inst->table_sm6[j].power_seventh_interval;
+        break;
+    }
+
+    return power_at_stage_r;
 }

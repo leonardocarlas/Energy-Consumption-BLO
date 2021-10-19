@@ -77,10 +77,15 @@ typedef struct
 
 
     // Global data
-    double tstart;
-    double zbest;
-    double tbest;
-    double best_lb;
+    //Variable that will contain global data
+    double timelimit;
+    double start_time;
+    double *solution;
+    double best_value;
+    int nvariables;
+    int *successors;
+    int *component;
+    int ncomp;
 
     int T;
 } instance;
