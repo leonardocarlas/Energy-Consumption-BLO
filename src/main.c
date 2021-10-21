@@ -15,7 +15,6 @@
 // ordinato con le variabili, prima aggiungo le colonne delle varibili con i bound delle variabili
 // poi i vincoli uno alla volta
 // salvare il file lp, controllare le variabili, controllare che i vincoli che ho aggiunto siano quelli
-
 // First shiftable loads, block
 // When the MILP is functioning for all the appliances, we will then implement a PSO for the UL
 
@@ -29,7 +28,7 @@ int main(int argc, char **argv) {
 		exit(1);
 	}
 
-    time_t start = time(NULL);
+    double start_time = seconds();
 	instance inst;
 
 	//Commands for gnuplot
@@ -44,9 +43,9 @@ int main(int argc, char **argv) {
 	printf("\n--------------OPTIMIZATION INFORMATIONS--------------\n\n");
 	BLOopt(&inst);
 
-    time_t end = time(NULL);
+    double end_time = seconds();
 
-    printf("\nTime to solve the BLO problem: %lf \n ", difftime(end, start));
+    printf("\nTime to solve the BLO problem: %lf \n ", (end_time - start_time));
 
     free_instance(&inst);
 

@@ -48,20 +48,6 @@ int BLOopt(instance *inst) {
 
     inst->solution = (double *) calloc(inst->nvariables, sizeof(double));
 
-    // If the problem have a solution it saves it into the instance structure
-    status = CPXgetx(env, lp, inst->solution, 0, inst->nvariables - 1);
-    if (status) {
-        printf("Failed to optimize MIP (retrieving the solution -> BLOopt() %d", status);
-    }
-
-    // Print the values of the solution
-    double solution = -1;
-    if (CPXgetobjval(env, lp, &solution)) {
-        print_error("Failed to optimize MIP (getobjval() -> BLOopt).\n");
-    }
-    printf("Objval: %f\n", solution);
-
-
 
     status = CPXmipopt (env, lp);
     if ( status ) {
@@ -74,6 +60,20 @@ int BLOopt(instance *inst) {
         fprintf (stderr,"CPXgetobjval failed\n");
         //goto TERMINATE;
     }
+
+
+    // If the problem have a solution it saves it into the instance structure
+    status = CPXgetx(env, lp, inst->solution, 0, inst->nvariables - 1);
+    if (status) {
+        printf("Failed to optimize MIP (retrieving the solution -> BLOopt()) %d", status);
+    }
+
+    // Print the values of the solution
+    double solution = -1;
+    if (CPXgetobjval(env, lp, &solution)) {
+        print_error("Failed to optimize MIP (getobjval() -> BLOopt).\n");
+    }
+    printf("Objval: %f\n", solution);
 
 
     // Free and close cplex model
@@ -247,21 +247,25 @@ void build_model(instance *inst, CPXENVptr env, CPXLPptr lp) {
      */
 
     // control of t
-
+    int duration;
     for (int j = 0; j < inst->nof_appliances; ++j) {
 
-        int t_counter = (inst->table_sm5[j].end_inteval - inst->max_dj + 1) - inst->table_sm5[j].start_interval;
+        if (j == 0) duration = 90;
+        if (j == 1) duration = 105;
+        if (j == 2) duration = 60;
+
+        int t_counter = (inst->table_sm5[j].end_inteval - duration + 1) - inst->table_sm5[j].start_interval;
         //printf("T allowed: %i \n", t_counter);
-        int c1_rmatind[t_counter];
-        double c1_rmatval[t_counter];
+        int c1_rmatind[t_counter + 1];
+        double c1_rmatval[t_counter + 1];
         k = 0;
 
-        for (int t = inst->table_sm5[j].start_interval; t < (inst->table_sm5[j].end_inteval - inst->max_dj + 1); ++t) {
+        for (int t = ( inst->table_sm5[j].start_interval - 1 ); t <= (inst->table_sm5[j].end_inteval - duration ); ++t) {
             c1_rmatind[k] = sMatrix[j][t];
             c1_rmatval[k] = 1.0;
             k++;
         }
-
+        printf("Caricati: %i valori \n", k);
         int c1_rmatbeg[2] = {0, t_counter};
 
         status = CPXaddrows (env, lp, 0, 1, t_counter,
@@ -290,15 +294,21 @@ void build_model(instance *inst, CPXENVptr env, CPXLPptr lp) {
     */
 
     int r_counter = 0;
-    int *r_indixes = calloc(inst->max_dj, sizeof(int));
 
     for (int j = 0; j < inst->nof_appliances; ++j) {
+
+        if (j == 0) duration = 90;
+        if (j == 1) duration = 105;
+        if (j == 2) duration = 60;
+        int *r_indixes = calloc( duration , sizeof(int));
+
         for (int t = 0; t < inst->T; ++t) {
 
+            if ( t > inst->table_sm5[j].start_interval) continue;
 
-            for (int r = 0; r < inst->max_dj; ++r) {
+            for (int r = 0; r < duration ; ++r) {
 
-                if ( r == 0 || r <= t || r <= t - inst->table_sm5[j].start_interval) {
+                if ( r == 0 || ( r <= t && r <= t - inst->table_sm5[j].start_interval) ){
 
                     r_indixes[r_counter] = r;
                     r_counter++;

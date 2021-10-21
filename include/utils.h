@@ -35,3 +35,7 @@ double powerCostTimet(int t, instance *inst);
 int powerRequiredShiftableStageR(instance *inst, int j, int r);
 
 
+/*!
+* Return the seconds of the current program
+*/
+double seconds();

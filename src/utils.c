@@ -1,8 +1,12 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
+#include <time.h>
+#include <sys/resource.h>
 #include <errno.h>
 #include "utils.h"
+
+
 
 
 void print_error(const char *err) {
@@ -111,3 +115,26 @@ int powerRequiredShiftableStageR(instance *inst, int j, int r) {
 
     return power_at_stage_r;
 }
+
+#define CLOCK_MONOTONIC                 1
+
+double seconds() {
+    struct timespec ts;
+    clock_gettime(CLOCK_MONOTONIC, &ts);
+    return (double) ts.tv_sec + 1.0e-9 * ((double) ts.tv_nsec);
+    return ((double) clock() / (double) CLOCKS_PER_SEC);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
