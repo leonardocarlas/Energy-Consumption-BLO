@@ -1,4 +1,3 @@
-#define _CRT_SECURE_NO_DEPRECATE
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -91,8 +90,8 @@ void read_input(instance *inst)
             // TABLE SM2
             if ( strncmp(parameter_name, "NUMBER_OF_POWER_LEVELS", 23) == 0 ) {
 
-                inst->nof_powerlevels = value;
-                inst->table_sm2 = calloc(inst->nof_powerlevels, sizeof(TABLE_SM2));
+                inst->L = value;
+                inst->table_sm2 = calloc(inst->L, sizeof(TABLE_SM2));
             }
 
             // TABLE SM3
@@ -105,20 +104,35 @@ void read_input(instance *inst)
             // TABLE SM5
             if ( strncmp(parameter_name, "NUMBER_OF_APPLIANCES", 21) == 0 ) {
 
-                inst->nof_appliances = value;
-                inst->table_sm5 = calloc(inst->nof_appliances, sizeof(TABLE_SM5));
+                inst->J = value;
+                inst->table_sm5 = calloc(inst->J, sizeof(TABLE_SM5));
+                inst->table_sm20 = calloc(inst->J, sizeof(TABLE_SM20));
             }
 
             // TABLE SM6
             if ( strncmp(parameter_name, "NUMBER_OF_APPLIANCE_STAGES", 26) == 0 ) {
 
                 inst->nof_appliancestages = value;
-                inst->table_sm6 = calloc(inst->nof_appliances, sizeof(TABLE_SM6));
+                inst->table_sm6 = calloc(inst->J, sizeof(TABLE_SM6));
+            }
+
+            // TABLE SM8
+            if ( strncmp(parameter_name, "NUMBER_OF_WATERWITHDRAWL_INTERVALS", 34) == 0 ) {
+
+                inst->nof_waterwithdrawl_intervals = value;
+                inst->table_sm8 = calloc( value , sizeof(TABLE_SM8));
+            }
+
+            // TABLE SM9
+            if ( strncmp(parameter_name, "NUMBER_OF_AMBIENTTEMPERATUREEWH_INTERVALS", 41) == 0 ) {
+
+                inst->nof_amb_temp_intervals = value;
+                inst->table_sm9 = calloc( value , sizeof(TABLE_SM9));
             }
 
             if ( strncmp(parameter_name, "MAX_DJ", 6) == 0 ) {
 
-                inst->max_dj = value;
+                inst->MAX_DJ = value;
             }
 
             if ( strncmp(parameter_name, "TIME", 4) == 0 ) {
@@ -172,7 +186,7 @@ void read_input(instance *inst)
             inst->table_sm2[in - 1].watt= atof( token );
             //printf("Test: %lf \n", inst->table_sm2[in - 1].price_at_day);
 
-            if (in == inst->nof_powerlevels) active_session = 0;
+            if (in == inst->L) active_session = 0;
         }
 
         if ( active_session == 1 && value == 3 ) {
@@ -193,7 +207,6 @@ void read_input(instance *inst)
         }
 
 
-
         if ( active_session == 1 && value == 5 ) {
 
             token = strtok(line, " ");
@@ -205,7 +218,7 @@ void read_input(instance *inst)
             token = strtok(NULL, " ");
             inst->table_sm5[in - 1].end_inteval= atoi( token );
 
-            if (in == inst->nof_appliances) active_session = 0;
+            if (in == inst->J) active_session = 0;
         }
 
 
@@ -235,14 +248,95 @@ void read_input(instance *inst)
             token = strtok(NULL, " ");
             inst->table_sm6[in - 1].power_seventh_interval = atoi( token );
 
-            if (in == inst->nof_appliances) active_session = 0;
+            if (in == inst->J) active_session = 0;
         }
 
-        if ( value == 7 ) {
-            continue;
+
+        if ( active_session == 1 && value == 20 ) {
+
+            token = strtok(line, " ");
+            int in = atoi( token );
+
+            token = strtok(NULL, " ");
+            inst->table_sm20[in - 1].duration = atoi( token );
+
+            if (in == inst->J) active_session = 0;
         }
-        if ( value == 8 ) {
-            continue;
+
+        if ( active_session == 1 && value == 7 ) {
+
+            token = strtok(line, " ");
+            inst->table_sm7.power_required = atoi( token );
+
+            token = strtok(NULL, " ");
+            inst->table_sm7.M = atoi( token );
+
+            token = strtok(NULL, " ");
+            inst->table_sm7.AU = atoi( token );
+
+            token = strtok(NULL, " ");
+            inst->table_sm7.termal_coeff = atof( token );
+            // La SOURCE
+            token = strtok(NULL, " ");
+            inst->table_sm7.inlet_temperature = atoi( token );
+
+            token = strtok(NULL, " ");
+            inst->table_sm7.min_temperature = atoi( token );
+
+            token = strtok(NULL, " ");
+            inst->table_sm7.max_temperature = atoi( token );
+
+            token = strtok(NULL, " ");
+            inst->table_sm7.required_temperature = atoi( token );
+
+            token = strtok(NULL, " ");
+            inst->table_sm7.required_time = atoi( token );
+
+            token = strtok(NULL, " ");
+            inst->table_sm7.initial_temperature = atoi( token );
+
+            token = strtok(NULL, " ");
+            inst->table_sm7.initial_on_off = atoi( token );
+
+            token = strtok(NULL, " ");
+            inst->table_sm7.initial_power_losses = atoi( token );
+
+        }
+
+        if ( active_session == 1 && value == 8 ) {
+
+            token = strtok(line, " ");
+            int in = atoi( token );
+
+            token = strtok(NULL, " ");
+            inst->table_sm8[ in - 1 ].start_interval = atoi( token );
+
+            token = strtok(NULL, " ");
+            inst->table_sm8[ in - 1 ].end_interval = atoi( token );
+
+            token = strtok(NULL, " ");
+            inst->table_sm8[ in - 1 ].kg_water = atof( token );
+
+            if (in == inst->nof_waterwithdrawl_intervals) active_session = 0;
+
+        }
+
+        if ( active_session == 1 && value == 9 ) {
+
+            token = strtok(line, " ");
+            int in = atoi( token );
+
+            token = strtok(NULL, " ");
+            inst->table_sm9[ in - 1 ].start_interval = atoi( token );
+
+            token = strtok(NULL, " ");
+            inst->table_sm9[ in - 1 ].end_interval = atoi( token );
+
+            token = strtok(NULL, " ");
+            inst->table_sm9[ in - 1 ].temperature = atof( token );
+
+            if (in == inst->nof_amb_temp_intervals) active_session = 0;
+
         }
 
 

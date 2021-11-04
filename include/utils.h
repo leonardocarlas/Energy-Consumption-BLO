@@ -17,7 +17,7 @@ void debug();
 void free_instance(instance *inst);
 
 
-void build_model(instance *inst, CPXENVptr pCpxenv, CPXLPptr pCpxlp);
+void model_m1(instance *inst, CPXENVptr env, CPXLPptr lp);
 
 
 int xpos(int j, int t, instance *inst);

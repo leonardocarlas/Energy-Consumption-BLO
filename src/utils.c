@@ -43,7 +43,7 @@ int xpos(int j, int t, instance *inst) {
 // Power required by the appliance j at time t, P_jt
 double powerRequiredShiftable(int j, int t, instance *inst) {
 
-    int max_duration = inst->max_dj;
+    int max_duration = inst->MAX_DJ;
     int nofinterval = inst->nof_appliancestages;
 
     // check when s(j,t) = 1, return the t_start
@@ -85,7 +85,7 @@ double powerCostTimet(int t, instance *inst) {
  */
 int powerRequiredShiftableStageR(instance *inst, int j, int r) {
 
-    int time_interval = inst->max_dj / inst->nof_appliancestages;   //15
+    int time_interval = inst->MAX_DJ / inst->nof_appliancestages;   //15
     int integer_part = r / time_interval;
     int power_at_stage_r = 0;
     switch (integer_part)

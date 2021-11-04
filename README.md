@@ -20,8 +20,11 @@ Execute with parameters:
 
 TO DO LIST:
 
-- dynamic allocation in blo.c of structure
-- correct the indices of the first constraint
+- MODEL M1 is correctly modelled but it produces a wrong objval
+
+NEXT UP:
+
+- to model M1 using CPLEX Optimization Studio IDE
 
 
 

@@ -8,8 +8,6 @@
 #define LOWER_BOUND 'L'
 #define EPS 1e-5
 
-
-
 #include <ilcplex/cplex.h>
 
 
@@ -39,7 +37,7 @@ int BLOopt(instance *inst) {
 
     CPXLPptr lp = CPXcreateprob(env, &status, "BLO");          // env, pointer to error to comunicate, a name
 
-    build_model(inst, env, lp);    // populate the data
+    model_m1(inst, env, lp);    // populate the data
 
     // Obtain the number of variable and print them on screen
     int cur_numcols = CPXgetnumcols(env, lp);
@@ -75,6 +73,14 @@ int BLOopt(instance *inst) {
     }
     printf("Objval: %f\n", solution);
 
+    for (int j = 0; j < inst->J; ++j) {
+        for (int t = 0; t < inst->T; ++t) {
+            //printf("VAL s(%i, %i): %i ", j+1, t+1, CPXgetx(env, lp))
+        }
+    }
+
+
+    status = CPXsolwrite(env, lp, "test.sol");
 
     // Free and close cplex model
     CPXfreeprob(env, &lp);
@@ -89,7 +95,7 @@ int BLOopt(instance *inst) {
 /*
  * Method to define problem variables and constraints
  */
-void build_model(instance *inst, CPXENVptr env, CPXLPptr lp) {
+void model_m1(instance *inst, CPXENVptr env, CPXLPptr lp) {
 
     char binary = 'B';
     char integer = 'I';
@@ -99,6 +105,7 @@ void build_model(instance *inst, CPXENVptr env, CPXLPptr lp) {
     double  one[1] = {1.0};
     int status;
     int k = 0;
+    double P = 10000.0;
 
     // each name of the variable are string, organizzare le variabili ( column name )
     char **cname = ( char ** ) calloc( 1, sizeof (char *));
@@ -106,28 +113,30 @@ void build_model(instance *inst, CPXENVptr env, CPXLPptr lp) {
 
     int counter = 0;
 
-    // Declaration of structure for variable P_t
-    int pVector[inst->T];
-    // Declaration of structure for variable u_l
-    int uVector[inst->nof_powerlevels];
-    // Declaration of structure for variable s_jt
-    int sMatrix[inst->nof_appliances][inst->T];
-    // Declaration of structure for variable s_jt
-    int pMatrix[inst->nof_appliances][inst->T];
-    // Declaration of structure for variable g_jr
-    int gMatrix[inst->nof_appliances][inst->max_dj];
+    // Declaration of structure for variable P(t)
+    int *pVector = calloc( inst->T, sizeof (int) );
+    // Declaration of structure for variable u(l)
+    int *uVector = calloc( inst->L, sizeof (int) );
+    // Declaration of structure for variable s(j,t)
+    int (*sMatrix)[inst->T];
+    sMatrix =  calloc( inst->J, sizeof *sMatrix);
+    // Declaration of structure for variable P(j,t)
+    int (*pMatrix)[inst->T];
+    pMatrix =  calloc( inst->J, sizeof *pMatrix);
+    int (*ReversepMatrix)[inst->J];
+    ReversepMatrix = calloc(inst->T, sizeof *ReversepMatrix);
 
 
 
 
 
-    // P(t) = contiguos
+    // Definition of P(t) = contiguos
     for (int t = 0; t < inst->T; t++) {
 
         sprintf( cname[0], "P(%i)", t+1);
         double lb = 0.0;
-        double ub = 2000.0;
-        double obj = powerCostTimet(t+1, inst);        // cost
+        double ub = P;
+        double obj = powerCostTimet(t+1, inst);
 
         status = CPXnewcols(env, lp, 1, &obj, &lb, &ub, &integer, cname);
         if ( status ){
@@ -135,7 +144,7 @@ void build_model(instance *inst, CPXENVptr env, CPXLPptr lp) {
         }
 
         pVector[t] = counter;
-        printf("Posizione variabile P(%i): %i \n ", t+1, pVector[t]);
+        //printf("Posizione variabile P(%i): %i \n ", t+1, pVector[t]);
         counter++;
     }
 
@@ -143,12 +152,8 @@ void build_model(instance *inst, CPXENVptr env, CPXLPptr lp) {
 
 
 
-    // u( l ) = 0 / 1
-    double  u_rmatval[] = {1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
-    int  u_rmatbeg[2] = {0, inst->nof_powerlevels};
-
-
-    for ( int l = 0; l < inst->nof_powerlevels; l++) {
+    // Definition of u(l) = 0/1
+    for ( int l = 0; l < inst->L; l++) {
 
         sprintf(cname[0], "u(%i)", l+1);
         double lb = 0.0;
@@ -162,257 +167,220 @@ void build_model(instance *inst, CPXENVptr env, CPXLPptr lp) {
         }
 
         uVector[l] = counter;
-        printf("Posizione variabile u(%i): %i \n ", l+1, uVector[l]);
+        //printf("Posizione variabile u(%i): %i \n ", l+1, uVector[l]);
         counter++;
     }
 
 
-
-
-
-
-
-    // s(j, t)  = 0 / 1
-
-    for ( int j = 0; j < inst->nof_appliances; j++) {
+    // Definition of s(j,t) = 0/1
+    for ( int j = 0; j < inst->J; j++) {
         for ( int t = 0; t < inst->T; t++) {
+        
+            if ( t >= (inst->table_sm5[j].start_interval - 1) && t <  inst->table_sm5[j].end_inteval  ) {
+	    	    sprintf(cname[0], "s(%i,%i)", j+1, t+1);
+                double lb = 0.0;
+                double ub = 1.0;
+                double obj = 0.0;
 
-            sprintf(cname[0], "s(%i,%i)", j+1, t+1);
-            double lb = 0.0;
-            double ub = 1.0;
-            double obj = 1.0;
+                status = CPXnewcols(env, lp, 1, &obj, &lb, &ub, &binary, cname);
+                if (status) print_error("Error CPXnewcols on s_jt");
 
-            status = CPXnewcols(env, lp, 1, &obj, &lb, &ub, &binary, cname);
-            if (status) print_error("Error CPXnewcols on s_jt");
-
-            sMatrix[j][t] = counter;
-            counter++;
-
-            printf("Posizione variabile s(%i,%i): %i \n", j+1, t+1, sMatrix[j][t]);
-
+                sMatrix[j][t] = counter;
+                counter++;
+                //printf("Posizione variabile s(%i,%i): %i \n", j+1, t+1, sMatrix[j][t]);
+            }
+            else {
+                sMatrix[j][t] = -1;
+            }
         }
     }
 
 
 
 
+    // Definition of P(j,t) = contiguos
 
-
-    // P(j,t) = contiguos
-
-    int pjt_rmatind[(inst->nof_appliances * inst->T)][1];
-    int ptj_rmatind[(inst->T)][inst->nof_appliances];
-    k = 0;
-
-    for ( int j = 0; j < inst->nof_appliances; j++) {
+    for ( int j = 0; j < inst->J; j++) {
         for (int t = 0; t < inst->T; t++) {
 
             sprintf(cname[0], "P(%d,%d)", j+1, t+1);
             double lb = 0.0;
-            double ub = 2000.0;
-            double obj = 1.0;
+            double ub = P;
+            double obj = 0.0;
 
             //Creates the columns of the new variable
             if (CPXnewcols(env, lp, 1, &obj, &lb, &ub, &integer, cname))
                 print_error("Wrong CPXnewcols on x var.s");
 
-            pjt_rmatind[k][0] = pMatrix[j][t] = counter;
-            ptj_rmatind[t][j] = counter;
+            pMatrix[j][t] = counter;
+            ReversepMatrix[t][j] = counter;
             counter++;
 
-            printf("Posizione variabile P(%i,%i): %i \n", j+1, t+1, pMatrix[j][t]);
-            k++;
+            //printf("Posizione variabile P(%i,%i): %i \n", j+1, t+1, pMatrix[j][t]);
+
         }
     }
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-    /* Constraint number 1: example, variable s(j,t)
+    /* Constraint number: example, variable s(j,t)
      *
-     s(1,1) + s(1,2) + s(1,3) + s(1,4) + s(1,5) + s(1,6) + s(1,7) + s(1,8) + s(1,9) + s(1,10) = 1
-     s(2,1) + s(2,2) + s(2,3) + s(2,4) + s(2,5) + s(2,6) + s(2,7) + s(2,8) + s(2,9) + s(2,10) = 1
-     s(3,1) + s(3,2) + s(3,3) + s(3,4) + s(3,5) + s(3,6) + s(3,7) + s(3,8) + s(3,9) + s(3,10) = 1
+     s(1,1) + s(1,2) + s(1,3) + s(1,4) + s(1,5) + ... + s(1,391) = 1
+     s(2,1) + s(2,2) + s(2,3) + s(2,4) + s(2,5) + ... + s(2,231) = 1
+     s(3,1) + s(3,2) + s(3,3) + s(3,4) + s(3,5) + ... + s(3,10) = 1
      */
 
-    // control of t
-    int duration;
-    for (int j = 0; j < inst->nof_appliances; ++j) {
+    for (int j = 0; j < inst->J; ++j) {
 
-        if (j == 0) duration = 90;
-        if (j == 1) duration = 105;
-        if (j == 2) duration = 60;
+        int end = (inst->table_sm5[j].end_inteval - inst->table_sm20[j].duration + 1);
+        int t_counter = end - inst->table_sm5[j].start_interval;
 
-        int t_counter = (inst->table_sm5[j].end_inteval - duration + 1) - inst->table_sm5[j].start_interval;
-        //printf("T allowed: %i \n", t_counter);
-        int c1_rmatind[t_counter + 1];
-        double c1_rmatval[t_counter + 1];
+        int *c1_rmatind = calloc( t_counter + 1, sizeof (int) );
+        double *c1_rmatval = calloc( t_counter + 1, sizeof (double) );
         k = 0;
-
-        for (int t = ( inst->table_sm5[j].start_interval - 1 ); t <= (inst->table_sm5[j].end_inteval - duration ); ++t) {
+        for (int t = ( inst->table_sm5[j].start_interval - 1 ); t < inst->table_sm5[j].end_inteval - inst->table_sm20[j].duration + 1 ; ++t) {
             c1_rmatind[k] = sMatrix[j][t];
             c1_rmatval[k] = 1.0;
             k++;
         }
-        printf("Caricati: %i valori \n", k);
-        int c1_rmatbeg[2] = {0, t_counter};
 
-        status = CPXaddrows (env, lp, 0, 1, t_counter,
+        int c1_rmatbeg[2] = {0, t_counter + 1};
+        status = CPXaddrows (env, lp, 0, 1, t_counter + 1,
                              one, sense_equal, c1_rmatbeg, c1_rmatind, c1_rmatval,
                              NULL, NULL);
         if ( status ) {
             fprintf (stderr,"CPXaddrows failed.\n");
-
+        } else {
+            free(c1_rmatind);
+            free(c1_rmatval);
         }
-
     }
-    printf("Vincolo 1 creato \n");
+    printf("CONSTRAINT n 1: CREATED \n");
 
 
 
 
 
-    /* Constraint number 2: example P_jt
-     *
-    P_11 = g_11 * s_11 + g_12 * s_13 + ... +
-    P_21 =
-    P_31 =
-    P_12 =
-    P_22 =
-    P_33 =
-    */
 
-    int r_counter = 0;
+    /* Constraint number 3: example P(j,t)
+    *
+   P(1,4) = f(1,1) * s(1,4) + f(1,2) * s(1,3) + f(1,3) * s(1,2) + f(1,4) * s(1,1)
+   ...
+   */
 
-    for (int j = 0; j < inst->nof_appliances; ++j) {
+    for (int j = 0; j < inst->J; ++j) {
+        for (int t = (inst->table_sm5[j].start_interval - 1); t < inst->table_sm5[j].end_inteval ; ++t) {
 
-        if (j == 0) duration = 90;
-        if (j == 1) duration = 105;
-        if (j == 2) duration = 60;
-        int *r_indixes = calloc( duration , sizeof(int));
+            int r_counter = 0;
 
-        for (int t = 0; t < inst->T; ++t) {
-
-            if ( t > inst->table_sm5[j].start_interval) continue;
-
-            for (int r = 0; r < duration ; ++r) {
-
-                if ( r == 0 || ( r <= t && r <= t - inst->table_sm5[j].start_interval) ){
-
-                    r_indixes[r_counter] = r;
+            for (int r = 0; r < inst->table_sm20[j].duration; ++r) {
+                if (r == 0 || ( (r <= t) && (r <= (t + 1 - inst->table_sm5[j].start_interval)))) {
                     r_counter++;
                 }
             }
+            //printf("J = %d, T = %d, R_counter: %d \n", j+1, t+1, r_counter);
 
-            //printf("Numero di r_counter: %i \n", r_counter);
-
-            int c2_rmatind[r_counter + 1];
-            double c2_rmatval[r_counter + 1];
-
-            for (int r = 0; r < r_counter; ++r) {
-
-                int right_index = t - r_indixes[r];
-                int s_j_right_index = sMatrix[j][right_index];
-                int g_jr = powerRequiredShiftableStageR(inst, j, r);
-                //printf("Indice giusto, sj(t-r+1), g_jr %i %i %i %i\n",j ,right_index + 1, s_j_right_index, g_jr);
-                c2_rmatind[r] = s_j_right_index;
-                c2_rmatval[r] = g_jr;
+            int *chard_rmatind = calloc(r_counter + 1, sizeof(int));
+            double *chard_rmatval = calloc(r_counter + 1, sizeof(double));
+            int chard_rmatbeg[2] = {0, r_counter};
+            k = 0;
+            for (int r = 0; r < inst->table_sm20[j].duration; ++r) {
+                if (r == 0 || (r <= t && r <= t + 1 - inst->table_sm5[j].start_interval)) {
+                    if ( sMatrix[j][t-r] == -1 ) {
+                        printf("J: %d Value: %d T: %d  R: %d \n ", j, t-r+1, t ,r  );
+                    } else {
+                        chard_rmatind[k] = sMatrix[j][t-r];
+                        chard_rmatval[k] = powerRequiredShiftableStageR(inst, j, r);
+                        k++;
+                    }
+                }
             }
-            c2_rmatval[r_counter] = -1.0;
-            c2_rmatind[r_counter] = pMatrix[j][t];
 
-            int c2_rmatbeg[2] = {0, r_counter};
+            chard_rmatind[ r_counter ] = pMatrix[j][t];
+            chard_rmatval[ r_counter ] = -1.0;
 
             status = CPXaddrows (env, lp, 0, 1, r_counter + 1,
-                                 zero, sense_equal, c2_rmatbeg, c2_rmatind, c2_rmatval,
+                                 zero, sense_equal, chard_rmatbeg, chard_rmatind, chard_rmatval,
                                  NULL, NULL);
-            if ( status ) {
+            if ( status )
                 fprintf(stderr, "CPXaddrows failed.\n");
-
+            else {
+                free(chard_rmatval);
+                free(chard_rmatind);
             }
 
-            r_counter = 0;
 
         }
     }
-    printf("Vincolo 2 creato \n");
+    printf("Constraint HARD OK \n");
 
 
 
 
 
-
-    /* Constraint number 3: example, variable P(j, t)
+    /* Constraint number 4: example, variable P(j,t)
      *
-     P(2,1) = 0
+     P(2,1) = 0         
      P(2,2) = 0
-     P(2,3) = 0 ... meglio aggiungerli uno alla volta
+     P(2,3) = 0
     */
 
-    int c3_rmatbeg[2] = {0, 1};
-    k = 0;
-    for ( int j = 0; j < inst->nof_appliances; j++ ) {
+    int c4_rmatbeg[2] = {0, 1};
+    for (int j = 0; j < inst->J; j++ ) {
         for (int t = 0; t < inst->T; ++t) {
 
             if( t+1 < inst->table_sm5[j].start_interval || t+1 > inst->table_sm5[j].end_inteval ) {
 
+                int *c_rmatind = calloc(1, sizeof (int));
+                c_rmatind[0] = pMatrix[j][t];
                 status = CPXaddrows (env, lp, 0, 1, 1,
-                                     zero, sense_equal, c3_rmatbeg, pjt_rmatind[k], one,
+                                     zero, sense_equal, c4_rmatbeg, c_rmatind, one,
                                      NULL, NULL);
                 if ( status ) {
                     fprintf(stderr, "CPXaddrows failed.\n");
+                } else {
+                    free(c_rmatind);
                 }
             }
-            k++;
         }
     }
-    printf("Vincolo 3 creato \n");
+    printf("Constraint n 4 OK \n");
 
 
 
 
 
-    /* Constraint number 4: example, variable P(t)
-     *
-     P_11 + P_21 + P_31 = P(1)
-     P_12 + P_22 + P_32 = P(2)
+    /* Constraint 1: example, variable P(t)
+     * Power required at time t is calculated as the sum of the power required by the J appliances
+     P(1) = P(1,1) + P(2,1) + P(3,1)
+     P(2) = P(1,2) + P(2,2) + P(3,2)
     */
 
-    double c4_rmatval[4] = {1.0, 1.0, 1.0, -1.0};
-    int c4_rmatbeg[2] = {0, 3};
-
+    int c1_rmatbeg[2] = {0, inst->J};
     for (int t = 0; t < inst->T ; ++t) {
 
-        // creo un nuovo array e ci aggiungo P (t) alla fine
-        int c4_rmatind[inst->nof_appliances + 1];
+        int *c1_rmatind = calloc(inst->J + 1, sizeof(int));
+        double *c1_rmatval = calloc(inst->J + 1, sizeof(double));
 
-        for (int i = 0; i < inst->nof_appliances; ++i) {
-            c4_rmatind[i] = ptj_rmatind[t][i];
-
+        for (int i = 0; i < inst->J; ++i) {
+            c1_rmatind[i] = ReversepMatrix[t][i];
+            c1_rmatval[i] = 1.0;
         }
-        c4_rmatind[inst->nof_appliances] = pVector[t];
+        c1_rmatind[inst->J] = pVector[t];
+        c1_rmatval[inst->J] = -1.0;
 
-        status = CPXaddrows (env, lp, 0, 1, inst->nof_appliances + 1,
-                             zero, sense_equal, c4_rmatbeg, c4_rmatind, c4_rmatval,
+        status = CPXaddrows (env, lp, 0, 1, inst->J + 1,
+                             zero, sense_equal, c1_rmatbeg, c1_rmatind, c1_rmatval,
                              NULL, NULL);
         if ( status ) {
             fprintf(stderr, "CPXaddrows failed.\n");
-
+        } else {
+            free(c1_rmatval);
+            free(c1_rmatind);
         }
-
     }
-    printf("Vincolo 4 creato \n");
+    printf("Constraint OK \n");
 
 
 
@@ -420,42 +388,39 @@ void build_model(instance *inst, CPXENVptr env, CPXLPptr lp) {
 
 
 
-    /* Constraint number 5: example, variable P(t)
-     *
+    /* Constraint number 2: example, variable P(t)
+     * The power at any instant shuold be less then the amount contracted
      P_1 * u_1 + P_2 * u_2 + P_3 * u_3 + P_4 * u_4 + ... + P_9 * u_9  >= P(1)
      P_1 * u_1 + P_2 * u_2 + P_3 * u_3 + P_4 * u_4 + ... + P_9 * u_9  >= P(2)
      P_1 * u_1 + P_2 * u_2 + P_3 * u_3 + P_4 * u_4 + ... + P_9 * u_9  >= P(3)
-     *
-     P_12 + P_22 + P_32 >= P(2)
     */
 
-    int c5_rmatbeg[2] = {0, inst->nof_powerlevels};
-    double c5_rmtval[inst->nof_powerlevels + 1];
-    int c5_rmatind[inst->nof_powerlevels + 1];
+    int c2_rmatbeg[2] = {0, inst->L};
+    double *c2_rmtval = calloc( inst->L + 1, sizeof (double));
+    int *c2_rmatind = calloc( inst->L + 1, sizeof (int));
 
-    for (int l = 0; l < inst->nof_powerlevels; ++l) {
-
-        c5_rmatind[l] = uVector[l];
-        c5_rmtval[l] =  inst->table_sm2[l].watt;
+    for (int l = 0; l < inst->L; ++l) {
+        c2_rmatind[l] = uVector[l];
+        c2_rmtval[l] =  inst->table_sm2[l].watt;
     }
-    c5_rmtval[inst->nof_powerlevels] = -1.0;
-
+    c2_rmtval[inst->L] = -1.0;
 
     for (int t = 0; t < inst->T; ++t) {
 
-        c5_rmatind[inst->nof_powerlevels] = pVector[t];
+        c2_rmatind[inst->L] = pVector[t];
 
-        status = CPXaddrows (env, lp, 0, 1, inst->nof_powerlevels + 1,
-                             zero, sense_greater, c5_rmatbeg, c5_rmatind, c5_rmtval ,
+        status = CPXaddrows (env, lp, 0, 1, inst->L + 1,
+                             zero, sense_greater, c2_rmatbeg, c2_rmatind, c2_rmtval ,
                              NULL, NULL);
         if ( status ) {
             fprintf(stderr, "CPXaddrows failed.\n");
-
+        } else {
+            //free(c2_rmatind);
+            //free(c2_rmtval);
         }
-
     }
 
-    printf("Vincolo 5 creato \n");
+    printf("Constraint n 2 OK \n");
 
 
 
@@ -465,20 +430,27 @@ void build_model(instance *inst, CPXENVptr env, CPXLPptr lp) {
 
 
 
-    /* Constraint number 6: example, variable u(l)
+    /* Constraint number 9: example, variable u(l)
      *
      * u(1) + u(2) + u(3) + u(4) + u(5) + u(6) + u(7) + u(8) + u(9)  = 1
      */
-    status = CPXaddrows (env, lp, 0, 1, inst->nof_powerlevels,
-                         one, sense_equal, u_rmatbeg, uVector, u_rmatval,
+
+    double  *c9_rmatval = calloc( inst->L, sizeof( double ));
+    for (int i = 0; i < inst->L; ++i) {
+        c9_rmatval[i] = 1.0;
+    }
+    int  c9_rmatbeg[2] = {0, inst->L};
+
+    status = CPXaddrows (env, lp, 0, 1, inst->L,
+                         one, sense_equal, c9_rmatbeg, uVector, c9_rmatval,
                          NULL, NULL);
     if ( status ) {
         fprintf (stderr,"CPXaddrows failed.\n");
         //goto TERMINATE;
     } else {
-        printf("Vincolo 6 creato \n");
+        free(c9_rmatval);
     }
-
+    printf("Constraint n 9 OK \n");
 
 
 
@@ -486,11 +458,12 @@ void build_model(instance *inst, CPXENVptr env, CPXLPptr lp) {
     CPXwriteprob(env, lp, "model.lp", NULL );
 
 
-    TERMINATE:
+
 
     free(cname[0]);
     free(cname);
-
+    free(pVector);
+    free(uVector);
 
 }
 
@@ -503,28 +476,7 @@ void build_model(instance *inst, CPXENVptr env, CPXLPptr lp) {
 
 
 
-/*
-    //  g(j, r) = contiguos
-    for ( int j = 0; j < inst->nof_appliances; j++) {
-        for (int r = 0; r < inst->max_dj; r++) {
 
-            sprintf(cname[0], "g(%d,%d)", j+1, r+1);
-            double lb = 0.0;
-            double ub = 2000.0;
-            double obj = 1.0;
-
-            //Creates the columns of the new variable
-            if (CPXnewcols(env, lp, 1, &obj, &lb, &ub, &integer, cname))
-                print_error("Wrong CPXnewcols on x var.s");
-
-            gMatrix[j][r] = counter;
-            counter++;
-
-            printf("Posizione variabile g(%i,%i): %i \n", j+1, r+1, gMatrix[j][r]);
-
-        }
-    }
-*/
 
 
 
