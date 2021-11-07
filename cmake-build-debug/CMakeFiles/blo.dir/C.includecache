@@ -16,6 +16,8 @@ stdlib.h
 ilcplex/cplex.h
 -
 
+../include/models/m1a.h
+
 ../include/utils.h
 blo.h
 ../include/blo.h
@@ -27,6 +29,8 @@ blo.h
 /home/leonardo/Scrivania/BLO/src/blo.h
 utils.h
 /home/leonardo/Scrivania/BLO/src/utils.h
+models/m1a.h
+/home/leonardo/Scrivania/BLO/src/models/m1a.h
 ilcplex/cplex.h
 -
 

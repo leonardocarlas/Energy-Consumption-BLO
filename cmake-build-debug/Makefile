@@ -177,6 +177,54 @@ src/main.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/blo.dir/build.make CMakeFiles/blo.dir/src/main.c.s
 .PHONY : src/main.c.s
 
+src/models/m1.o: src/models/m1.c.o
+.PHONY : src/models/m1.o
+
+# target to build an object file
+src/models/m1.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/blo.dir/build.make CMakeFiles/blo.dir/src/models/m1.c.o
+.PHONY : src/models/m1.c.o
+
+src/models/m1.i: src/models/m1.c.i
+.PHONY : src/models/m1.i
+
+# target to preprocess a source file
+src/models/m1.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/blo.dir/build.make CMakeFiles/blo.dir/src/models/m1.c.i
+.PHONY : src/models/m1.c.i
+
+src/models/m1.s: src/models/m1.c.s
+.PHONY : src/models/m1.s
+
+# target to generate assembly for a file
+src/models/m1.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/blo.dir/build.make CMakeFiles/blo.dir/src/models/m1.c.s
+.PHONY : src/models/m1.c.s
+
+src/models/m1a.o: src/models/m1a.c.o
+.PHONY : src/models/m1a.o
+
+# target to build an object file
+src/models/m1a.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/blo.dir/build.make CMakeFiles/blo.dir/src/models/m1a.c.o
+.PHONY : src/models/m1a.c.o
+
+src/models/m1a.i: src/models/m1a.c.i
+.PHONY : src/models/m1a.i
+
+# target to preprocess a source file
+src/models/m1a.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/blo.dir/build.make CMakeFiles/blo.dir/src/models/m1a.c.i
+.PHONY : src/models/m1a.c.i
+
+src/models/m1a.s: src/models/m1a.c.s
+.PHONY : src/models/m1a.s
+
+# target to generate assembly for a file
+src/models/m1a.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/blo.dir/build.make CMakeFiles/blo.dir/src/models/m1a.c.s
+.PHONY : src/models/m1a.c.s
+
 src/plot.o: src/plot.c.o
 .PHONY : src/plot.o
 
@@ -264,6 +312,12 @@ help:
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
+	@echo "... src/models/m1.o"
+	@echo "... src/models/m1.i"
+	@echo "... src/models/m1.s"
+	@echo "... src/models/m1a.o"
+	@echo "... src/models/m1a.i"
+	@echo "... src/models/m1a.s"
 	@echo "... src/plot.o"
 	@echo "... src/plot.i"
 	@echo "... src/plot.s"
