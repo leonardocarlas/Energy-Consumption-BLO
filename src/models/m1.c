@@ -6,10 +6,11 @@
 /*
  * Method to define problem variables and constraints
  */
-void model_m1(instance *inst, CPXENVptr env, CPXLPptr lp) {
+int model_m1(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **cname, int *pVector, int (*sMatrix)[inst->T], int (*pMatrix)[inst->T]) {
 
     char binary = 'B';
     char integer = 'I';
+    char continuos = 'C';
     char sense_greater[1] = {'G'};
     char    sense_equal[1] = {'E'};
     const double zero[1] = {0.0};
@@ -18,25 +19,10 @@ void model_m1(instance *inst, CPXENVptr env, CPXLPptr lp) {
     int k = 0;
     double P = 10000.0;
 
-    // each name of the variable are string, organizzare le variabili ( column name )
-    char **cname = ( char ** ) calloc( 1, sizeof (char *));
-    cname[0] = ( char * ) calloc( 100, sizeof(char) );
 
-    int counter = 0;
-
-    // Declaration of structure for variable P(t)
-    int *pVector = calloc( inst->T, sizeof (int) );
-    // Declaration of structure for variable u(l)
-    int *uVector = calloc( inst->L, sizeof (int) );
-    // Declaration of structure for variable s(j,t)
-    int (*sMatrix)[inst->T];
-    sMatrix =  calloc( inst->J, sizeof *sMatrix);
-    // Declaration of structure for variable P(j,t)
-    int (*pMatrix)[inst->T];
-    pMatrix =  calloc( inst->J, sizeof *pMatrix);
+    // Declaration of auxiliary structure
     int (*ReversepMatrix)[inst->J];
     ReversepMatrix = calloc(inst->T, sizeof *ReversepMatrix);
-
 
 
 
@@ -47,38 +33,15 @@ void model_m1(instance *inst, CPXENVptr env, CPXLPptr lp) {
         sprintf( cname[0], "P(%i)", t+1);
         double lb = 0.0;
         double ub = P;
-        double obj = powerCostTimet(t+1, inst);
+        double obj = 0.0;
+                //powerCostTimet(t+1, inst) * 1/1000;     // la potenza dev'essere espressa in kWh
 
-        status = CPXnewcols(env, lp, 1, &obj, &lb, &ub, &integer, cname);
-        if ( status ){
+        status = CPXnewcols(env, lp, 1, &obj, &lb, &ub, &continuos, cname);
+        if ( status )
             fprintf (stderr,"CPXnewcols failed on P(t) variables.\n");
-        }
 
         pVector[t] = counter;
         //printf("Posizione variabile P(%i): %i \n ", t+1, pVector[t]);
-        counter++;
-    }
-
-
-
-
-
-    // Definition of u(l) = 0/1
-    for ( int l = 0; l < inst->L; l++) {
-
-        sprintf(cname[0], "u(%i)", l+1);
-        double lb = 0.0;
-        double ub = 1.0;
-        double obj = powerLevelCost(l+1,inst);     // cost
-
-        status = CPXnewcols(env, lp, 1, &obj, &lb, &ub, &binary, cname);
-        if ( status ) {
-
-            print_error("Wrong CPXnewcols on u variables");
-        }
-
-        uVector[l] = counter;
-        //printf("Posizione variabile u(%i): %i \n ", l+1, uVector[l]);
         counter++;
     }
 
@@ -116,7 +79,7 @@ void model_m1(instance *inst, CPXENVptr env, CPXLPptr lp) {
 
             sprintf(cname[0], "P(%d,%d)", j+1, t+1);
             double lb = 0.0;
-            double ub = P;
+            double ub = CPX_INFBOUND;
             double obj = 0.0;
 
             //Creates the columns of the new variable
@@ -126,7 +89,6 @@ void model_m1(instance *inst, CPXENVptr env, CPXLPptr lp) {
             pMatrix[j][t] = counter;
             ReversepMatrix[t][j] = counter;
             counter++;
-
             //printf("Posizione variabile P(%i,%i): %i \n", j+1, t+1, pMatrix[j][t]);
 
         }
@@ -167,7 +129,7 @@ void model_m1(instance *inst, CPXENVptr env, CPXLPptr lp) {
             free(c1_rmatval);
         }
     }
-    printf("CONSTRAINT n 1: CREATED \n");
+    //printf("CONSTRAINT n 1: CREATED \n");
 
 
 
@@ -224,7 +186,7 @@ void model_m1(instance *inst, CPXENVptr env, CPXLPptr lp) {
 
         }
     }
-    printf("Constraint HARD OK \n");
+    //printf("Constraint HARD OK \n");
 
 
 
@@ -256,7 +218,7 @@ void model_m1(instance *inst, CPXENVptr env, CPXLPptr lp) {
             }
         }
     }
-    printf("Constraint n 4 OK \n");
+    //printf("Constraint n 4 OK \n");
 
 
 
@@ -291,47 +253,7 @@ void model_m1(instance *inst, CPXENVptr env, CPXLPptr lp) {
             free(c1_rmatind);
         }
     }
-    printf("Constraint OK \n");
-
-
-
-
-
-
-
-    /* Constraint number 2: example, variable P(t)
-     * The power at any instant shuold be less then the amount contracted
-     P_1 * u_1 + P_2 * u_2 + P_3 * u_3 + P_4 * u_4 + ... + P_9 * u_9  >= P(1)
-     P_1 * u_1 + P_2 * u_2 + P_3 * u_3 + P_4 * u_4 + ... + P_9 * u_9  >= P(2)
-     P_1 * u_1 + P_2 * u_2 + P_3 * u_3 + P_4 * u_4 + ... + P_9 * u_9  >= P(3)
-    */
-
-    int c2_rmatbeg[2] = {0, inst->L};
-    double *c2_rmtval = calloc( inst->L + 1, sizeof (double));
-    int *c2_rmatind = calloc( inst->L + 1, sizeof (int));
-
-    for (int l = 0; l < inst->L; ++l) {
-        c2_rmatind[l] = uVector[l];
-        c2_rmtval[l] =  inst->table_sm2[l].watt;
-    }
-    c2_rmtval[inst->L] = -1.0;
-
-    for (int t = 0; t < inst->T; ++t) {
-
-        c2_rmatind[inst->L] = pVector[t];
-
-        status = CPXaddrows (env, lp, 0, 1, inst->L + 1,
-                             zero, sense_greater, c2_rmatbeg, c2_rmatind, c2_rmtval ,
-                             NULL, NULL);
-        if ( status ) {
-            fprintf(stderr, "CPXaddrows failed.\n");
-        } else {
-            //free(c2_rmatind);
-            //free(c2_rmtval);
-        }
-    }
-
-    printf("Constraint n 2 OK \n");
+    //printf("Constraint OK \n");
 
 
 
@@ -341,40 +263,9 @@ void model_m1(instance *inst, CPXENVptr env, CPXLPptr lp) {
 
 
 
-    /* Constraint number 9: example, variable u(l)
-     *
-     * u(1) + u(2) + u(3) + u(4) + u(5) + u(6) + u(7) + u(8) + u(9)  = 1
-     */
-
-    double  *c9_rmatval = calloc( inst->L, sizeof( double ));
-    for (int i = 0; i < inst->L; ++i) {
-        c9_rmatval[i] = 1.0;
-    }
-    int  c9_rmatbeg[2] = {0, inst->L};
-
-    status = CPXaddrows (env, lp, 0, 1, inst->L,
-                         one, sense_equal, c9_rmatbeg, uVector, c9_rmatval,
-                         NULL, NULL);
-    if ( status ) {
-        fprintf (stderr,"CPXaddrows failed.\n");
-        //goto TERMINATE;
-    } else {
-        free(c9_rmatval);
-    }
-    printf("Constraint n 9 OK \n");
 
 
-
-
-    CPXwriteprob(env, lp, "model.lp", NULL );
-
-
-
-
-    free(cname[0]);
-    free(cname);
-    free(pVector);
-    free(uVector);
+    return counter;
 
 }
 

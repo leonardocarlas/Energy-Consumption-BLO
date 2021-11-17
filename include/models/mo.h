@@ -1,0 +1,15 @@
+#ifndef BLO_MO_H
+#define BLO_MO_H
+#endif //BLO_MO_H
+
+
+/**
+ * Istanciates the model containing variables to connect all the to other models
+ * @param inst
+ * @param env
+ * @param lp
+ * @param counter
+ * @param cname
+ * @return the overall counter of variables
+ */
+int model_mo(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **cname, int *pVector, int *vVector);

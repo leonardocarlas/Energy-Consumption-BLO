@@ -33,27 +33,45 @@ void debug() {
 }
 
 
-// Computes the position
-int xpos(int j, int t, instance *inst) {
+/*
+ * Return the ambient temperature given a time t
+ */
+double ambientTemperatureAtTimet(int t, instance *inst) {
 
-    int pos = inst->T * (j-1) + t - 1;
-    return pos;
+    double temperature = 0.0;
+    t = t + 1;
+    for (int i = 0; i < inst->nof_amb_temp_intervals; i++) {
+        if ( t >= inst->table_sm9[i].start_interval && t <= inst->table_sm9[i].end_interval )
+            temperature = inst->table_sm9[i].temperature;
+    }
+    return temperature;
+
 }
 
-// Power required by the appliance j at time t, P_jt
-double powerRequiredShiftable(int j, int t, instance *inst) {
+double externalTemperatureAtTimet(instance *inst, int t){
 
-    int max_duration = inst->MAX_DJ;
-    int nofinterval = inst->nof_appliancestages;
+    double temperature = 0.0;
+    t = t + 1;
+    for (int i = 0; i < inst->nof_outdoor_temperature_intervals; i++) {
+        if ( t >= inst->table_sm11[i].start_interval && t <= inst->table_sm11[i].end_interval )
+            temperature = inst->table_sm11[i].outdoor_temperature;
+    }
+    return temperature;
+}
 
-    // check when s(j,t) = 1, return the t_start
 
-    // difference = t - t_start
+/*
+ * Return the water withdrawl a time t
+ */
+double waterWithdrawlAtTimet(int t, instance *inst){
 
-    // calculate the interval
-
-    // access to the the data structure and return the power
-    return 1.4;
+    double ww = 0.0;
+    t = t + 1;
+    for (int i = 0; i < inst->nof_waterwithdrawl_intervals; i++) {
+        if ( t >= inst->table_sm8[i].start_interval && t <= inst->table_sm8[i].end_interval )
+            ww = inst->table_sm8[i].kg_water;
+    }
+    return ww;
 }
 
 
@@ -72,6 +90,7 @@ double powerLevelCost(int l, instance *inst) {
 double powerCostTimet(int t, instance *inst) {
 
     double cost = 0.0;
+    t = t + 1;
     for (int i = 0; i < inst->nof_subperiods; i++) {
         if ( t >= inst->table_sm1[i].start_interval && t <= inst->table_sm1[i].end_interval )
             cost = inst->table_sm1[i].price_subperiod;

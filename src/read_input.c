@@ -40,6 +40,12 @@ void parse_command_line(int argc, char** argv, instance *inst) {
             continue;
         }
 
+        if (strcmp(argv[i], "-time_limit") == 0) {
+            inst->timelimit = atoi(argv[++i]);
+            printf("Time limit selected: %f\n", inst->timelimit);
+            continue;
+        }
+
     }
 
     printf("Selected file: %s \n Model type: %i \n", inst->input_file, inst->model_type);
@@ -130,9 +136,26 @@ void read_input(instance *inst)
                 inst->table_sm9 = calloc( value , sizeof(TABLE_SM9));
             }
 
+            // TABLE SM11
+            if ( strncmp(parameter_name, "NUMBER_OF_EXTERNAL_TEMPERATURE_INTERVALS", 40) == 0 ) {
+
+                inst->nof_outdoor_temperature_intervals= value;
+                inst->table_sm11 = calloc( value , sizeof(TABLE_SM11));
+            }
+
             if ( strncmp(parameter_name, "MAX_DJ", 6) == 0 ) {
 
                 inst->MAX_DJ = value;
+            }
+
+            if ( strncmp(parameter_name, "MAX_PG", 6) == 0 ) {
+
+                inst->MAX_PG= value;
+            }
+
+            if ( strncmp(parameter_name, "INITIAL_OUTDOOR_TEMPERATURE", 27) == 0 ) {
+
+                inst->INITIAL_OUTDOOR_TEMPERATURE = value / 100;
             }
 
             if ( strncmp(parameter_name, "TIME", 4) == 0 ) {
@@ -272,7 +295,7 @@ void read_input(instance *inst)
             inst->table_sm7.M = atoi( token );
 
             token = strtok(NULL, " ");
-            inst->table_sm7.AU = atoi( token );
+            inst->table_sm7.AU = atof( token );
 
             token = strtok(NULL, " ");
             inst->table_sm7.termal_coeff = atof( token );
@@ -337,6 +360,109 @@ void read_input(instance *inst)
 
             if (in == inst->nof_amb_temp_intervals) active_session = 0;
 
+        }
+
+        if ( active_session == 1 && value == 10 ) {
+
+            token = strtok(line, " ");
+            inst->table_sm10.maximum_temperature_allowed = atof( token );
+
+            token = strtok(NULL, " ");
+            inst->table_sm10.minimum_temperature_allowed = atof( token );
+
+            token = strtok(NULL, " ");
+            inst->table_sm10.initial_indoor_temperature = atof( token );
+
+            token = strtok(NULL, " ");
+            inst->table_sm10.nominal_power_AC = atoi( token );
+
+            token = strtok(NULL, " ");
+            inst->table_sm10.initial_start = atoi( token );
+
+            token = strtok(NULL, " ");
+            inst->table_sm10.alpha = atof( token );
+
+            token = strtok(NULL, " ");
+            inst->table_sm10.beta = atof( token );
+
+            token = strtok(NULL, " ");
+            inst->table_sm10.gamma = atof( token );
+
+        }
+
+        if ( active_session == 1 && value == 11 ) {
+
+            token = strtok(line, " ");
+            int in = atoi( token );
+
+            token = strtok(NULL, " ");
+            inst->table_sm11[ in - 1 ].start_interval = atoi( token );
+
+            token = strtok(NULL, " ");
+            inst->table_sm11[ in - 1 ].end_interval = atoi( token );
+
+            token = strtok(NULL, " ");
+            inst->table_sm11[ in - 1 ].outdoor_temperature = atof( token );
+
+            if (in == inst->nof_outdoor_temperature_intervals) active_session = 0;
+
+        }
+
+        if ( active_session == 1 && value == 12 ) {
+
+            token = strtok(line, " ");
+            inst->table_sm12.sb_charging_efficiency = atof( token );
+
+            token = strtok(NULL, " ");
+            inst->table_sm12.sb_discharging_efficiency = atof( token );
+
+            token = strtok(NULL, " ");
+            inst->table_sm12.sb_minimum_charge = atoi( token );
+
+            token = strtok(NULL, " ");
+            inst->table_sm12.sb_maximum_charge = atoi( token );
+
+            token = strtok(NULL, " ");
+            inst->table_sm12.sb_maximum_charge_power = atoi( token );
+
+            token = strtok(NULL, " ");
+            inst->table_sm12.sb_maximum_discharge_power = atoi( token );
+
+            token = strtok(NULL, " ");
+            inst->table_sm12.sb_initial_battery_charge = atoi( token );
+        }
+
+        if ( active_session == 1 && value == 13 ) {
+
+            token = strtok(line, " ");
+            inst->table_sm13.ev_charging_efficiency = atof( token );
+
+            token = strtok(NULL, " ");
+            inst->table_sm13.ev_discharging_efficiency = atof( token );
+
+            token = strtok(NULL, " ");
+            inst->table_sm13.ev_minimum_charge = atoi( token );
+
+            token = strtok(NULL, " ");
+            inst->table_sm13.ev_maximum_charge = atoi( token );
+
+            token = strtok(NULL, " ");
+            inst->table_sm13.requested_charge = atoi( token );
+
+            token = strtok(NULL, " ");
+            inst->table_sm13.ev_maximum_charge_power = atoi( token );
+
+            token = strtok(NULL, " ");
+            inst->table_sm13.ev_maximum_discharge_power = atoi( token );
+
+            token = strtok(NULL, " ");
+            inst->table_sm13.time_arrival= atoi( token );
+
+            token = strtok(NULL, " ");
+            inst->table_sm13.time_departure= atoi( token );
+
+            token = strtok(NULL, " ");
+            inst->table_sm13.ev_initial_battery_charge = atoi( token );
         }
 
 

@@ -82,6 +82,50 @@ typedef struct{
     double temperature;
 } TABLE_SM9;
 
+//Table SM10, one array containing the parameter about the air conditioner system
+typedef struct {
+    double maximum_temperature_allowed;
+    double minimum_temperature_allowed;
+    double initial_indoor_temperature;
+    int nominal_power_AC;
+    int initial_start;
+    double alpha;
+    double beta;
+    double gamma;
+} TABLE_SM10;
+
+//Table SM11, intervals of outdoor temperature
+typedef struct {
+    int start_interval;
+    int end_interval;
+    double outdoor_temperature;
+} TABLE_SM11;
+
+
+//Table SM12, one array containing the parameter about the SB static battery
+typedef struct {
+    double sb_charging_efficiency;
+    double sb_discharging_efficiency;
+    int sb_minimum_charge;
+    int sb_maximum_charge;
+    int sb_maximum_charge_power;
+    int sb_maximum_discharge_power;
+    int sb_initial_battery_charge;
+} TABLE_SM12;
+
+//Table SM13, one array containing the parameter about the EV
+typedef struct {
+    double ev_charging_efficiency;
+    double ev_discharging_efficiency;
+    int ev_minimum_charge;
+    int ev_maximum_charge;
+    int requested_charge;
+    int ev_maximum_charge_power;
+    int ev_maximum_discharge_power;
+    int time_arrival;
+    int time_departure;
+    int ev_initial_battery_charge;
+} TABLE_SM13;
 
 
 // Single data structure that contains all the input of the problem
@@ -126,6 +170,19 @@ typedef struct
     int nof_amb_temp_intervals;
     TABLE_SM9* table_sm9;
 
+    //Table SM10, one array containing the parameter about the air conditioner system
+    TABLE_SM10 table_sm10;
+
+    //Table SM11, outdoor temperature
+    int nof_outdoor_temperature_intervals;
+    TABLE_SM11* table_sm11;
+
+    //Table SM12, EV batteries parameters
+    TABLE_SM12 table_sm12;
+
+    //Table SM13, EV batteries parameters
+    TABLE_SM13 table_sm13;
+
     // Global data
     //Variable that will contain global data
     double timelimit;
@@ -137,7 +194,10 @@ typedef struct
     int *component;
     int ncomp;
 
+
     int T;
+    int MAX_PG;
+    double INITIAL_OUTDOOR_TEMPERATURE;
 } instance;
 
 

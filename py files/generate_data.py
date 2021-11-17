@@ -1,6 +1,7 @@
 from typing import Counter
 import matplotlib.pyplot as plt
 import numpy as np
+import math
 
 def generate_prices_power_level():
     IPstart_interval = [1, 421, 661, 841, 1081, 1261];
@@ -57,14 +58,30 @@ def generate_power_requested_stage_r():
     file.close()
 
 
-# def calculate_power(j, r):
+def calculate_power(j, t, start, number_of_stage, power_matrix):
+    power = 0
+    d = t - start[j]
+    trunc = math.trunc(d / 15)
+    #print("t: ", t, "j: ", j, "d: ", d, " ", trunc )
+    # Little trick to avoid out of index
+    if trunc == number_of_stage[j]:
+        trunc = trunc - 1
+
+    power = power_matrix[j][ trunc ]
+    #
+    #if  math.floor( d / 15) < 0 :
+    #    power = power_matrix[j][d]
+    #else:
+    #    power = power_matrix[j][ math.floor( d / 15) ]   
+    #    print( d / 15 )
+    return power
 
 
 def print_graph():
     
     d_j = [90, 105, 60]
     number_of_stage = [6,7,4]
-    start = [331, 406, 1381]
+    start = [6, 406, 1381]
     end =  [start[0]+ d_j[0], start[1]+ d_j[1], start[2]+ d_j[2]]
     power_matrix = [
     [1750, 1250, 120, 1600, 640, 220, 0],
@@ -74,22 +91,35 @@ def print_graph():
     power = []
     T = 1440
     j = 0
+    v_t = [20, 36, 40, 46, 64, 83, 89, 104, 121, 133, 159, 194, 209, 211, 252, 259, 264, 299, 316, 335, 361, 378, 381, 417, 418,419, 420, 481, 485, 486, 489, 491, 511, 515, 520, 542, 563, 585, 608, 633, 639, 671, 701, 727, 752, 780, 783, 807, 841, 863, 890, 913, 923, 938, 965, 971, 989, 1016, 1043, 1079, 1080, 1113, 1118, 1120, 1123, 1129, 1151, 1173, 1201, 1227, 1231, 1255, 1292, 1310, 1315, 1332, 1334, 1357, 1377, 1417]
+    EWHPower = 1500
 
     for i in range(1,T+1):
         minutes.append(i)
         power.append(0)
     
 
+
+    # Shiftable appliances 
     for j in range(0,3):
-        for s in range(0,number_of_stage[j]):
-            for i in range(0,15):
-                power[start[j] + 15*s  + i - 1] = power_matrix[j][s]
-        
+        for t in range(0,T):
+            if t >= start[j] and t <= end[j]:
+                power[t] = power[t] + calculate_power(j, t, start, number_of_stage, power_matrix)
+            else:
+                power[t] = power[t] + 0
+    # EWH
+    for t in range(0,T):
+        for k in range(0, len(v_t)):
+            if (t+1) == v_t[k]:
+                power[t] = power[t] + EWHPower
+                
+
+
 
     x = np.array(minutes)
     y = np.array(power)
     
-    plt.title("Power requested by the shiftable load in model M1A")
+    plt.title("Power requested in model M1 + M2EWH")
     plt.plot(x,y)
     plt.ylabel('Power (W)')
     plt.xlabel('Time (m)')

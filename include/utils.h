@@ -5,7 +5,6 @@
 void print_error(const char *err);
 
 
-
 void debug();
 
 
@@ -17,10 +16,10 @@ void debug();
 void free_instance(instance *inst);
 
 
-void model_m1(instance *inst, CPXENVptr env, CPXLPptr lp);
+double ambientTemperatureAtTimet(int t, instance *inst);
 
 
-int xpos(int j, int t, instance *inst);
+double waterWithdrawlAtTimet(int t, instance *inst);
 
 
 double powerRequiredShiftable(int j, int t, instance *inst);
@@ -33,6 +32,9 @@ double powerCostTimet(int t, instance *inst);
 
 
 int powerRequiredShiftableStageR(instance *inst, int j, int r);
+
+
+double externalTemperatureAtTimet(instance *inst, int t);
 
 
 /*!

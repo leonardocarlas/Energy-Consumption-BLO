@@ -16,23 +16,19 @@ stdlib.h
 ilcplex/cplex.h
 -
 
-../include/models/m1a.h
-
 ../include/utils.h
 blo.h
 ../include/blo.h
 ilcplex/cplex.h
 -
 
-/home/leonardo/Scrivania/BLO/src/blo.c
-blo.h
-/home/leonardo/Scrivania/BLO/src/blo.h
-utils.h
-/home/leonardo/Scrivania/BLO/src/utils.h
-models/m1a.h
-/home/leonardo/Scrivania/BLO/src/models/m1a.h
+/home/leonardo/Scrivania/BLO/src/models/m3.c
 ilcplex/cplex.h
 -
+blo.h
+/home/leonardo/Scrivania/BLO/src/models/blo.h
+utils.h
+/home/leonardo/Scrivania/BLO/src/models/utils.h
 
 /opt/ibm/ILOG/CPLEX_Studio201/cplex/include/ilcplex/cplex.h
 cpxconst.h

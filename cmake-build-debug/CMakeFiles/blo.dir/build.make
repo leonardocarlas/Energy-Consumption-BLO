@@ -157,6 +157,71 @@ CMakeFiles/blo.dir/src/models/m1.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/blo.dir/src/models/m1.c.s"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/leonardo/Scrivania/BLO/src/models/m1.c -o CMakeFiles/blo.dir/src/models/m1.c.s
 
+CMakeFiles/blo.dir/src/models/m2ewh.c.o: CMakeFiles/blo.dir/flags.make
+CMakeFiles/blo.dir/src/models/m2ewh.c.o: ../src/models/m2ewh.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/leonardo/Scrivania/BLO/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building C object CMakeFiles/blo.dir/src/models/m2ewh.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/blo.dir/src/models/m2ewh.c.o -c /home/leonardo/Scrivania/BLO/src/models/m2ewh.c
+
+CMakeFiles/blo.dir/src/models/m2ewh.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/blo.dir/src/models/m2ewh.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/leonardo/Scrivania/BLO/src/models/m2ewh.c > CMakeFiles/blo.dir/src/models/m2ewh.c.i
+
+CMakeFiles/blo.dir/src/models/m2ewh.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/blo.dir/src/models/m2ewh.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/leonardo/Scrivania/BLO/src/models/m2ewh.c -o CMakeFiles/blo.dir/src/models/m2ewh.c.s
+
+CMakeFiles/blo.dir/src/models/m2ev.c.o: CMakeFiles/blo.dir/flags.make
+CMakeFiles/blo.dir/src/models/m2ev.c.o: ../src/models/m2ev.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/leonardo/Scrivania/BLO/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building C object CMakeFiles/blo.dir/src/models/m2ev.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/blo.dir/src/models/m2ev.c.o -c /home/leonardo/Scrivania/BLO/src/models/m2ev.c
+
+CMakeFiles/blo.dir/src/models/m2ev.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/blo.dir/src/models/m2ev.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/leonardo/Scrivania/BLO/src/models/m2ev.c > CMakeFiles/blo.dir/src/models/m2ev.c.i
+
+CMakeFiles/blo.dir/src/models/m2ev.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/blo.dir/src/models/m2ev.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/leonardo/Scrivania/BLO/src/models/m2ev.c -o CMakeFiles/blo.dir/src/models/m2ev.c.s
+
+CMakeFiles/blo.dir/src/models/mo.c.o: CMakeFiles/blo.dir/flags.make
+CMakeFiles/blo.dir/src/models/mo.c.o: ../src/models/mo.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/leonardo/Scrivania/BLO/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building C object CMakeFiles/blo.dir/src/models/mo.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/blo.dir/src/models/mo.c.o -c /home/leonardo/Scrivania/BLO/src/models/mo.c
+
+CMakeFiles/blo.dir/src/models/mo.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/blo.dir/src/models/mo.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/leonardo/Scrivania/BLO/src/models/mo.c > CMakeFiles/blo.dir/src/models/mo.c.i
+
+CMakeFiles/blo.dir/src/models/mo.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/blo.dir/src/models/mo.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/leonardo/Scrivania/BLO/src/models/mo.c -o CMakeFiles/blo.dir/src/models/mo.c.s
+
+CMakeFiles/blo.dir/src/models/m2sb.c.o: CMakeFiles/blo.dir/flags.make
+CMakeFiles/blo.dir/src/models/m2sb.c.o: ../src/models/m2sb.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/leonardo/Scrivania/BLO/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building C object CMakeFiles/blo.dir/src/models/m2sb.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/blo.dir/src/models/m2sb.c.o -c /home/leonardo/Scrivania/BLO/src/models/m2sb.c
+
+CMakeFiles/blo.dir/src/models/m2sb.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/blo.dir/src/models/m2sb.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/leonardo/Scrivania/BLO/src/models/m2sb.c > CMakeFiles/blo.dir/src/models/m2sb.c.i
+
+CMakeFiles/blo.dir/src/models/m2sb.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/blo.dir/src/models/m2sb.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/leonardo/Scrivania/BLO/src/models/m2sb.c -o CMakeFiles/blo.dir/src/models/m2sb.c.s
+
+CMakeFiles/blo.dir/src/models/m3.c.o: CMakeFiles/blo.dir/flags.make
+CMakeFiles/blo.dir/src/models/m3.c.o: ../src/models/m3.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/leonardo/Scrivania/BLO/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building C object CMakeFiles/blo.dir/src/models/m3.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/blo.dir/src/models/m3.c.o -c /home/leonardo/Scrivania/BLO/src/models/m3.c
+
+CMakeFiles/blo.dir/src/models/m3.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/blo.dir/src/models/m3.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/leonardo/Scrivania/BLO/src/models/m3.c > CMakeFiles/blo.dir/src/models/m3.c.i
+
+CMakeFiles/blo.dir/src/models/m3.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/blo.dir/src/models/m3.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/leonardo/Scrivania/BLO/src/models/m3.c -o CMakeFiles/blo.dir/src/models/m3.c.s
+
 # Object files for target blo
 blo_OBJECTS = \
 "CMakeFiles/blo.dir/src/main.c.o" \
@@ -165,7 +230,12 @@ blo_OBJECTS = \
 "CMakeFiles/blo.dir/src/read_input.c.o" \
 "CMakeFiles/blo.dir/src/utils.c.o" \
 "CMakeFiles/blo.dir/src/models/m1a.c.o" \
-"CMakeFiles/blo.dir/src/models/m1.c.o"
+"CMakeFiles/blo.dir/src/models/m1.c.o" \
+"CMakeFiles/blo.dir/src/models/m2ewh.c.o" \
+"CMakeFiles/blo.dir/src/models/m2ev.c.o" \
+"CMakeFiles/blo.dir/src/models/mo.c.o" \
+"CMakeFiles/blo.dir/src/models/m2sb.c.o" \
+"CMakeFiles/blo.dir/src/models/m3.c.o"
 
 # External object files for target blo
 blo_EXTERNAL_OBJECTS =
@@ -177,9 +247,14 @@ blo: CMakeFiles/blo.dir/src/read_input.c.o
 blo: CMakeFiles/blo.dir/src/utils.c.o
 blo: CMakeFiles/blo.dir/src/models/m1a.c.o
 blo: CMakeFiles/blo.dir/src/models/m1.c.o
+blo: CMakeFiles/blo.dir/src/models/m2ewh.c.o
+blo: CMakeFiles/blo.dir/src/models/m2ev.c.o
+blo: CMakeFiles/blo.dir/src/models/mo.c.o
+blo: CMakeFiles/blo.dir/src/models/m2sb.c.o
+blo: CMakeFiles/blo.dir/src/models/m3.c.o
 blo: CMakeFiles/blo.dir/build.make
 blo: CMakeFiles/blo.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/leonardo/Scrivania/BLO/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking C executable blo"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/leonardo/Scrivania/BLO/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Linking C executable blo"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/blo.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
