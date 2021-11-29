@@ -102,24 +102,33 @@ int BLOopt(instance *inst) {
     // Declaration of structure for variable inTemp(t)
     int *inTempVector = calloc(inst->T, sizeof(int));
 
+    /** STRUTTURE DATI MODELLO MO */
+
+    //Declaration of structure for variable sg2h(t)
+    int *sg2hVector = calloc(inst->T, sizeof(int));
+    //Declaration of structure for variable PG2H(t)
+    int *PG2HVector = calloc(inst->T, sizeof(int));
+    // Declaration of structure for variable u(l)
+    int *uVector = calloc(inst->L, sizeof (int));
+
     /** MODELS */
 
-    //counter = model_m1(inst, env, lp, counter, cname, pVector, sMatrix, pMatrix);
-    //printf("MODEL M1 INSTANTIATED \n Counter: %d \n", counter);
-    //counter = model_m2ewh(inst, env, lp, counter, cname, vVector, nVector, PlossVector, tempVector);
-    //printf("MODEL M2EWH INSTANTIATED \n Counter: %d \n", counter);
-    //counter = model_m2ev(inst, env, lp, counter, cname, sh2vVector, sv2hVector, Ph2vVector, Pv2hVector, EvVector);
-    //printf("MODEL M2EV INSTANTIATED \n Counter: %d \n", counter);
+    counter = model_m1(inst, env, lp, counter, cname, pVector, sMatrix, pMatrix);
+    printf("MODEL M1 INSTANTIATED \n Counter: %d \n", counter);
+    counter = model_m2ewh(inst, env, lp, counter, cname, vVector, nVector, PlossVector, tempVector);
+    printf("MODEL M2EWH INSTANTIATED \n Counter: %d \n", counter);
+    counter = model_m2ev(inst, env, lp, counter, cname, sh2vVector, sv2hVector, Ph2vVector, Pv2hVector, EvVector);
+    printf("MODEL M2EV INSTANTIATED \n Counter: %d \n", counter);
     //counter = model_m2sb(inst, env, lp, counter, cname, sh2bVector, sb2hVector, Ph2bVector, Pb2hVector, BatteryEVector);
     //printf("MODEL M2SB INSTANTIATED \n Counter: %d \n", counter);
     //counter = model_m3(inst, env, lp, counter, cname, sACVector, yVector, zVector, inTempVector);
     //printf("MODEL M3 INSTANTIATED \n Counter: %d \n", counter);
 
-    //counter = model_mo(inst, env, lp, counter, cname, pVector, vVector);
-    //printf("MODEL MO INSTANTIATED \n Counter: %d \n", counter);
+    counter = model_mo(inst, env, lp, counter, cname, pVector, vVector, Ph2vVector,Pv2hVector, Ph2bVector, Pb2hVector, sACVector, sg2hVector, PG2HVector, uVector);
+    printf("MODEL MO INSTANTIATED \n Counter: %d \n", counter);
 
 
-    CPXwriteprob(env, lp, "model.lp", NULL );
+    CPXwriteprob(env, lp, "model3.lp", NULL );
     free(cname[0]);
     free(cname);
 
@@ -172,6 +181,12 @@ int BLOopt(instance *inst) {
     free(nVector);
     free(tempVector);
     free(PlossVector);
+    free(uVector);
+    free(PG2HVector);
+    free(sg2hVector);
+    free(Ph2vVector);
+    free(Pv2hVector);
+
     CPXfreeprob(env, &lp);
     CPXcloseCPLEX(&env);
 

@@ -4,7 +4,9 @@
 #include "models/m1.h"
 
 
-int model_mo(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **cname, int *pVector, int *vVector) {
+int model_mo(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **cname, int *pVector, int *vVector,
+                    int *Ph2vVector, int *Pv2hVector, int *Ph2bVector, int *Pb2hVector, int *sACVector,
+                    int *sg2hVector, int *PG2HVector, int *uVector) {
 
     char binary = 'B';
     char integer = 'I';
@@ -16,13 +18,6 @@ int model_mo(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **cna
     double one[1] = {1.0};
     int status;
     int k = 0;
-
-    //Declaration of structure for variable sg2h(t)
-    int *sg2hVector = calloc(inst->T, sizeof(int));
-    //Declaration of structure for variable PG2H(t)
-    int *PG2HVector = calloc(inst->T, sizeof(int));
-    // Declaration of structure for variable u(l)
-    int *uVector = calloc( inst->L, sizeof (int));
 
 
 
@@ -80,34 +75,41 @@ int model_mo(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **cna
 
     /**
      * CONSTRAINT NUMBER : example, variable PG2H
-     *  PG2H(t) - P(t) - power_required_ewh * v(t) = 0
+     *  PG2H(t) - P(t) - power_required_ewh * v(t) - Ph2v(t) + Pv2h(t) - Ph2b(t) + Pb2h(t) - Pac * sAC(t)= 0
      */
 
-    for (int t = 0; t < inst->T; ++t) {
+    int *c5_rmatbeg = calloc(2, sizeof(int));
+    c5_rmatbeg[0] = 0;
+    c5_rmatbeg[1] = 7;
+    int *c5_rmatind = calloc(8, sizeof(int));
+    double *c5_rmatval = calloc(8, sizeof(double));
+    c5_rmatval[0] = 1.0;
+    c5_rmatval[1] = -1.0;
+    c5_rmatval[2] = -1.0 * inst->table_sm7.power_required;
+    c5_rmatval[3] = -1.0;
+    c5_rmatval[4] = 1.0;
+    c5_rmatval[5] = -1.0;
+    c5_rmatval[6] = 1.0;
+    c5_rmatval[7] = -1 * inst->table_sm10.nominal_power_AC;
 
-        int *c5_rmatbeg = calloc(2, sizeof(int));
-        int *c5_rmatind = calloc(3, sizeof(int));
-        double *c5_rmatval = calloc(2, sizeof(int));
-        c5_rmatbeg[0] = 0;
-        c5_rmatbeg[1] = 2;
-        c5_rmatval[0] = 1.0;
-        c5_rmatval[1] = -1.0;
-        c5_rmatval[2] = -1.0 * inst->table_sm7.power_required;
+    for (int t = 0; t < inst->T; ++t) {
         c5_rmatind[0] = PG2HVector[t];
         c5_rmatind[1] = pVector[t];
         c5_rmatind[2] = vVector[t];
-        status = CPXaddrows (env, lp, 0, 1, 3,
+        c5_rmatind[3] = Ph2vVector[t];
+        c5_rmatind[4] = Pv2hVector[t];
+        c5_rmatind[5] = Ph2bVector[t];
+        c5_rmatind[6] = Pb2hVector[t];
+        c5_rmatind[7] = sACVector[t];
+        status = CPXaddrows (env, lp, 0, 1, 8,
                              zero, sense_equal, c5_rmatbeg, c5_rmatind, c5_rmatval,
                              NULL, NULL);
         if ( status )
             fprintf(stderr, "CPXaddrows failed.\n");
-        else {
-            free(c5_rmatbeg);
-            free(c5_rmatval);
-            free(c5_rmatind);
-        }
     }
+
     printf("CONSTRAINT MO 1 OK");
+
 
 
     /**  CONSTRAINT NUMBER :  example, variable P(t)
@@ -168,6 +170,9 @@ int model_mo(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **cna
 
 
 
+
+
+
     /**
  * CONSTRAINT NUMBER : example, variable PG2H
  *  PG2H(t) - MAX_PG * sg2h(t) <= 0
@@ -195,9 +200,6 @@ int model_mo(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **cna
     }
 */
 
-    free(uVector);
-    free(PG2HVector);
-    free(sg2hVector);
 
     return counter;
 }

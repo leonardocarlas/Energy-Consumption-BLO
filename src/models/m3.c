@@ -82,7 +82,7 @@ int model_m3(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **cna
     }
 
     /** CONSTRAINT N 1, variable inTemp(t)
-     *  inTemp(t) - (1-B) * inTemp(t-1) - B extTemp(t-1) - gamma * PAC * sAC(t-1) = 0
+     *  inTemp(t) - (1-B) * inTemp(t-1)  - gamma * PAC * sAC(t-1) = B extTemp(t-1)
      *  inTemp(1) lo calcolo separatamente
     */
     for (int t = 1; t < inst->T; ++t) {
@@ -90,20 +90,20 @@ int model_m3(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **cna
         int *c1_rmatind = calloc(4, sizeof(int));
         double *c1_rmatval = calloc(4, sizeof(double ));
         int *c1_rmatbeg = calloc(2, sizeof(int));
+        double *c1_rhs = calloc(1, sizeof(double ));
 
+        c1_rhs[0] = inst->table_sm10.beta * externalTemperatureAtTimet(inst, t-1);
         c1_rmatbeg[0] = 0;
-        c1_rmatbeg[1] = 3;
+        c1_rmatbeg[1] = 2;
         c1_rmatind[0] = inTempVector[t];
         c1_rmatind[1] = inTempVector[t-1];
-        c1_rmatind[2] = externalTemperatureAtTimet(inst, t);
-        c1_rmatind[3] = sACVector[t-1];
+        c1_rmatind[2] = sACVector[t-1];
         c1_rmatval[0] = 1.0;
         c1_rmatval[1] = -1 *(1 - inst->table_sm10.beta);
-        c1_rmatval[2] = -1 * inst->table_sm10.beta;
-        c1_rmatval[3] = -1* inst->table_sm10.gamma * inst->table_sm10.nominal_power_AC;
+        c1_rmatval[2] = -1 * inst->table_sm10.gamma * inst->table_sm10.nominal_power_AC;
 
-        status = CPXaddrows (env, lp, 0, 1, 4,
-                             zero, sense_equal, c1_rmatbeg, c1_rmatind, c1_rmatval,
+        status = CPXaddrows (env, lp, 0, 1, 3,
+                             c1_rhs, sense_equal, c1_rmatbeg, c1_rmatind, c1_rmatval,
                              NULL, NULL);
         if ( status )
             fprintf(stderr, "CPXaddrows failed.\n");
@@ -230,7 +230,7 @@ int model_m3(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **cna
         c5_rmatval[2] = -1.0;
         c5_rmatval[3] = 1.0;
 
-        status = CPXaddrows (env, lp, 0, 1, 2,
+        status = CPXaddrows (env, lp, 0, 1, 4,
                              c5_rhs, sense_less, c5_rmatbeg, c5_rmatind, c5_rmatval,
                              NULL, NULL);
         if ( status ) fprintf(stderr, "CPXaddrows failed.\n");
@@ -264,7 +264,7 @@ int model_m3(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **cna
         c6_rmatval[2] = 1.0;
         c6_rmatval[3] = -1.0;
 
-        status = CPXaddrows (env, lp, 0, 1, 2,
+        status = CPXaddrows (env, lp, 0, 1, 4,
                              c6_rhs, sense_less, c6_rmatbeg, c6_rmatind, c6_rmatval,
                              NULL, NULL);
         if ( status ) fprintf(stderr, "CPXaddrows failed.\n");

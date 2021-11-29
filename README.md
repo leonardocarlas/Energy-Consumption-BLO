@@ -18,14 +18,15 @@ Execute with parameters:
 
 ./'name of the binary' -f ../data/blo_data.txt
 
-TO DO LIST:
+SSH conn
 
-- MODEL M1 is correctly modelled but it produces a wrong objval
+ssh carlassare@login.dei.unipd.it
 
-NEXT UP:
+scp Scrivania/BLO/cmake-build-debug/model.lp carlassare@login.dei.unipd.it:~/Desktop/EXP/M12EVSB
 
-- to model M1 using CPLEX Optimization Studio IDE
+cd Desktop/EXP/M12EVSB
 
+./../../../../../nfsd/rop/sw/ibm/cos201/cplex/bin/x86-64_linux/cplex
 
 
 

@@ -86,9 +86,15 @@ int model_m2sb(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **c
     for (int t = 0; t < inst->T; t++) {
 
         sprintf( cname[0], "BatteryE(%i)", t+1);
-        double lb = inst->table_sm12.sb_minimum_charge;
-        double ub = inst->table_sm12.sb_maximum_charge;
-
+        double lb;
+        double ub;
+        if (t == 0) {
+            lb = 2000.0;
+            ub = 2000.0;
+        } else {
+            lb = inst->table_sm12.sb_minimum_charge;
+            ub = inst->table_sm12.sb_maximum_charge;
+        }
         double obj = 0.0;
         status = CPXnewcols(env, lp, 1, &obj, &lb, &ub, &continuos, cname);
         if ( status )
@@ -103,7 +109,7 @@ int model_m2sb(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **c
      *  Eb(t) - Eb(t-1) - nch * Ph2b(t) + (1/ndch) Pb2h(t) = 0
      */
 
-    for (int t = 0 ; t < inst->T; ++t) {
+    for (int t = 1 ; t < inst->T; ++t) {
 
         int *c1_rmatind = calloc( 4 , sizeof (int) );
         double *c1_rmatval = calloc( 4 , sizeof (double) );
@@ -120,7 +126,7 @@ int model_m2sb(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **c
         c1_rmatval[0] = 1.0;
         c1_rmatval[1] = -1.0;
         c1_rmatval[2] = -1.0 * inst->table_sm12.sb_charging_efficiency;
-        c1_rmatval[3] = ( 1 / inst->table_sm12.sb_discharging_efficiency) * Pb2hVector[t];
+        c1_rmatval[3] = ( 1 / inst->table_sm12.sb_discharging_efficiency);
 
         status = CPXaddrows (env, lp, 0, 1, 4,
                              zero, sense_equal, c1_rmatbeg, c1_rmatind, c1_rmatval,
@@ -198,7 +204,7 @@ int model_m2sb(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **c
     /** Constraint number 5: example, variable Ev
      *  sh2b(t) + sb2h(t) <= 1
      */
-    for (int t = inst->table_sm13.time_arrival ; t < inst->table_sm13.time_departure; ++t) {
+    for (int t = 0 ; t < inst->T; ++t) {
 
         int *c5_rmatind = calloc( 2 , sizeof (int) );
         double *c5_rmatval = calloc( 2 , sizeof (double) );
@@ -230,7 +236,7 @@ int model_m2sb(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **c
     int *c2_rmatind = calloc( 1 , sizeof (int) );
     double *c2_rmatval = calloc( 1 , sizeof (double) );
     int *c2_rmatbeg = calloc( 2, sizeof (int) );
-    int *c2_rhs = calloc( 1, sizeof (int) );
+    double *c2_rhs = calloc( 1, sizeof (int) );
 
     c2_rhs[0] = inst->table_sm12.sb_initial_battery_charge;
     c2_rmatbeg[0] = 0;
@@ -239,7 +245,7 @@ int model_m2sb(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **c
     c2_rmatval[0] = 1.0;
 
     status = CPXaddrows (env, lp, 0, 1, 1,
-                         zero, sense_greater, c2_rmatbeg, c2_rmatind, c2_rmatval,
+                         c2_rhs, sense_greater, c2_rmatbeg, c2_rmatind, c2_rmatval,
                          NULL, NULL);
     if ( status ) {
         fprintf (stderr,"CPXaddrows failed.\n");
