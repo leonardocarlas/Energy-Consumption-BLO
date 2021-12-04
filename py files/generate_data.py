@@ -152,7 +152,7 @@ def print_temperature_graph(solution_file, minutes):
     y = np.array(temp_vector)
     
    
-    plt.title("Water temperature in the EWH according to M1 + M2EWH")
+    plt.title("Water temperature in the EWH according to M4")
     plt.plot(x,y)
     plt.ylabel('Temperature (°C)')
     plt.xlabel('Time (m)')
@@ -161,50 +161,299 @@ def print_temperature_graph(solution_file, minutes):
 def find_between(s, start, end):
     return (s.split(start))[1].split(end)[0]
 
-def print_power_graph(solution_file, minutes, power_vector):
+def print_power_graph(solution_file, minutes):
 
     # Opening file
     file = open(solution_file, 'r')
-    
+    power_vector = []
     # Using for loop
     for line in file:
         power_string = "PG2H"
         if power_string in line:
-            time_t = int( find_between(line, "PG2H(", ")") ) 
             vec = re.split('\s+', line) 
-            power_vector[time_t] += float( vec[1] )
+            power_vector.append( float( vec[1] ) )
 
     # Closing files
     file.close()
     
     x = np.array(minutes)
-    print(power_vector)
+    #print(power_vector)
     y = np.array(power_vector)
     
-    plt.title("Power consume according to M1 + M2EWH + M2EV")
+    plt.title("Power consume according to M4")
     plt.plot(x,y)
     plt.ylabel('Power (W)')
     plt.xlabel('Time (m)')
     plt.show()
 
 
+def print_ev_graph(solution_file, minutes, ev_charge_vector):
+
+    # Opening file
+    file = open(solution_file, 'r')
+    
+    # Using for loop
+    for line in file:
+        charge_string = "VehicleE"
+        if charge_string in line:
+            time_t = int( find_between(line, "VehicleE(", ")") ) 
+            vec = re.split('\s+', line) 
+            ev_charge_vector[time_t] += float( vec[1] )
+
+    # Closing files
+    file.close()
+    
+    x = np.array(minutes)
+    #print(power_vector)
+    y = np.array(ev_charge_vector)
+    
+    plt.title("EV energy charge according to M5")
+    plt.plot(x,y)
+    plt.ylabel('Energy charge (Wh)')
+    plt.xlabel('Time (m)')
+    plt.show()
+
+
+def print_sb_graph(solution_file, minutes):
+
+    #sb_charge_vector = np.empty(1440, dtype=object)
+     
+    # Opening file
+    file = open(solution_file, 'r')
+    vector_check = []
+    
+    sb_charge_vector = []
+
+    for line in file:
+        charge_string = "BatteryE"
+        if charge_string in line:
+            ausiliary_vector = []
+            vec = re.split('\s+', line)
+            time_t = int( find_between(line, "BatteryE(", ")") )
+            ausiliary_vector.append( int(time_t) )
+            ausiliary_vector.append( float(vec[1]) )   
+            vector_check.append(ausiliary_vector)
+                
+    #print(vector_check)
+
+    for i in range(1,1441):
+        found = False
+        for vec in vector_check:
+            if vec[0] == i:
+                found = True
+                print("TROVATO")
+                sb_charge_vector.append(vec[1])
+        if found == False:
+            print("NON TROVATO")
+            sb_charge_vector.append(0)
+  
+    # Closing files
+    file.close()
+    
+    x = np.array(minutes)
+    y = np.array(sb_charge_vector)
+
+    plt.title("SB energy charge according to M5")
+    plt.plot(x,y)
+    plt.ylabel('Energy charge (Wh)')
+    plt.xlabel('Time (m)')
+    plt.show()
+
+def print_intemp_graph(solution_file, minutes):
+    
+    file = open(solution_file, 'r')
+       
+    intemp_vector = []
+    for line in file:
+        string = "inTemp"
+        if string in line:
+            vec = re.split('\s+', line)
+            print(vec)
+            intemp_vector.append( float (vec[1]) )
+    
+        # Closing files
+    file.close()
+    
+    x = np.array(minutes)
+    y = np.array(intemp_vector)
+
+    plt.title("Home internal temperature according to M5")
+    plt.plot(x,y)
+    plt.ylabel('Grades (°C)')
+    plt.xlabel('Time (m)')
+    plt.show()
+
+
+
+def print_dirty_power_graph(solution_file, minutes):
+     
+    # Opening file
+    file = open(solution_file, 'r')
+    vector_check = []
+    
+    sb_charge_vector = []
+
+    for line in file:
+        charge_string = "PG2H"
+        if charge_string in line:
+            ausiliary_vector = []
+            vec = re.split('\s+', line)
+            time_t = int( find_between(line, "PG2H(", ")") )
+            ausiliary_vector.append( int(time_t) )
+            ausiliary_vector.append( float(vec[1]) )   
+            vector_check.append(ausiliary_vector)
+             
+    #print(vector_check)
+
+    for i in range(1,1441):
+        found = False
+        for vec in vector_check:
+            if vec[0] == i:
+                found = True
+                #print("TROVATO")
+                sb_charge_vector.append(vec[1])
+        if found == False:
+            print(str(i), " NON TROVATO")
+            sb_charge_vector.append("MISSIGNO")
+
+    with open("created_data.txt", "w") as outfile:
+        outfile.write("\n".join( str( sb_charge_vector) ))
+  
+    # Closing files
+    file.close()
+
+
+def print_two_powers(solution_file, minutes):
+
+    PG2H_vector = []
+    PH2G_vector = []
+
+    for i in range(1,T+1):
+        PG2H_vector.append(0)
+        PH2G_vector.append(0)
+
+    file = open(solution_file, 'r')
+
+    for line in file:
+        charge_string = "PG2H"
+        if charge_string in line:
+            vec = re.split('\s+', line)
+            time_t = int( find_between(line, "PG2H(", ")") )
+            PG2H_vector[ time_t - 1] = float( vec[1] )
+            #print(time_t, " ", float( vec[1] ) )
+
+    file.close()
+    file = open(solution_file, 'r')
+
+    for line in file:
+        string = "PH2G"
+        if string in line:
+            vec = re.split('\s+', line)
+            print("LOG")
+            time_t = int( find_between(line, "PH2G(", ")") )
+            PH2G_vector[ time_t - 1] = float( vec[1] ) * 1000
+            #print(time_t, " ", float( vec[1] ) )
+
+    file.close()
+
+    print(PH2G_vector)
+
+    x = np.array(minutes)
+    y = np.array(PG2H_vector)
+    z = np.array(PH2G_vector)
+
+
+    plt.title("PG2H and PH2G according to M5")
+    plt.plot(x,y,z)
+    plt.ylabel('Power (W)')
+    plt.xlabel('Time (m)')
+    plt.show()
 
 if __name__ == "__main__":
 
-    solution_file = "/home/leonardo/Scrivania/BLO/solutions/m12ewhev.sol"
+    solution_file = "/home/leonardo/Scrivania/BLO/solutions/m12ewh.sol"
     T = 1440
     temp_vector = []
-    power_vector = []
+    full_vector = []
+    ev_charge_vector = []
     minutes = []
     for i in range(1,T+1):
         minutes.append(i)
-        power_vector.append(0)
+        ev_charge_vector.append(0)
+        full_vector.append(i)
 
-    #print_temperature_graph(solution_file, minutes)
-    print_power_graph(solution_file, minutes, power_vector)
+    #print_two_powers(solution_file, minutes)
+    print_temperature_graph(solution_file, minutes)
+    #print_power_graph(solution_file, minutes)
+    #print_dirty_power_graph(solution_file, minutes)
+    #print_ev_graph(solution_file, minutes, ev_charge_vector)
+    #print_sb_graph(solution_file, minutes)
     #generate_prices_power_level()
     #generate_power_requested_stage_r()
+    print_intemp_graph(solution_file, minutes)
     #print_graph()
 
 
 
+
+
+
+"""
+    full = []
+    for i in range(1, 1441):
+        full.append(i)
+    
+    set_difference = set(full) - set(vector_check)
+    list_difference = list(set_difference)
+    print(list_difference)
+
+
+    for i in range(0, 1440):
+        if i in vector_check:
+            np.put(sb_charge_vector, i, ausiliary_vector[i])
+        else:
+            np.put(sb_charge_vector, i, 0)
+
+            c = 1
+for line in file:
+    charge_string = "BatteryE"
+    if charge_string in line:
+        time_t = int( find_between(line, "BatteryE(", ")") )
+        if time_t == c:
+            #appendo il valore
+            vec = re.split('\s+', line)
+            sb_charge_vector.append( float(vec[1]) )
+        else:
+            #appendo 0
+            sb_charge_vector.append(0)
+        c +=1
+        #vec = re.split('\s+', line)
+        #vector_check.append(time_t)
+        #ausiliary_vector.append(float( vec[1]) )
+
+
+
+
+                        charge_string = "BatteryE"
+                if charge_string in line:
+                    time_t = int( find_between(line, "BatteryE(", ")") )
+                    if time_t == i:
+                        vec = re.split('\s+', line)
+                        sb_charge_vector.append( float(vec[1]) )
+
+
+                            for i in range(1,10):
+        
+        stringa = "BatteryE(" + str(i) + ")"
+        found = False
+        for line in file:
+            vec = re.split('\s+', line)
+            if vec[0] == stringa:
+                found = True
+                sb_charge_vector.append(1)              
+                
+        if found == False:
+            sb_charge_vector.append(0)
+        print(found," ", i)  
+
+"""

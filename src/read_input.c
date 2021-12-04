@@ -107,6 +107,13 @@ void read_input(instance *inst)
                 inst->table_sm3 = calloc(inst->nof_baseloadintervals, sizeof(TABLE_SM3));
             }
 
+            // TABLE SM4
+            if ( strncmp(parameter_name, "NUMBER_OF_PVGENERATION_INTERVAL", 31) == 0 ) {
+
+                inst->nof_pvgeneration_intervals = value;
+                inst->table_sm4 = calloc(inst->nof_pvgeneration_intervals , sizeof(TABLE_SM4));
+            }
+
             // TABLE SM5
             if ( strncmp(parameter_name, "NUMBER_OF_APPLIANCES", 21) == 0 ) {
 
@@ -227,6 +234,23 @@ void read_input(instance *inst)
             inst->table_sm3[in - 1].power_required = atoi( token );
 
             if (in == inst->nof_baseloadintervals) active_session = 0;
+        }
+
+        if ( active_session == 1 && value == 4 ) {
+
+            token = strtok(line, " ");
+            int in = atoi ( token );
+
+            token = strtok(NULL, " ");
+            inst->table_sm4[in - 1].start_interval = atoi( token );
+
+            token = strtok(NULL, " ");
+            inst->table_sm4[in - 1].end_interval = atoi( token );
+
+            token = strtok(NULL, " ");
+            inst->table_sm4[in - 1].generated_power = atoi( token );
+
+            if (in == inst->nof_pvgeneration_intervals) active_session = 0;
         }
 
 

@@ -30,6 +30,13 @@ typedef struct {
     int power_required;
 } TABLE_SM3;
 
+// Table SM4, PV generations intervals
+typedef struct {
+    int start_interval;
+    int end_interval;
+    int generated_power;
+} TABLE_SM4;
+
 // Table SM5, comfort time slots, allowed operations for each appliance
 typedef struct {
     int start_interval;
@@ -146,6 +153,10 @@ typedef struct
     // Table SM3, base load intervals of power required
     int nof_baseloadintervals;
     TABLE_SM3* table_sm3;
+
+    // Table SM4, base load intervals of power required
+    int nof_pvgeneration_intervals;
+    TABLE_SM4* table_sm4;
 
     //Table SM5, comfort time slots, allowed operations for each appliance
     int J;

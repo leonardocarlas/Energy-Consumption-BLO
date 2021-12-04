@@ -1,0 +1,177 @@
+EV
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.6\textwidth]{immagini/m12ewhev.png}
+    \caption{ Power consumed by the user according to model M1 + M2EWH + M2EV}
+    \label{fig:m12ewhev-results}
+\end{figure}
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.6\textwidth]{immagini/temp_m12ewhev.png}
+    \caption{Power consumed by the user according to model M1 + M2EWH + M2EV}
+    \label{fig:temp-model-m12ewhev}
+\end{figure}
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.6\textwidth]{immagini/ev_charge_m12ewhev.png}
+    \caption{ Energy charge in the EV according to model M1 + M2EWH + M2EV}
+    \label{fig:ev-charge-m12ewhev-results}
+\end{figure}
+
+
+SB 
+
+
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.6\textwidth]{immagini/m12ewhevsb.png}
+    \caption{ Power consumed by the user according to model M1 + M2EWH + M2EV + M2SB}
+    \label{fig:m12ewhevsb-results}
+\end{figure}
+
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.6\textwidth]{immagini/ev_charge_m12ewhevsb.png}
+    \caption{ Energy charge in the EV according to model M1 + M2EWH + M2EV + M2SB}
+    \label{fig:ev-charge-m12ewhevsb-results}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.6\textwidth]{immagini/temp_m12ewhevsb.png}
+    \caption{Temperature of the EWH water according to model M1 + M2EWH + M2EV + M2SB}
+    \label{fig:temp-model-m12ewhevsb}
+\end{figure}
+
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.6\textwidth]{immagini/sb_charge_m12ewhevsb.png}
+    \caption{ Energy charge in the SB according to model M1 + M2EWH + M2EV + M2SB}
+    \label{fig:sb-charge-m12ewhevsb-results}
+\end{figure}
+
+
+M3
+
+
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.6\textwidth]{immagini/m12ewhevsb3.png}
+    \caption{ Power consumed by the user according to model M3}
+    \label{fig:m12ewhevsb3-results}
+\end{figure}
+
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.6\textwidth]{immagini/ev_charge_3.png}
+    \caption{ Energy charge in the EV according to model M3}
+    \label{fig:ev-charge-m12ewhevsb3-results}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.6\textwidth]{immagini/temp_m3.png}
+    \caption{Temperature of the EWH water according to model M3}
+    \label{fig:temp_modelm3}
+\end{figure}
+
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.6\textwidth]{immagini/sb_charge_m3.png}
+    \caption{ Energy charge in the SB according to model M3}
+    \label{fig:sb-charge-m3}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.6\textwidth]{immagini/ac_m3.png}
+    \caption{ Home internal temperature according to model M3}
+    \label{fig:ac-m3}
+\end{figure}
+
+
+M4
+
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.6\textwidth]{immagini/m4.png}
+    \caption{Power consumed by the user according to model M4}
+    \label{fig:m4-power}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.6\textwidth]{immagini/ev_charge_m4.png}
+    \caption{Energy charge in the EV according to model M4}
+    \label{fig:ev-charge-m4}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.6\textwidth]{immagini/temp_m4.png}
+    \caption{Temperature of the EWH water according to model M4}
+    \label{fig:temp_m4}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.6\textwidth]{immagini/sb_charge_m4.png}
+    \caption{Energy charge in the SB according to model M4}
+    \label{fig:sb-charge-m4}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.6\textwidth]{immagini/ac_m4.png}
+    \caption{Home internal temperature according to model M4}
+    \label{fig:ac-m4}
+\end{figure}
+
+
+M5
+
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{immagini/m5.png}
+    \caption{PG2H and PH2G according to model M5}
+    \label{fig:m5-results}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{immagini/ev_charge_m5.png}
+    \caption{EV charge according to model M5}
+    \label{fig:ev-charge-m5}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{immagini/temp_m5.png}
+    \caption{EWH  water temperature according to model M5}
+    \label{fig:ewh-temperature-m5}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{immagini/sb_charge_m5.png}
+    \caption{SB charge according to model M5}
+    \label{fig:sb-charge-m5}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{immagini/ac_m5.png}
+    \caption{SB charge according to model M5}
+    \label{fig:internal-temperature-m5}
+\end{figure}

@@ -37,6 +37,12 @@ int powerRequiredShiftableStageR(instance *inst, int j, int r);
 double externalTemperatureAtTimet(instance *inst, int t);
 
 
+double baseLoadAtTime(int t, instance *inst);
+
+
+double pvGenerationAtTime(int t, instance *inst);
+
+
 /*!
 * Return the seconds of the current program
 */

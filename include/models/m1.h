@@ -9,4 +9,4 @@
 * @param	env is the environment of CPLEX
 * @param	lp is the problem written in CPLEX
 */
-int model_m1(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **cname, int *pVector, int (*sMatrix)[inst->T], int (*pMatrix)[inst->T]);
+int model_m1(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **cname, int *PSHVector, int (*sMatrix)[inst->T], int (*pMatrix)[inst->T]);
