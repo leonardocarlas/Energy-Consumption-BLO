@@ -10,12 +10,12 @@
  * @param lp
  * @param counter
  * @param cname
- * @param sh2vVector
+ * @param sH2VVector
  * @param sv2hVector
  * @param Ph2vVector
  * @param Pv2hVector
  * @param EvVector
  * @return
  */
-int model_m2ev(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **cname, int *sh2vVector, int *sv2hVector,
+int model_m2ev(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **cname, int *sH2VVector, int *sv2hVector,
                int *Ph2vVector, int *Pv2hVector, int *EvVector);

@@ -1,5 +1,5 @@
 #include <ilcplex/cplex.h>
-#include "blo.h"
+#include "ll.h"
 #include "utils.h"
 
 
@@ -29,13 +29,8 @@ int model_m2ewh(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **
         double lb = 0.0;
         double ub = 1.0;
         double obj = 0.0;
-        //double obj = ( (inst->table_sm7.power_required / 1000 )* powerCostTimet(t, inst));    //dev'essere espressa in kW
-
         status = CPXnewcols(env, lp, 1, &obj, &lb, &ub, &binary, cname);
-        if ( status )
-            print_error("Wrong CPXnewcols on v(t) variables");
-
-
+        if ( status ) print_error("Wrong CPXnewcols on v(t) variables");
         vVector[t] = counter;
         //printf("Posizione variabile v(%i): %i \n ", t+1, vVector[t]);
         counter++;
@@ -50,8 +45,7 @@ int model_m2ewh(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **
         double obj = 0.0;
 
         status = CPXnewcols(env, lp, 1, &obj, &lb, &ub, &binary, cname);
-        if ( status )
-            print_error("Wrong CPXnewcols on n(t) variables");
+        if ( status ) print_error("Wrong CPXnewcols on n(t) variables");
 
         nVector[t] = counter;
         //printf("Posizione variabile n(%i): %i \n ", t+1, nVector[t]);
@@ -68,8 +62,8 @@ int model_m2ewh(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **
             ub = 55.0;
         }
         else {
-            lb = 0.0;
-            ub = CPX_INFBOUND;
+            lb = inst->table_sm7.min_temperature;
+            ub = inst->table_sm7.max_temperature;
         }
         sprintf(cname[0], "temp(%i)", t+1);
         double obj = 0.0;
@@ -102,12 +96,10 @@ int model_m2ewh(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **
 
 
 
-    /* Constraint n 1, variable Ploss(t)
+    /** Constraint n 1, variable Ploss(t)
      * Calculate the loss of Power due to the difference of temperature for every t
      * Ploss(1) - AU * temp(1) = - AU * at(1)
-     * ...
-     */
-
+     **/
     for (int t = 0; t < inst->T; ++t) {
 
         int *c1_rmatind = calloc(2, sizeof (int));
@@ -117,9 +109,9 @@ int model_m2ewh(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **
 
         c1_rmatbeg[0] = 0;
         c1_rmatbeg[1] = 1;
-        c1_rmatval[0] = 1.0 ;
-        c1_rmatval[1] = -1.0 * inst->table_sm7.AU;       // espressione in kW
-        c1_rmatind[0] = PlossVector[t] ;
+        c1_rmatval[0] = 1.0;
+        c1_rmatval[1] = -1.0 * inst->table_sm7.AU;
+        c1_rmatind[0] = PlossVector[t];
         c1_rmatind[1] = tempVector[t];
         c1_rhs[0] = -1.0 * inst->table_sm7.AU * ambientTemperatureAtTimet(t, inst);
 
@@ -139,12 +131,13 @@ int model_m2ewh(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **
     printf("Constraint n 1 OK \n");
 
 
-    /* Constraint n 2, variable temp(t)
+    /** Constraint n 2, variable temp(t)
      * Calculate the for each time t the temperature temp(t)
-     * * // t(0) = 55
-     *   temp(t+1) - coeff temp(t) - coeff v(t) - coeff Ploss(t)  =  noto
-     */
-    for (int t = 0; t < inst->T-1; ++t) {
+     * // t(0) = 55
+     * temp(t+1) - coeff temp(t) - coeff v(t) + coeff Ploss(t)  =  noto
+     **/
+
+    for (int t = 0; t < inst->T - 1; ++t) {
 
         int *c2_rmatind = calloc(4, sizeof (int));
         double *c2_rmatval = calloc(4, sizeof (double ));
@@ -155,7 +148,7 @@ int model_m2ewh(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **
         c2_rmatbeg[1] = 3;
         c2_rmatval[0] = 1.0;
         c2_rmatval[1] = -1 * ( inst->table_sm7.M - waterWithdrawlAtTimet(t,inst) ) / inst->table_sm7.M ;
-        c2_rmatval[2] = -1 *( (inst->table_sm7.power_required ) / ( inst->table_sm7.M * inst->table_sm7.termal_coeff));
+        c2_rmatval[2] = -1 * ( (inst->table_sm7.power_required) / ( inst->table_sm7.M * inst->table_sm7.termal_coeff));
         c2_rmatval[3] = 1 / ( inst->table_sm7.M * inst->table_sm7.termal_coeff);
         c2_rmatind[0] = tempVector[t+1];
         c2_rmatind[1] = tempVector[t];
@@ -179,12 +172,11 @@ int model_m2ewh(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **
 
 
 
-    /* Constraint n 3, variable temp(t)
+    /** Constraint n 3, variable temp(t)
      * Imposes the water temperature to be above the minimum temperature for every t
-     * M * v (t) + temp(t) >= min_temp
-     * ...
-     */
-
+     * bigM * v (t) + temp(t) >= min_temp
+     **/
+    int bigM = 100;
     for (int t = 0; t < inst->T; ++t) {
 
         int *c3_rmatind = calloc(2, sizeof (int));
@@ -194,7 +186,7 @@ int model_m2ewh(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **
 
         c3_rmatbeg[0] = 0;
         c3_rmatbeg[1] = 1;
-        c3_rmatval[0] = inst->table_sm7.M;
+        c3_rmatval[0] = bigM;
         c3_rmatval[1] = 1.0;
         c3_rmatind[0] = vVector[t];
         c3_rmatind[1] = tempVector[t];
@@ -216,13 +208,10 @@ int model_m2ewh(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **
     printf("Constraint n 3 OK \n");
 
 
-    /* Constraint n 4, variable temp(t)
+    /** Constraint n 4, variable temp(t)
      * Imposes the water temperature to be above the minimum temperature for every t
-     * temp(1) + M * v (1)  <= max_temp + M
-     * temp(2) + M * v (2)  <= max_temp + M
-     * temp(3) + M * v (3)  <= max_temp + M
-     * ...
-     */
+     * temp(1) + bigM * v (1)  <= max_temp + bigM
+     **/
 
     for (int t = 0; t < inst->T; ++t) {
 
@@ -234,10 +223,10 @@ int model_m2ewh(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **
         c4_rmatbeg[0] = 0;
         c4_rmatbeg[1] = 1;
         c4_rmatval[0] = 1.0;
-        c4_rmatval[1] = inst->table_sm7.M;
+        c4_rmatval[1] = bigM;
         c4_rmatind[0] = tempVector[t];
         c4_rmatind[1] = vVector[t];
-        c4_rhs[0] = inst->table_sm7.max_temperature + inst->table_sm7.M;
+        c4_rhs[0] = inst->table_sm7.max_temperature + bigM;
 
         status = CPXaddrows (env, lp, 0, 1, 2,
                              c4_rhs, sense_less, c4_rmatbeg, c4_rmatind, c4_rmatval,
@@ -255,10 +244,11 @@ int model_m2ewh(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **
     printf("Constraint n 4 OK \n");
 
 
-    /* Constraint n 5, variable temp(t)
+    /** Constraint n 5, variable temp(t)
      * Imposes to choose only one moment of the day to start warming up the water
      * n(1) + n(2) + ... + n(1429) = 1
-     */
+     **/
+
     int end = inst->T - inst->table_sm7.required_time + 1;
     int *c5_rmatind = calloc(end, sizeof (int));
     double *c5_rmatval = calloc(end, sizeof (double ));
@@ -283,10 +273,10 @@ int model_m2ewh(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **
 
 
 
-    /* Constraint n 6, variable temp(t)
+
+    /** Constraint n 6, variable temp(t)
      * The temperature of the water needs to be adjusted regarding when n(t) is set
-     * required_temp * n ()
-     */
+     **/
 
     for (int t = 0; t < inst->T; ++t) {
 
@@ -309,7 +299,7 @@ int model_m2ewh(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **
             c6_rmatval[i] = -1.0 * inst->table_sm7.required_temperature;
         }
         c6_rmatind[k] = tempVector[t];
-        c6_rmatval[k] = +1.0;
+        c6_rmatval[k] = 1.0;
 
         status = CPXaddrows (env, lp, 0, 1, k+1,
                              zero, sense_greater, c6_rmatbeg, c6_rmatind, c6_rmatval,

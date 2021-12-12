@@ -165,9 +165,24 @@ void read_input(instance *inst)
                 inst->INITIAL_OUTDOOR_TEMPERATURE = value / 100;
             }
 
+            if ( strncmp(parameter_name, "X_AVARAGE", 9) == 0 ) {
+
+                inst->X_AVARAGE = value / 100;
+            }
+
             if ( strncmp(parameter_name, "TIME", 4) == 0 ) {
 
                 inst->T = value;
+            }
+
+            if ( strncmp(parameter_name, "POPULATION_SIZE", 15) == 0 ) {
+
+                inst->N = value;
+            }
+
+            if ( strncmp(parameter_name, "PSO_ITERATIONS", 14) == 0 ) {
+
+                inst->G = value;
             }
 
             if ( strncmp(parameter_name, "MODEL_TYPE", 11) == 0 ) {
@@ -197,6 +212,12 @@ void read_input(instance *inst)
 
             token = strtok(NULL, " ");
             inst->table_sm1[in - 1].price_subperiod = atof( token );
+
+            token = strtok(NULL, " ");
+            inst->table_sm1[in - 1].min_price = atof( token );
+
+            token = strtok(NULL, " ");
+            inst->table_sm1[in - 1].max_price = atof( token );
             //printf( " %lf\n", inst->table_sm1[in - 1].price_subperiod);
 
             if (in == inst->nof_subperiods) active_session = 0;

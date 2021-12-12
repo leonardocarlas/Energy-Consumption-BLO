@@ -3,11 +3,18 @@ cmake_minimum_required(VERSION 2.8)
 project(blo)
 set(SRC
         src/main.c
-        src/blo.c
+        src/ll.c
         src/plot.c
         src/read_input.c
         src/utils.c
-        src/models/m1a.c include/models/m1.h src/models/m1.c include/models/m2ewh.h src/models/m2ewh.c include/models/m2ev.h src/models/m2ev.c include/models/mo.h src/models/mo.c include/models/m2sb.h src/models/m2sb.c src/models/m3.c include/models/m3.h)
+        src/models/m1a.c
+        include/models/m1.h
+        src/models/m1.c
+        include/models/m2ewh.h
+        src/models/m2ewh.c
+        include/models/m2ev.h
+        src/models/m2ev.c
+        include/models/mo.h src/models/mo.c include/models/m2sb.h src/models/m2sb.c src/models/m3.c include/models/m3.h src/ul.c include/ul.h include/pso.h src/pso.c)
 
 add_executable(${PROJECT_NAME} ${SRC})
 

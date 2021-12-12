@@ -1,5 +1,5 @@
 #include <ilcplex/cplex.h>
-#include "blo.h"
+#include "ll.h"
 #include "utils.h"
 
 int model_m2sb(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **cname,
@@ -108,7 +108,6 @@ int model_m2sb(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **c
     /** Constraint number 1: example, variable Ev
      *  Eb(t) - Eb(t-1) - nch * Ph2b(t) + (1/ndch) Pb2h(t) = 0
      */
-
     for (int t = 1 ; t < inst->T; ++t) {
 
         int *c1_rmatind = calloc( 4 , sizeof (int) );

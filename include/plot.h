@@ -1,5 +1,5 @@
 
-#include "blo.h"
+#include "ll.h"
 
 /*!
 * Plot a graph using the passed command and the gnuplot enviroment

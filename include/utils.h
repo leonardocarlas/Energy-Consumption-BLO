@@ -1,4 +1,4 @@
-#include "blo.h"
+#include "ll.h"
 #include <ilcplex/cplex.h>
 
 
@@ -41,6 +41,9 @@ double baseLoadAtTime(int t, instance *inst);
 
 
 double pvGenerationAtTime(int t, instance *inst);
+
+
+double randomPrice(int i, instance *inst);
 
 
 /*!

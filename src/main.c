@@ -5,10 +5,11 @@
 #include <errno.h>
 #include <stdio.h>
 #include <time.h>
-#include "blo.h"
+#include "ll.h"
 #include "read_input.h"
 #include "plot.h"
 #include "utils.h"
+#include "../include/pso.h"
 
 
 // una struct per ogni tabella, poi un array di struct
@@ -41,11 +42,16 @@ int main(int argc, char **argv) {
 
 	//Calculate the solution of the problem
 	printf("\n--------------OPTIMIZATION INFORMATIONS--------------\n\n");
-	BLOopt(&inst);
+	//BLOopt(&inst);
 
     double end_time = seconds();
 
     printf("\nTime to solve the BLO problem: %lf \n ", (end_time - start_time));
+
+    printf("STARTING THE PSO\n ");
+    int test = test_pso(&inst);
+    if (test) printf("TEST PSO FAILED \n");
+    else printf("TEST PSO OK \n");
 
     free_instance(&inst);
 
@@ -55,3 +61,5 @@ int main(int argc, char **argv) {
 	//printf("\n----------------------PLOTTING------------------------\n");
 	//plot(commandsForGnuplot, 2, &inst);
 }
+
+

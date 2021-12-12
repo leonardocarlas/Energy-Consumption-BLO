@@ -106,7 +106,13 @@
 		<Unit filename="/home/leonardo/Scrivania/BLO/include/models/mo.h">
 			<Option target="blo"/>
 		</Unit>
-		<Unit filename="/home/leonardo/Scrivania/BLO/src/blo.c">
+		<Unit filename="/home/leonardo/Scrivania/BLO/include/pso.h">
+			<Option target="blo"/>
+		</Unit>
+		<Unit filename="/home/leonardo/Scrivania/BLO/include/ul.h">
+			<Option target="blo"/>
+		</Unit>
+		<Unit filename="/home/leonardo/Scrivania/BLO/src/ll.c">
 			<Option target="blo"/>
 		</Unit>
 		<Unit filename="/home/leonardo/Scrivania/BLO/src/main.c">
@@ -136,7 +142,13 @@
 		<Unit filename="/home/leonardo/Scrivania/BLO/src/plot.c">
 			<Option target="blo"/>
 		</Unit>
+		<Unit filename="/home/leonardo/Scrivania/BLO/src/pso.c">
+			<Option target="blo"/>
+		</Unit>
 		<Unit filename="/home/leonardo/Scrivania/BLO/src/read_input.c">
+			<Option target="blo"/>
+		</Unit>
+		<Unit filename="/home/leonardo/Scrivania/BLO/src/ul.c">
 			<Option target="blo"/>
 		</Unit>
 		<Unit filename="/home/leonardo/Scrivania/BLO/src/utils.c">

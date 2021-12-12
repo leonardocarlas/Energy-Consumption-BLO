@@ -163,6 +163,22 @@ int powerRequiredShiftableStageR(instance *inst, int j, int r) {
     return power_at_stage_r;
 }
 
+/*
+ * Return a random price between a minimum and a maximum of the sub period
+ */
+double randomPrice(int i, instance *inst){
+
+    double price = 0.0;
+    double min = inst->table_sm1[i].min_price;
+    double max = inst->table_sm1[i].max_price;
+    price = min + (max - min) * (double) rand() / RAND_MAX;
+    return price;
+
+}
+
+
+
+
 #define CLOCK_MONOTONIC                 1
 
 double seconds() {
