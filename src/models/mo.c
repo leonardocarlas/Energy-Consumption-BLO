@@ -108,7 +108,7 @@ int model_mo(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **cna
 
     /** ONLY MEWH
      *  PG2H(t) - power_required_ewh * v(t) = 0  */
-
+    /*
     int *c5_rmatbeg = calloc(2, sizeof(int));
     c5_rmatbeg[0] = 0;
     c5_rmatbeg[1] = 1;
@@ -127,7 +127,7 @@ int model_mo(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **cna
             fprintf(stderr, "CPXaddrows failed.\n");
     }
 
-
+    */
 
 
     /**
@@ -198,7 +198,7 @@ int model_mo(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **cna
 
     /** ONLY MEWH
     PG2H(t) - Preq * v(t) = 0  */
-/*
+
     int *c5_rmatbeg = calloc(2, sizeof(int));
     c5_rmatbeg[0] = 0;
     c5_rmatbeg[1] = 1;
@@ -215,7 +215,7 @@ int model_mo(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **cna
                              NULL, NULL);
         if ( status ) fprintf(stderr, "CPXaddrows failed.\n");
     }
-*/
+
 
 
 

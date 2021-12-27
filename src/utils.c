@@ -75,6 +75,8 @@ double waterWithdrawlAtTimet(int t, instance *inst){
 }
 
 
+
+
 /*
  * Return the price associated at the power level l provided
  */

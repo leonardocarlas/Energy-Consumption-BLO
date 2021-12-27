@@ -160,7 +160,7 @@ def print_power_sol(solution_file, minutes, model_name):
 
 if __name__ == "__main__":
 
-    solution_file = "/home/leonardo/Scrivania/BLO/solutions/M1.sol"
+    solution_file = "/home/leonardo/Scrivania/BLO/cmake-build-debug/ll.sol"
     model_name = "M1"
     T = 1440
     temp_vector = []
@@ -172,9 +172,9 @@ if __name__ == "__main__":
         ev_charge_vector.append(0)
         full_vector.append(i)
 
-    print_power_sol(solution_file, minutes, model_name)
+    #print_power_sol(solution_file, minutes, model_name)
     #print_two_powers(solution_file, minutes, model_name)
-    #print_temperature_graph(solution_file, minutes, model_name)
+    print_temperature_graph(solution_file, minutes, model_name)
     #print_ev_graph(solution_file, minutes, model_name)
     #print_sb_graph(solution_file, minutes, model_name)
     #print_intemp_graph(solution_file, minutes, model_name)

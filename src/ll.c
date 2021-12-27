@@ -9,11 +9,11 @@
 #include "ul.h"
 #include <ilcplex/cplex.h>
 
+#define INTERNAL_TIME_LIMIT 60.0
 
 
 
-
-int BLOopt(instance *inst) {
+double LLopt(instance *inst, double *prices) {
 
     double objval;
     int status;          // code of an error, 0 if is all correct
@@ -30,12 +30,15 @@ int BLOopt(instance *inst) {
 
     CPXLPptr lp = CPXcreateprob(env, &status, "BLO");          // env, pointer to error to comunicate, a name
 
-
-    /* POPULATION OF THE MODEL */
-
     char **cname = ( char ** ) calloc( 1, sizeof (char *));
     cname[0] = ( char * ) calloc( 100, sizeof(char) );
     int counter = 0;
+
+    /** SETTING THE PRICES TO BUY **/
+
+    for (int i = 0; i < inst->nof_subperiods; ++i)
+        inst->table_sm1[i].price_subperiod = prices[i];
+
 
     /** STRUTTURE DATI MODELLO M1 */
 
@@ -122,8 +125,8 @@ int BLOopt(instance *inst) {
 
     //counter = model_m1(inst, env, lp, counter, cname, PSHVector, sMatrix, pMatrix);
     //printf("MODEL M1 INSTANTIATED \n Counter: %d \n", counter);
-    //counter = model_m2ewh(inst, env, lp, counter, cname, vVector, nVector, PlossVector, tempVector);
-    //printf("MODEL M2EWH INSTANTIATED \n Counter: %d \n", counter);
+    counter = model_m2ewh(inst, env, lp, counter, cname, vVector, nVector, PlossVector, tempVector);
+    printf("MODEL M2EWH INSTANTIATED \n Counter: %d \n", counter);
     //counter = model_m2ev(inst, env, lp, counter, cname, sH2VVector, sV2HVector, PH2VVector, PV2HVector, EvVector);
     //printf("MODEL M2EV INSTANTIATED \n Counter: %d \n", counter);
     //counter = model_m2sb(inst, env, lp, counter, cname, sh2bVector, sb2hVector, Ph2bVector, Pb2hVector, BatteryEVector);
@@ -133,8 +136,8 @@ int BLOopt(instance *inst) {
     /** MODEL M4: JUST MODIFY THE MO ADDING THE BASE LOAD **/
     /** MODEL M5: JUST MODIFY THE MO ADDING THE PV PRODUCTION **/
 
-    //counter = model_mo(inst, env, lp, counter, cname, PSHVector, vVector, PH2VVector, PV2HVector, Ph2bVector, Pb2hVector, sACVector, sg2hVector, PG2HVector, sh2gVector, PH2GVector, uVector);
-    //printf("MODEL MO INSTANTIATED \n Counter: %d \n", counter);
+    counter = model_mo(inst, env, lp, counter, cname, PSHVector, vVector, PH2VVector, PV2HVector, Ph2bVector, Pb2hVector, sACVector, sg2hVector, PG2HVector, sh2gVector, PH2GVector, uVector);
+    printf("MODEL MO INSTANTIATED \n Counter: %d \n", counter);
 
     //counter = model_mul(inst, env, lp, counter, cname, xVector);
     //printf("MODEL MUL INSTANTIATED \n Counter: %d \n", counter);
@@ -147,33 +150,38 @@ int BLOopt(instance *inst) {
     // Obtain the number of variable and print them on screen
     int cur_numcols = CPXgetnumcols(env, lp);
     inst->nvariables = cur_numcols;
-    printf("Number of variables: %d\n", inst->nvariables);
-
+    printf("--- NUMBER OF VARIABLES: %d\n", inst->nvariables);
     inst->solution = (double *) calloc(inst->nvariables, sizeof(double));
 
 
+    inst->start_time = seconds();
+    //Change the internal time limit of cplex
+    CPXsetdblparam(env, CPX_PARAM_TILIM, INTERNAL_TIME_LIMIT);
+    printf("--- CALCULATING THE SOLUTION\n");
+
+
+    //If the time remaining is lower than the INTERNAL_TIME_LIMIT than
+    //change the cplex time limit to the actual time remaining
+    //double timeleft = inst->start_time + inst->timelimit - seconds();
+    //if (timeleft <= 0)
+    //    break;
+    //if (timeleft < INTERNAL_TIME_LIMIT) {
+    status = CPXsetdblparam(env, CPX_PARAM_TILIM, INTERNAL_TIME_LIMIT);
+    if ( status ) fprintf (stderr, "Failed to set parameter time limit\n");
+    //}
+
     status = CPXmipopt (env, lp);
-    if ( status )
-        fprintf (stderr, "Failed to optimize MIP.\n");
+    if ( status ) fprintf (stderr, "Failed to optimize MIP.\n");
 
 
     status = CPXgetobjval (env, lp, &objval);
-    if ( status )
-        fprintf (stderr,"CPXgetobjval failed\n");
+    if ( status ) fprintf (stderr,"CPXgetobjval failed\n");
 
 
     // If the problem have a solution it saves it into the instance structure
     status = CPXgetx(env, lp, inst->solution, 0, inst->nvariables - 1);
-    if (status)
-        printf("Failed to optimize MIP (retrieving the solution -> BLOopt()) %d", status);
+    if (status) printf("Failed to optimize MIP (retrieving the solution -> LLopt()) %d", status);
 
-
-    // Print the values of the solution
-    double solution = -1;
-    if (CPXgetobjval(env, lp, &solution)) {
-        print_error("Failed to optimize MIP (getobjval() -> BLOopt).\n");
-    }
-    printf("Objval: %f\n", solution);
 
 
 
@@ -195,12 +203,8 @@ int BLOopt(instance *inst) {
     CPXfreeprob(env, &lp);
     CPXcloseCPLEX(&env);
 
-    return 0;
+    return objval;
 }
-
-
-
-
 
 
 

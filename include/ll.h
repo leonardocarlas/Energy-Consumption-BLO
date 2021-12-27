@@ -229,5 +229,5 @@ typedef struct
 * @param	inst is a pointer to the instance where is stored the problem
 * @return	0 if the solution is found. Other values otherwise
 */
-int BLOopt(instance *inst);
+double LLopt(instance *inst, double *prices);
 

@@ -6,7 +6,8 @@
 #define C1            1
 #define C2            1
 
-int test_pso(instance *inst) {
+
+void psoUL(instance *inst, double *global_best) {
 
     // Generate initial population
     particle *swarm = calloc( inst->N, sizeof(particle));
@@ -17,7 +18,6 @@ int test_pso(instance *inst) {
         swarm[p].best_personal_position =  calloc(inst->nof_subperiods, sizeof(double));
 
     }
-    double *global_best = calloc(inst->nof_subperiods, sizeof(double));
 
     for (int p = 0; p < inst->N; ++p) {
         printf("--- Particle: %i \n", p+1 );
@@ -37,7 +37,8 @@ int test_pso(instance *inst) {
         // 2.2 for each particle I solve the LL problem
         for (int p = 0; p < inst->N; ++p) {
 
-            double objval = 7.0919; //ll(inst, swarm[p].position);
+            //double objval = 7.0919;
+            double objval = LLopt(inst, swarm[p].position);
 
             // 2.3 Evaluate the fitness function and set the best solution
             if (objval < best_objval) {
@@ -66,8 +67,10 @@ int test_pso(instance *inst) {
 
     free(swarm);
 
-    // output of the global best that contains the best solution
-    return 0;
+    // print out the global best that contains the best solution
+    for (int i = 0; i < inst->nof_subperiods; ++i)
+        printf("%i GLOBAL BEST VALUE: %f \n", i+1, global_best[i]);
+
 }
 
 
@@ -84,13 +87,19 @@ void repairSwarm(particle *swarm, instance *inst) {
             if (swarm[p].position[i] > inst->table_sm1[i].max_price)
                 swarm[p].position[i] = inst->table_sm1[i].max_price;
 
-            // x_avarage condition
             double amplitudePi = inst->table_sm1[i].end_interval - inst->table_sm1[i].start_interval + 1;
             sum = sum + amplitudePi * swarm[p].position[i];
         }
-        if ( sum > inst->X_AVARAGE * inst->T || sum < (inst->X_AVARAGE - EPS) * inst->T )
-            printf("Bad Values \n");
-            // repair (how?)
+        // controllo vincolo x_avarage, abbasso tutti i valori di una determinata percentuale
+        if ( sum > inst->X_AVARAGE * inst->T )          // || sum < (inst->X_AVARAGE - EPS) * inst->T
+        {
+            double difference = sum - inst->X_AVARAGE * inst->T;
+            double percentage = difference / sum;
+            for (int i = 0; i < inst->nof_subperiods; ++i) {
+                swarm[p].position[i] -= swarm[p].position[i] * percentage;
+            }
+        }
+
     }
 
 

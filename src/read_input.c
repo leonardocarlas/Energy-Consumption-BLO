@@ -40,7 +40,7 @@ void parse_command_line(int argc, char** argv, instance *inst) {
             continue;
         }
 
-        if (strcmp(argv[i], "-time_limit") == 0) {
+        if (strcmp(argv[i], "-timelimit") == 0) {
             inst->timelimit = atoi(argv[++i]);
             printf("Time limit selected: %f\n", inst->timelimit);
             continue;

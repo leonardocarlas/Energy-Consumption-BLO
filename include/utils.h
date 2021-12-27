@@ -46,6 +46,7 @@ double pvGenerationAtTime(int t, instance *inst);
 double randomPrice(int i, instance *inst);
 
 
+
 /*!
 * Return the seconds of the current program
 */
