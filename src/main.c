@@ -36,6 +36,7 @@ int main(int argc, char **argv) {
 	parse_command_line(argc, argv, &inst); // & serve a passare il puntatore dell'istanza
 	read_input(&inst);
 
+    /** RUNNING ONLY THE LOWER LEVEL PROBLEM
     //Setting the initial prices (or the prices only for the LL problem)
     double *initial_prices = calloc(inst.nof_subperiods, sizeof(double ));
     initial_prices[0] = 0.001660;
@@ -54,11 +55,12 @@ int main(int argc, char **argv) {
 	LLopt(&inst, initial_prices);
     double end_time = seconds();
 
-    printf("\nTime to solve the BLO problem: %lf \n ", (end_time - start_time));
+    //printf("\nTime to solve the BLO problem: %lf \n ", (end_time - start_time));
+    **/
 
     printf("\n--------------STARTING THE PSO--------------\n\n");
     double *global_best = calloc(inst.nof_subperiods, sizeof(double));
-    //psoUL(&inst, global_best);
+    psoUL(&inst, global_best);
 
     free_instance(&inst);
 

@@ -15,6 +15,7 @@ typedef struct {
     double price_subperiod;
     double min_price;
     double max_price;
+    double sell_price_subperiod;
 } TABLE_SM1;
 
 

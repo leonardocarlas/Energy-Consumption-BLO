@@ -29,7 +29,7 @@ int model_m3(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **cna
         if (status) print_error("Error CPXnewcols on sAC(t)");
         sACVector[t] = counter;
         counter++;
-        printf("Posizione variabile sh2v(%d): %d \n", t+1 , sACVector[t]);
+        //printf("Posizione variabile sh2v(%d): %d \n", t+1 , sACVector[t]);
     }
 
     // Definition of y(t) = 0/1
@@ -43,7 +43,7 @@ int model_m3(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **cna
         if (status) print_error("Error CPXnewcols on y(t)");
         yVector[t] = counter;
         counter++;
-        printf("Posizione variabile y(%d): %d \n", t+1 , yVector[t]);
+        //printf("Posizione variabile y(%d): %d \n", t+1 , yVector[t]);
     }
 
     // Definition of z(t) = 0/1
@@ -57,7 +57,7 @@ int model_m3(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **cna
         if (status) print_error("Error CPXnewcols on z(t)");
         zVector[t] = counter;
         counter++;
-        printf("Posizione variabile z(%d): %d \n", t+1 , zVector[t]);
+        //printf("Posizione variabile z(%d): %d \n", t+1 , zVector[t]);
     }
 
     // Definition of inTemp(t) = continuos
@@ -77,7 +77,7 @@ int model_m3(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **cna
         if (status) print_error("Error CPXnewcols on inTemp(t)");
         inTempVector[t] = counter;
         counter++;
-        printf("Posizione variabile inTempVector(%d): %d \n", t+1 , inTempVector[t]);
+        //printf("Posizione variabile inTempVector(%d): %d \n", t+1 , inTempVector[t]);
 
     }
 

@@ -31,6 +31,9 @@ double powerLevelCost(int l, instance *inst);
 double powerCostTimet(int t, instance *inst);
 
 
+double powerSellTimet(int t, instance *inst);
+
+
 int powerRequiredShiftableStageR(instance *inst, int j, int r);
 
 

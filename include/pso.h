@@ -7,6 +7,8 @@ typedef struct {
     double *position;
     double *velocity;
     double *best_personal_position;
+    double best_objval;
+    double actual_objval;
 } particle;
 
 #endif //BLO_PSO_H
@@ -16,7 +18,6 @@ typedef struct {
 /**
  * psoUL is the main method for the execution of the PSO algorithm on the ele. prices
  * @param inst
- * @return 0 is the procedure is correct, 1 otherwise
  */
 void psoUL(instance *inst, double *global_best);
 

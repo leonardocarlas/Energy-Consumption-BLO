@@ -61,7 +61,7 @@ int model_m1(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **cna
             double obj = 0.0;
             status = CPXnewcols(env, lp, 1, &obj, &lb, &ub, &binary, cname);
             if (status) print_error("Error CPXnewcols on s(j,t)");
-            printf("Posizione variabile s(%i,%i): %i \n", j+1, t+1, sMatrix[j][t]);
+            //printf("Posizione variabile s(%i,%i): %i \n", j+1, t+1, sMatrix[j][t]);
         }
     }
 

@@ -5,7 +5,7 @@
 
 
 int model_mo(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **cname, int *PSHVector, int *vVector,
-                    int *Ph2vVector, int *Pv2hVector, int *Ph2bVector, int *Pb2hVector, int *sACVector,
+                    int *PH2VVector, int *PV2HVector, int *PH2BVector, int *PB2HVector, int *sACVector,
                     int *sG2HVector, int *PG2HVector, int *sH2GVector, int *PH2GVector, int *uVector) {
 
     char binary = 'B';
@@ -20,7 +20,7 @@ int model_mo(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **cna
     int k = 0;
 
 
-    /*
+
     // Definition of sG2H(t) = 0/1
     for ( int t = 0; t < inst->T; t++) {
 
@@ -37,7 +37,7 @@ int model_mo(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **cna
         //printf("Posizione variabile sG2H(%i): %i \n ", t+1, sG2HVector[t]);
         counter++;
     }
-     */
+
 
     // Definition of PG2H(t) >=0
     for ( int t = 0; t < inst->T; t++) {
@@ -54,7 +54,7 @@ int model_mo(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **cna
         //printf("Posizione variabile PG2H(%i): %i \n ", t+1, PG2HVector[t]);
         counter++;
     }
-/*
+
     // Definition of sH2G(t) = 0/1
     for ( int t = 0; t < inst->T; t++) {
 
@@ -78,7 +78,7 @@ int model_mo(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **cna
         sprintf(cname[0], "PH2G(%i)", t+1);
         double lb = 0.0;
         double ub = CPX_INFBOUND;
-        double obj = -1.0 * 0.04 / 1000;
+        double obj = powerSellTimet(t, inst) / 1000;
 
         status = CPXnewcols(env, lp, 1, &obj, &lb, &ub, &continuos, cname);
         if ( status )
@@ -88,7 +88,7 @@ int model_mo(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **cna
         //printf("Posizione variabile PH2G(%i): %i \n ", t+1, PH2GVector[t]);
         counter++;
     }
-*/
+
     // Definition of u(l) = 0/1
     for ( int l = 0; l < inst->L; l++) {
 
@@ -135,7 +135,7 @@ int model_mo(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **cna
      *  PG2H(t) - P(t) - Ph2v(t) + Pv2h(t) - Ph2b(t) + Pb2h(t) - Pac * sAC(t)
      *             - PH2G(t) - v(t) * Pewh =  baseLoadAtTime(t) - pvGenerationAtTime(t)
      */
-    /*
+
     int *c5_rmatbeg = calloc(2, sizeof(int));
     c5_rmatbeg[0] = 0;
     c5_rmatbeg[1] = 8;
@@ -155,15 +155,15 @@ int model_mo(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **cna
     for (int t = 0; t < inst->T; ++t) {
         c5_rmatind[0] = PG2HVector[t];
         c5_rmatind[1] = PSHVector[t];
-        c5_rmatind[2] = Ph2vVector[t];
-        c5_rmatind[3] = Pv2hVector[t];
-        c5_rmatind[4] = Ph2bVector[t];
-        c5_rmatind[5] = Pb2hVector[t];
+        c5_rmatind[2] = PH2VVector[t];
+        c5_rmatind[3] = PV2HVector[t];
+        c5_rmatind[4] = PH2BVector[t];
+        c5_rmatind[5] = PB2HVector[t];
         c5_rmatind[6] = sACVector[t];
         c5_rmatind[7] = PH2GVector[t];
         c5_rmatind[8] = vVector[t];
         c5_rhs[0] = baseLoadAtTime(t, inst) - pvGenerationAtTime(t, inst);
-        printf("TEST rhs: %lf \n", c5_rhs[0]);
+        //printf("TEST rhs: %lf \n", c5_rhs[0]);
         status = CPXaddrows (env, lp, 0, 1, 8,
                              c5_rhs, sense_equal, c5_rmatbeg, c5_rmatind, c5_rmatval,
                              NULL, NULL);
@@ -171,8 +171,8 @@ int model_mo(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **cna
             fprintf(stderr, "CPXaddrows failed.\n");
     }
 
-    printf("CONSTRAINT MO 1 OK");
-    */
+    //printf("CONSTRAINT MO 1 OK");
+
 
 
     /** ONLY M1
@@ -196,26 +196,42 @@ int model_mo(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **cna
     }
     */
 
-    /** ONLY MEWH
-    PG2H(t) - Preq * v(t) = 0  */
-
+    /** MODEL M4
+    PG2H(t) - Preq * v(t) - PSH(t) - Ph2v(t) + Pv2h(t) - Ph2b(t) + Pb2h(t) - Pac * sAC(t)
+     =  baseLoadAtTime(t) */
+/*
     int *c5_rmatbeg = calloc(2, sizeof(int));
     c5_rmatbeg[0] = 0;
-    c5_rmatbeg[1] = 1;
-    int *c5_rmatind = calloc(2, sizeof(int));
-    double *c5_rmatval = calloc(2, sizeof(double));
+    c5_rmatbeg[1] = 7;
+    double *c5_rhs = calloc(1, sizeof(double));
+    int *c5_rmatind = calloc(8, sizeof(int));
+    double *c5_rmatval = calloc(8, sizeof(double));
     c5_rmatval[0] = 1.0;
     c5_rmatval[1] = -1.0 * inst->table_sm7.power_required;
+    c5_rmatval[2] = -1.0;
+    c5_rmatval[3] = -1.0;
+    c5_rmatval[4] = 1.0;
+    c5_rmatval[5] = -1.0;
+    c5_rmatval[6] = 1.0;
+    c5_rmatval[7] = -1 * inst->table_sm10.nominal_power_AC;
+
 
     for (int t = 0; t < inst->T; ++t) {
-        c5_rmatind[0] = PG2HVector[t];;
+        c5_rmatind[0] = PG2HVector[t];
         c5_rmatind[1] = vVector[t];
-        status = CPXaddrows (env, lp, 0, 1, 2,
-                             zero, sense_equal, c5_rmatbeg, c5_rmatind, c5_rmatval,
+        c5_rmatind[2] = PSHVector[t];
+        c5_rmatind[3] = PH2VVector[t];
+        c5_rmatind[4] = PV2HVector[t];
+        c5_rmatind[5] = PH2BVector[t];
+        c5_rmatind[6] = PB2HVector[t];
+        c5_rmatind[7] = sACVector[t];
+        c5_rhs[0] = baseLoadAtTime(t, inst); //- pvGenerationAtTime(t, inst);
+        status = CPXaddrows (env, lp, 0, 1, 8,
+                             c5_rhs, sense_equal, c5_rmatbeg, c5_rmatind, c5_rmatval,
                              NULL, NULL);
         if ( status ) fprintf(stderr, "CPXaddrows failed.\n");
     }
-
+*/
 
 
 
@@ -247,7 +263,7 @@ int model_mo(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **cna
         if ( status )
             fprintf(stderr, "CPXaddrows failed.\n");
     }
-    printf("CONSTRAINT MO 2 OK\n");
+    //printf("CONSTRAINT MO 2 OK\n");
     free(c2_rmatind);
     free(c2_rmtval);
 
@@ -272,7 +288,7 @@ int model_mo(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **cna
     } else {
         free(c9_rmatval);
     }
-    printf("CONSTRAINT MO 3 OK\n");
+    //printf("CONSTRAINT MO 3 OK\n");
 
 
 
@@ -280,7 +296,7 @@ int model_mo(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **cna
      * CONSTRAINT NUMBER : example, variable PG2H
      *  PG2H(t) - MAX_PG * sG2H(t) <= 0
      */
-/*
+
     for (int t = 0; t < inst->T; ++t) {
 
         int *c1_rmatbeg = calloc(2, sizeof(int));
@@ -300,13 +316,13 @@ int model_mo(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **cna
         if ( status ) fprintf(stderr, "CPXaddrows failed.\n");
         else { free(c1_rmatbeg); free(c1_rmatval); free(c1_rmatind); }
     }
-*/
+
 
     /**
      * CONSTRAINT NUMBER : example, variable PH2G
      *  PH2G(t) - MAX_PG * sH2G(t) <= 0
      */
-/*
+
     for (int t = 0; t < inst->T; ++t) {
 
         int *c3_rmatbeg = calloc(2, sizeof(int));
@@ -326,12 +342,12 @@ int model_mo(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **cna
         if ( status ) fprintf(stderr, "CPXaddrows failed.\n");
         else { free(c3_rmatbeg); free(c3_rmatval); free(c3_rmatind); }
     }
-*/
+
     /**
      * CONSTRAINT NUMBER : example, variable PG2H
      *  sG2H(t) + sH2G(t) <= 1
      */
-/*
+
     for (int t = 0; t < inst->T; ++t) {
 
         int *c4_rmatbeg = calloc(2, sizeof(int));
@@ -349,7 +365,7 @@ int model_mo(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **cna
         if ( status ) fprintf(stderr, "CPXaddrows failed.\n");
         else { free(c4_rmatbeg); free(c4_rmatval); free(c4_rmatind); }
     }
-*/
+
 
     return counter;
 }
@@ -407,11 +423,11 @@ double *c5_rhs = calloc(1, sizeof(double));
 
 for (int t = 0; t < inst->T; ++t) {
     c5_rmatind[0] = PG2HVector[t];
-    c5_rmatind[1] = Ph2vVector[t];
-    c5_rmatind[2] = Pv2hVector[t];
+    c5_rmatind[1] = PH2VVector[t];
+    c5_rmatind[2] = PV2HVector[t];
     c5_rmatind[3] = PSHVector[t];
-    c5_rmatind[4] = Ph2bVector[t];
-    c5_rmatind[5] = Pb2hVector[t];
+    c5_rmatind[4] = PH2BVector[t];
+    c5_rmatind[5] = PB2HVector[t];
     c5_rmatind[6] = sACVector[t];
     printf("Base load: %lf, PV Generation %lf \n", baseLoadAtTime(t, inst), pvGenerationAtTime(t, inst));
     c5_rhs[0] = baseLoadAtTime(t, inst) ;

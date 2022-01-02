@@ -100,6 +100,17 @@ double powerCostTimet(int t, instance *inst) {
     return cost;
 }
 
+double powerSellTimet(int t, instance *inst) {
+
+    double cost = 0.0;
+    t = t + 1;
+    for (int i = 0; i < inst->nof_subperiods; i++) {
+        if ( t >= inst->table_sm1[i].start_interval && t <= inst->table_sm1[i].end_interval )
+            cost = inst->table_sm1[i].sell_price_subperiod;
+    }
+    return cost;
+}
+
 /*
  * Power required by the base load in table 3
  */

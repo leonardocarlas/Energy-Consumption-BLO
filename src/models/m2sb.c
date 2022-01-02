@@ -30,7 +30,7 @@ int model_m2sb(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **c
 
         sh2bVector[t] = counter;
         counter++;
-        printf("Posizione variabile sh2b(%d): %d \n",t+1 ,sh2bVector[t]);
+        //printf("Posizione variabile sh2b(%d): %d \n",t+1 ,sh2bVector[t]);
     }
 
     // Definition of sb2h(t) = 0/1
@@ -46,7 +46,7 @@ int model_m2sb(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **c
 
         sb2hVector[t] = counter;
         counter++;
-        printf("Posizione variabile sb2h(%d): %d \n",t+1 ,sb2hVector[t] );
+        //printf("Posizione variabile sb2h(%d): %d \n",t+1 ,sb2hVector[t] );
     }
 
 
@@ -63,7 +63,7 @@ int model_m2sb(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **c
             fprintf (stderr,"CPXnewcols failed on Pb2h(t) variables.\n");
 
         Pb2hVector[t] = counter;
-        printf("Posizione variabile Pb2h(%i): %i \n ", t+1, Pb2hVector[t]);
+        //printf("Posizione variabile Pb2h(%i): %i \n ", t+1, Pb2hVector[t]);
         counter++;
     }
 
@@ -78,7 +78,7 @@ int model_m2sb(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **c
         if ( status )
             fprintf (stderr,"CPXnewcols failed on Pv2h(t) variables.\n");
         Ph2bVector[t] = counter;
-        printf("Posizione variabile Ph2v(%i): %i \n ", t+1, Ph2bVector[t]);
+        //printf("Posizione variabile Ph2v(%i): %i \n ", t+1, Ph2bVector[t]);
         counter++;
     }
 
@@ -100,7 +100,7 @@ int model_m2sb(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **c
         if ( status )
             fprintf (stderr,"CPXnewcols failed on BatteryE(t) variables.\n");
         BatteryEVector[t] = counter;
-        printf("Posizione variabile BatteryE(%i): %i \n ", t+1, BatteryEVector[t]);
+        //printf("Posizione variabile BatteryE(%i): %i \n ", t+1, BatteryEVector[t]);
         counter++;
     }
 

@@ -218,6 +218,9 @@ void read_input(instance *inst)
 
             token = strtok(NULL, " ");
             inst->table_sm1[in - 1].max_price = atof( token );
+
+            token = strtok(NULL, " ");
+            inst->table_sm1[in - 1].sell_price_subperiod = atof( token );
             //printf( " %lf\n", inst->table_sm1[in - 1].price_subperiod);
 
             if (in == inst->nof_subperiods) active_session = 0;
