@@ -11,6 +11,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/blo.dir/src/plot.c.o"
   "CMakeFiles/blo.dir/src/pso.c.o"
   "CMakeFiles/blo.dir/src/read_input.c.o"
+  "CMakeFiles/blo.dir/src/sa.c.o"
   "CMakeFiles/blo.dir/src/ul.c.o"
   "CMakeFiles/blo.dir/src/utils.c.o"
   "blo"

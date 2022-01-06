@@ -1,0 +1,466 @@
+ La migliore particella è la 10
+
+--- SPEED INERTIA ---
+Best personal position: 0.001280
+Position: 0.001280
+Old position 1 particle 1 : 0.001280
+New position 1 particle 1 : 0.001294
+Best personal position: 0.004354
+Position: 0.004354
+Old position 2 particle 1 : 0.004354
+New position 2 particle 1 : 0.004376
+Best personal position: 0.002178
+Position: 0.002178
+Old position 3 particle 1 : 0.002178
+New position 3 particle 1 : 0.002178
+Best personal position: 0.001883
+Position: 0.001883
+Old position 4 particle 1 : 0.001883
+New position 4 particle 1 : 0.001843
+Best personal position: 0.005288
+Position: 0.005288
+Old position 5 particle 1 : 0.005288
+New position 5 particle 1 : 0.005327
+Best personal position: 0.002697
+Position: 0.002697
+Old position 6 particle 1 : 0.002697
+New position 6 particle 1 : 0.002696
+Best personal position: 0.001296
+Position: 0.001296
+Old position 1 particle 2 : 0.001296
+New position 1 particle 2 : 0.001305
+Best personal position: 0.004303
+Position: 0.004303
+Old position 2 particle 2 : 0.004303
+New position 2 particle 2 : 0.004374
+Best personal position: 0.002259
+Position: 0.002259
+Old position 3 particle 2 : 0.002259
+New position 3 particle 2 : 0.002148
+Best personal position: 0.001813
+Position: 0.001813
+Old position 4 particle 2 : 0.001813
+New position 4 particle 2 : 0.001792
+Best personal position: 0.005369
+Position: 0.005369
+Old position 5 particle 2 : 0.005369
+New position 5 particle 2 : 0.005406
+Best personal position: 0.002698
+Position: 0.002698
+Old position 6 particle 2 : 0.002698
+New position 6 particle 2 : 0.002701
+Best personal position: 0.001287
+Position: 0.001287
+Old position 1 particle 3 : 0.001287
+New position 1 particle 3 : 0.001291
+Best personal position: 0.004343
+Position: 0.004343
+Old position 2 particle 3 : 0.004343
+New position 2 particle 3 : 0.004406
+Best personal position: 0.002202
+Position: 0.002202
+Old position 3 particle 3 : 0.002202
+New position 3 particle 3 : 0.002157
+Best personal position: 0.001774
+Position: 0.001774
+Old position 4 particle 3 : 0.001774
+New position 4 particle 3 : 0.001735
+Best personal position: 0.005400
+Position: 0.005400
+Old position 5 particle 3 : 0.005400
+New position 5 particle 3 : 0.005426
+Best personal position: 0.002693
+Position: 0.002693
+Old position 6 particle 3 : 0.002693
+New position 6 particle 3 : 0.002697
+Best personal position: 0.001287
+Position: 0.001287
+Old position 1 particle 4 : 0.001287
+New position 1 particle 4 : 0.001291
+Best personal position: 0.004339
+Position: 0.004339
+Old position 2 particle 4 : 0.004339
+New position 2 particle 4 : 0.004393
+Best personal position: 0.002144
+Position: 0.002144
+Old position 3 particle 4 : 0.002144
+New position 3 particle 4 : 0.002159
+Best personal position: 0.001850
+Position: 0.001850
+Old position 4 particle 4 : 0.001850
+New position 4 particle 4 : 0.001807
+Best personal position: 0.005400
+Position: 0.005400
+Old position 5 particle 4 : 0.005400
+New position 5 particle 4 : 0.005403
+Best personal position: 0.002700
+Position: 0.002700
+Old position 6 particle 4 : 0.002700
+New position 6 particle 4 : 0.002700
+Best personal position: 0.001289
+Position: 0.001289
+Old position 1 particle 5 : 0.001289
+New position 1 particle 5 : 0.001289
+Best personal position: 0.004376
+Position: 0.004376
+Old position 2 particle 5 : 0.004376
+New position 2 particle 5 : 0.004385
+Best personal position: 0.002094
+Position: 0.002094
+Old position 3 particle 5 : 0.002094
+New position 3 particle 5 : 0.002130
+Best personal position: 0.001833
+Position: 0.001833
+Old position 4 particle 5 : 0.001833
+New position 4 particle 5 : 0.001790
+Best personal position: 0.005400
+Position: 0.005400
+Old position 5 particle 5 : 0.005400
+New position 5 particle 5 : 0.005435
+Best personal position: 0.002682
+Position: 0.002682
+Old position 6 particle 5 : 0.002682
+New position 6 particle 5 : 0.002692
+Best personal position: 0.001270
+Position: 0.001270
+Old position 1 particle 6 : 0.001270
+New position 1 particle 6 : 0.001299
+Best personal position: 0.004335
+Position: 0.004335
+Old position 2 particle 6 : 0.004335
+New position 2 particle 6 : 0.004338
+Best personal position: 0.002210
+Position: 0.002210
+Old position 3 particle 6 : 0.002210
+New position 3 particle 6 : 0.002147
+Best personal position: 0.001831
+Position: 0.001831
+Old position 4 particle 6 : 0.001831
+New position 4 particle 6 : 0.001822
+Best personal position: 0.005400
+Position: 0.005400
+Old position 5 particle 6 : 0.005400
+New position 5 particle 6 : 0.005405
+Best personal position: 0.002697
+Position: 0.002697
+Old position 6 particle 6 : 0.002697
+New position 6 particle 6 : 0.002700
+Best personal position: 0.001284
+Position: 0.001284
+Old position 1 particle 7 : 0.001284
+New position 1 particle 7 : 0.001289
+Best personal position: 0.004330
+Position: 0.004330
+Old position 2 particle 7 : 0.004330
+New position 2 particle 7 : 0.004372
+Best personal position: 0.002184
+Position: 0.002184
+Old position 3 particle 7 : 0.002184
+New position 3 particle 7 : 0.002173
+Best personal position: 0.001839
+Position: 0.001839
+Old position 4 particle 7 : 0.001839
+New position 4 particle 7 : 0.001807
+Best personal position: 0.005400
+Position: 0.005400
+Old position 5 particle 7 : 0.005400
+New position 5 particle 7 : 0.005418
+Best personal position: 0.002681
+Position: 0.002681
+Old position 6 particle 7 : 0.002681
+New position 6 particle 7 : 0.002703
+Best personal position: 0.001265
+Position: 0.001265
+Old position 1 particle 8 : 0.001265
+New position 1 particle 8 : 0.001286
+Best personal position: 0.004347
+Position: 0.004347
+Old position 2 particle 8 : 0.004347
+New position 2 particle 8 : 0.004368
+Best personal position: 0.002234
+Position: 0.002234
+Old position 3 particle 8 : 0.002234
+New position 3 particle 8 : 0.002202
+Best personal position: 0.001831
+Position: 0.001831
+Old position 4 particle 8 : 0.001831
+New position 4 particle 8 : 0.001792
+Best personal position: 0.005387
+Position: 0.005387
+Old position 5 particle 8 : 0.005387
+New position 5 particle 8 : 0.005396
+Best personal position: 0.002696
+Position: 0.002696
+Old position 6 particle 8 : 0.002696
+New position 6 particle 8 : 0.002697
+Best personal position: 0.001258
+Position: 0.001258
+Old position 1 particle 9 : 0.001258
+New position 1 particle 9 : 0.001293
+Best personal position: 0.004329
+Position: 0.004329
+Old position 2 particle 9 : 0.004329
+New position 2 particle 9 : 0.004373
+Best personal position: 0.002178
+Position: 0.002178
+Old position 3 particle 9 : 0.002178
+New position 3 particle 9 : 0.002163
+Best personal position: 0.001913
+Position: 0.001913
+Old position 4 particle 9 : 0.001913
+New position 4 particle 9 : 0.001847
+Best personal position: 0.005389
+Position: 0.005389
+Old position 5 particle 9 : 0.005389
+New position 5 particle 9 : 0.005395
+Best personal position: 0.002695
+Position: 0.002695
+Old position 6 particle 9 : 0.002695
+New position 6 particle 9 : 0.002698
+Best personal position: 0.001279
+Position: 0.001279
+Old position 1 particle 11 : 0.001279
+New position 1 particle 11 : 0.001304
+Best personal position: 0.004322
+Position: 0.004322
+Old position 2 particle 11 : 0.004322
+New position 2 particle 11 : 0.004425
+Best personal position: 0.002176
+Position: 0.002176
+Old position 3 particle 11 : 0.002176
+New position 3 particle 11 : 0.002146
+Best personal position: 0.001899
+Position: 0.001899
+Old position 4 particle 11 : 0.001899
+New position 4 particle 11 : 0.001775
+Best personal position: 0.005385
+Position: 0.005385
+Old position 5 particle 11 : 0.005385
+New position 5 particle 11 : 0.005408
+Best personal position: 0.002681
+Position: 0.002681
+Old position 6 particle 11 : 0.002681
+New position 6 particle 11 : 0.002688
+Best personal position: 0.001280
+Position: 0.001280
+Old position 1 particle 12 : 0.001280
+New position 1 particle 12 : 0.001307
+Best personal position: 0.004312
+Position: 0.004312
+Old position 2 particle 12 : 0.004312
+New position 2 particle 12 : 0.004383
+Best personal position: 0.002193
+Position: 0.002193
+Old position 3 particle 12 : 0.002193
+New position 3 particle 12 : 0.002186
+Best personal position: 0.001910
+Position: 0.001910
+Old position 4 particle 12 : 0.001910
+New position 4 particle 12 : 0.001827
+Best personal position: 0.005360
+Position: 0.005360
+Old position 5 particle 12 : 0.005360
+New position 5 particle 12 : 0.005399
+Best personal position: 0.002683
+Position: 0.002683
+Old position 6 particle 12 : 0.002683
+New position 6 particle 12 : 0.002694
+Best personal position: 0.001292
+Position: 0.001292
+Old position 1 particle 13 : 0.001292
+New position 1 particle 13 : 0.001291
+Best personal position: 0.004312
+Position: 0.004312
+Old position 2 particle 13 : 0.004312
+New position 2 particle 13 : 0.004366
+Best personal position: 0.002184
+Position: 0.002184
+Old position 3 particle 13 : 0.002184
+New position 3 particle 13 : 0.002153
+Best personal position: 0.001863
+Position: 0.001863
+Old position 4 particle 13 : 0.001863
+New position 4 particle 13 : 0.001843
+Best personal position: 0.005365
+Position: 0.005365
+Old position 5 particle 13 : 0.005365
+New position 5 particle 13 : 0.005392
+Best personal position: 0.002696
+Position: 0.002696
+Old position 6 particle 13 : 0.002696
+New position 6 particle 13 : 0.002698
+Best personal position: 0.001290
+Position: 0.001290
+Old position 1 particle 14 : 0.001290
+New position 1 particle 14 : 0.001291
+Best personal position: 0.004318
+Position: 0.004318
+Old position 2 particle 14 : 0.004318
+New position 2 particle 14 : 0.004403
+Best personal position: 0.002215
+Position: 0.002215
+Old position 3 particle 14 : 0.002215
+New position 3 particle 14 : 0.002156
+Best personal position: 0.001827
+Position: 0.001827
+Old position 4 particle 14 : 0.001827
+New position 4 particle 14 : 0.001766
+Best personal position: 0.005400
+Position: 0.005400
+Old position 5 particle 14 : 0.005400
+New position 5 particle 14 : 0.005423
+Best personal position: 0.002674
+Position: 0.002674
+Old position 6 particle 14 : 0.002674
+New position 6 particle 14 : 0.002695
+Best personal position: 0.001298
+Position: 0.001298
+Old position 1 particle 15 : 0.001298
+New position 1 particle 15 : 0.001310
+Best personal position: 0.004284
+Position: 0.004284
+Old position 2 particle 15 : 0.004284
+New position 2 particle 15 : 0.004281
+Best personal position: 0.002153
+Position: 0.002153
+Old position 3 particle 15 : 0.002153
+New position 3 particle 15 : 0.002140
+Best personal position: 0.001922
+Position: 0.001922
+Old position 4 particle 15 : 0.001922
+New position 4 particle 15 : 0.001853
+Best personal position: 0.005380
+Position: 0.005380
+Old position 5 particle 15 : 0.005380
+New position 5 particle 15 : 0.005385
+Best personal position: 0.002685
+Position: 0.002685
+Old position 6 particle 15 : 0.002685
+New position 6 particle 15 : 0.002697
+Best personal position: 0.001276
+Position: 0.001276
+Old position 1 particle 16 : 0.001276
+New position 1 particle 16 : 0.001281
+Best personal position: 0.004385
+Position: 0.004385
+Old position 2 particle 16 : 0.004385
+New position 2 particle 16 : 0.004435
+Best personal position: 0.002188
+Position: 0.002188
+Old position 3 particle 16 : 0.002188
+New position 3 particle 16 : 0.002179
+Best personal position: 0.001726
+Position: 0.001726
+Old position 4 particle 16 : 0.001726
+New position 4 particle 16 : 0.001754
+Best personal position: 0.005400
+Position: 0.005400
+Old position 5 particle 16 : 0.005400
+New position 5 particle 16 : 0.005408
+Best personal position: 0.002700
+Position: 0.002700
+Old position 6 particle 16 : 0.002700
+New position 6 particle 16 : 0.002701
+Best personal position: 0.001249
+Position: 0.001249
+Old position 1 particle 17 : 0.001249
+New position 1 particle 17 : 0.001279
+Best personal position: 0.004330
+Position: 0.004330
+Old position 2 particle 17 : 0.004330
+New position 2 particle 17 : 0.004378
+Best personal position: 0.002166
+Position: 0.002166
+Old position 3 particle 17 : 0.002166
+New position 3 particle 17 : 0.002161
+Best personal position: 0.001997
+Position: 0.001997
+Old position 4 particle 17 : 0.001997
+New position 4 particle 17 : 0.001918
+Best personal position: 0.005323
+Position: 0.005323
+Old position 5 particle 17 : 0.005323
+New position 5 particle 17 : 0.005402
+Best personal position: 0.002682
+Position: 0.002682
+Old position 6 particle 17 : 0.002682
+New position 6 particle 17 : 0.002710
+Best personal position: 0.001304
+Position: 0.001304
+Old position 1 particle 18 : 0.001304
+New position 1 particle 18 : 0.001300
+Best personal position: 0.004268
+Position: 0.004268
+Old position 2 particle 18 : 0.004268
+New position 2 particle 18 : 0.004284
+Best personal position: 0.002119
+Position: 0.002119
+Old position 3 particle 18 : 0.002119
+New position 3 particle 18 : 0.002108
+Best personal position: 0.001830
+Position: 0.001830
+Old position 4 particle 18 : 0.001830
+New position 4 particle 18 : 0.001807
+Best personal position: 0.005400
+Position: 0.005400
+Old position 5 particle 18 : 0.005400
+New position 5 particle 18 : 0.005410
+Best personal position: 0.002684
+Position: 0.002684
+Old position 6 particle 18 : 0.002684
+New position 6 particle 18 : 0.002691
+Best personal position: 0.001272
+Position: 0.001272
+Old position 1 particle 19 : 0.001272
+New position 1 particle 19 : 0.001284
+Best personal position: 0.004322
+Position: 0.004322
+Old position 2 particle 19 : 0.004322
+New position 2 particle 19 : 0.004364
+Best personal position: 0.002203
+Position: 0.002203
+Old position 3 particle 19 : 0.002203
+New position 3 particle 19 : 0.002169
+Best personal position: 0.001819
+Position: 0.001819
+Old position 4 particle 19 : 0.001819
+New position 4 particle 19 : 0.001784
+Best personal position: 0.005400
+Position: 0.005400
+Old position 5 particle 19 : 0.005400
+New position 5 particle 19 : 0.005413
+Best personal position: 0.002694
+Position: 0.002694
+Old position 6 particle 19 : 0.002694
+New position 6 particle 19 : 0.002697
+Best personal position: 0.001264
+Position: 0.001258
+Old position 1 particle 20 : 0.001258
+New position 1 particle 20 : 0.001278
+Best personal position: 0.004288
+Position: 0.004314
+Old position 2 particle 20 : 0.004314
+New position 2 particle 20 : 0.004345
+Best personal position: 0.002320
+Position: 0.002277
+Old position 3 particle 20 : 0.002277
+New position 3 particle 20 : 0.002249
+Best personal position: 0.001868
+Position: 0.001887
+Old position 4 particle 20 : 0.001887
+New position 4 particle 20 : 0.001843
+Best personal position: 0.005333
+Position: 0.005362
+Old position 5 particle 20 : 0.005362
+New position 5 particle 20 : 0.005380
+Best personal position: 0.002700
+Position: 0.002677
+Old position 6 particle 20 : 0.002677
+New position 6 particle 20 : 0.002696
+1 GLOBAL BEST VALUE: 0.001283
+2 GLOBAL BEST VALUE: 0.004391
+3 GLOBAL BEST VALUE: 0.002155
+4 GLOBAL BEST VALUE: 0.001819
+5 GLOBAL BEST VALUE: 0.005394
+6 GLOBAL BEST VALUE: 0.002697
+

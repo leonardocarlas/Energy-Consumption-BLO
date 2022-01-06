@@ -163,6 +163,7 @@ def print_objvalues(solution_file, iterations):
 
     #  "many   fancy word \nhello    \thi".split()
     #  ['many', 'fancy', 'word', 'hello', 'hi']
+    
     global_best = []
     avarage = []
     N = 20
@@ -177,17 +178,21 @@ def print_objvalues(solution_file, iterations):
         for i in range(1, N+1):
             sum += float(splitted[i])
         avarage.append( sum / N )
+    
 
-
-
+    print(global_best)
+    print(avarage)
+    
     x = np.array(iterations)
     y = np.array(global_best)
     z = np.array(avarage)
     
-    plt.title("Evolution of best and avarage objvalues in each iterations")
-    plt.plot(x,y,z)
-    plt.ylabel('Number of iteration')
-    plt.xlabel('Evaluation function')
+    plt.title("Best objvalues (blue line) and avarage objvalues (orange line) in each iteration")
+    #plt.xticks(iterations)
+    plt.plot(y)
+    plt.plot(z)
+    plt.ylabel('Objective value')
+    plt.xlabel('Number of iteration')
     plt.show()
 
 if __name__ == "__main__":
@@ -195,7 +200,7 @@ if __name__ == "__main__":
     solution_file = "/home/leonardo/Scrivania/BLO/cmake-build-debug/ll.sol"
     model_name = "M5"
     T = 1440
-    G = 70
+    G = 10
     iterations = []
     minutes = []
     for i in range(1,T+1):
@@ -203,15 +208,15 @@ if __name__ == "__main__":
     for i in range(1, G+1):
         iterations.append(i)
         
-
+    print(iterations)
     #print_power_sol(solution_file, minutes, model_name)
     #print_two_powers(solution_file, minutes, model_name)
     #print_temperature_graph(solution_file, minutes, model_name)
     #print_ev_graph(solution_file, minutes, model_name)
     #print_sb_graph(solution_file, minutes, model_name)
     #print_intemp_graph(solution_file, minutes, model_name)
-    solution_file = "/home/leonardo/Scrivania/BLO/py files/objvalues.txt"
-    print_objvalues(solution_file, iterations)
+    obj_values = "/home/leonardo/Scrivania/BLO/py files/objvalues.txt"
+    print_objvalues(obj_values, iterations)
 
 
 

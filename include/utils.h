@@ -49,6 +49,12 @@ double pvGenerationAtTime(int t, instance *inst);
 double randomPrice(int i, instance *inst);
 
 
+double randomPerturbation(int i, instance *inst, double DELTA);
+
+
+double randomNeighbour(int i, instance *inst, double current_value);
+
+
 
 /*!
 * Return the seconds of the current program

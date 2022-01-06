@@ -109,6 +109,9 @@
 		<Unit filename="/home/leonardo/Scrivania/BLO/include/pso.h">
 			<Option target="blo"/>
 		</Unit>
+		<Unit filename="/home/leonardo/Scrivania/BLO/include/sa.h">
+			<Option target="blo"/>
+		</Unit>
 		<Unit filename="/home/leonardo/Scrivania/BLO/include/ul.h">
 			<Option target="blo"/>
 		</Unit>
@@ -146,6 +149,9 @@
 			<Option target="blo"/>
 		</Unit>
 		<Unit filename="/home/leonardo/Scrivania/BLO/src/read_input.c">
+			<Option target="blo"/>
+		</Unit>
+		<Unit filename="/home/leonardo/Scrivania/BLO/src/sa.c">
 			<Option target="blo"/>
 		</Unit>
 		<Unit filename="/home/leonardo/Scrivania/BLO/src/ul.c">

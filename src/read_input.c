@@ -165,10 +165,6 @@ void read_input(instance *inst)
                 inst->INITIAL_OUTDOOR_TEMPERATURE = value / 100;
             }
 
-            if ( strncmp(parameter_name, "X_AVARAGE", 9) == 0 ) {
-
-                inst->X_AVARAGE = value / 100;
-            }
 
             if ( strncmp(parameter_name, "TIME", 4) == 0 ) {
 
@@ -333,6 +329,15 @@ void read_input(instance *inst)
 
             if (in == inst->J) active_session = 0;
         }
+
+        if ( active_session == 1 && value == 21 ) {
+
+            token = strtok(line, " ");
+            double in = atof( token );
+            inst->X_AVARAGE = in;
+            active_session = 0;
+        }
+
 
         if ( active_session == 1 && value == 7 ) {
 

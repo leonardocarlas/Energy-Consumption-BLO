@@ -417,6 +417,30 @@ src/read_input.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/blo.dir/build.make CMakeFiles/blo.dir/src/read_input.c.s
 .PHONY : src/read_input.c.s
 
+src/sa.o: src/sa.c.o
+.PHONY : src/sa.o
+
+# target to build an object file
+src/sa.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/blo.dir/build.make CMakeFiles/blo.dir/src/sa.c.o
+.PHONY : src/sa.c.o
+
+src/sa.i: src/sa.c.i
+.PHONY : src/sa.i
+
+# target to preprocess a source file
+src/sa.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/blo.dir/build.make CMakeFiles/blo.dir/src/sa.c.i
+.PHONY : src/sa.c.i
+
+src/sa.s: src/sa.c.s
+.PHONY : src/sa.s
+
+# target to generate assembly for a file
+src/sa.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/blo.dir/build.make CMakeFiles/blo.dir/src/sa.c.s
+.PHONY : src/sa.c.s
+
 src/ul.o: src/ul.c.o
 .PHONY : src/ul.o
 
@@ -510,6 +534,9 @@ help:
 	@echo "... src/read_input.o"
 	@echo "... src/read_input.i"
 	@echo "... src/read_input.s"
+	@echo "... src/sa.o"
+	@echo "... src/sa.i"
+	@echo "... src/sa.s"
 	@echo "... src/ul.o"
 	@echo "... src/ul.i"
 	@echo "... src/ul.s"

@@ -5,6 +5,11 @@
 #define INERTIA_W     0.4
 #define C1            1
 #define C2            1
+#define Pm            0.1
+#define DELTA         0.2
+#define THETA         0.001
+#define G_primo       5
+
 
 
 void psoUL(instance *inst, double *global_best) {
@@ -12,15 +17,24 @@ void psoUL(instance *inst, double *global_best) {
 
     // Generate initial population
     particle *swarm = calloc( inst->N, sizeof(particle));
-    double best_objval = 1000.0;
+    double best_objval = 0.0;
     int best_particle_index = 0;
+    double *objVector = calloc(inst->G, sizeof(double));
+    int usePerturbation = 0;
+
+    FILE *f = fopen("/home/leonardo/Scrivania/BLO/py files/objvalues.txt", "w");
+    if (f == NULL)
+    {
+        printf("Error opening file!\n");
+        exit(1);
+    }
 
     for (int p = 0; p < inst->N; ++p) {
 
         swarm[p].position =  calloc(inst->nof_subperiods, sizeof(double));
         swarm[p].velocity =  calloc(inst->nof_subperiods, sizeof(double));
         swarm[p].best_personal_position =  calloc(inst->nof_subperiods, sizeof(double));
-        swarm[p].best_objval = 1000;
+        swarm[p].best_objval = 0.0;
     }
 
     for (int p = 0; p < inst->N; ++p) {
@@ -33,12 +47,7 @@ void psoUL(instance *inst, double *global_best) {
         }
     }
 
-    FILE *f = fopen("/home/leonardo/Scrivania/BLO/py files/objvalues.txt", "w");
-    if (f == NULL)
-    {
-        printf("Error opening file!\n");
-        exit(1);
-    }
+
 
     // Repeat for G iterations
     for (int g = 0; g < inst->G; ++g) {
@@ -58,7 +67,8 @@ void psoUL(instance *inst, double *global_best) {
             printf("--- objval: %f --- \n", objval);
 
             // 2.3 Evaluate the fitness function and set the best solution
-            if (objval < best_objval) {
+            if (objval > best_objval) {
+
                 best_objval = objval;
                 for (int i = 0; i < inst->nof_subperiods; ++i) {
                     global_best[i] = swarm[p].position[i];
@@ -67,14 +77,21 @@ void psoUL(instance *inst, double *global_best) {
                 printf("--- NEW BEST OBJVAL OBTAINED AND GLOBAL BEST UPDATED --- \n");
             }
 
-            // Update the best personal position if it is lower than the previous value
-            if (objval < swarm[p].best_objval) {
+            // Update the best personal position if it is greater than the previous value
+            if (objval > swarm[p].best_objval) {
 
                 swarm[p].best_objval = objval;
                 for (int i = 0; i < inst->nof_subperiods; ++i) {
                     swarm[p].best_personal_position[i] = swarm[p].position[i];
                 }
             }
+        }
+
+        objVector[g] = best_objval;
+
+        // Check if I should introduce the perturbation
+        if ( (objVector[g] - objVector[g-1])/objVector[g] < THETA ) {
+            usePerturbation = 1;
         }
 
         printf("\n \n La migliore particella è la %i \n \n", best_particle_index + 1);
@@ -105,6 +122,19 @@ void psoUL(instance *inst, double *global_best) {
             }
         }
 
+        // 2.5 Introduce perturbation here
+        if (usePerturbation == 1) {
+            for (int p = 0; p < inst->N; ++p) {
+                for (int i = 0; i < inst->nof_subperiods; ++i) {
+                    double C = randomPerturbation(i, inst, DELTA);
+                    printf("PERTURBATION: %f \n", C);
+                    printf("Old position: %f \n", swarm[p].position[i]);
+                    swarm[p].position[i] += C;
+                    printf("New position: %f \n", swarm[p].position[i]);
+                }
+            }
+            printf("\n Perturbation introduced in all the particles \n");
+        }
 
         // Print results of the iteration
         fprintf(f, "%f", best_objval);
@@ -145,8 +175,9 @@ void repairSwarm(particle *swarm, instance *inst) {
             double amplitudePi = inst->table_sm1[i].end_interval - inst->table_sm1[i].start_interval + 1;
             sum = sum + amplitudePi * swarm[p].position[i];
         }
+        printf("LEFT SIDE: %f >? X_AVARAGE: %f \n", sum / inst->T, inst->X_AVARAGE);
         // controllo vincolo x_avarage, abbasso tutti i valori di una determinata percentuale
-        if ( sum > inst->X_AVARAGE * inst->T )          // || sum < (inst->X_AVARAGE - EPS) * inst->T
+        if ( sum / inst->T > inst->X_AVARAGE)          // || sum < (inst->X_AVARAGE - EPS) * inst->T
         {
             double difference = sum - inst->X_AVARAGE * inst->T;
             double percentage = difference / sum;

@@ -190,7 +190,27 @@ double randomPrice(int i, instance *inst){
 }
 
 
+double randomPerturbation(int i, instance *inst, double DELTA){
 
+    double price = 0.0;
+    double min = - DELTA * ( inst->table_sm1[i].max_price - inst->table_sm1[i].min_price);
+    double max =   DELTA * ( inst->table_sm1[i].max_price - inst->table_sm1[i].min_price);
+    price = min + (max - min) * (double) rand() / RAND_MAX;
+    return price;
+}
+
+// Calcolo epsilon come il 10 % dell'amplitude, quindi posso pescare valori in un 20% dell' amplitude
+double randomNeighbour(int i, instance *inst, double current_value){
+
+    double price = 0.0;
+    double amplitudePi = inst->table_sm1[i].max_price - inst->table_sm1[i].min_price + 1;
+    double unite = amplitudePi / 100;
+    double eps = 10 * unite;
+    double min = current_value - eps;
+    double max = current_value + eps;
+    price = min + (max - min) * (double) rand() / RAND_MAX;
+    return price;
+}
 
 #define CLOCK_MONOTONIC                 1
 
