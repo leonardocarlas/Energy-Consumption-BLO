@@ -160,9 +160,6 @@ def print_power_sol(solution_file, minutes, model_name):
 
 
 def print_objvalues(solution_file, iterations):
-
-    #  "many   fancy word \nhello    \thi".split()
-    #  ['many', 'fancy', 'word', 'hello', 'hi']
     
     global_best = []
     avarage = []
@@ -188,25 +185,61 @@ def print_objvalues(solution_file, iterations):
     z = np.array(avarage)
     
     plt.title("Best objvalues (blue line) and avarage objvalues (orange line) in each iteration")
-    #plt.xticks(iterations)
+    plt.xticks(x)
+    
     plt.plot(y)
     plt.plot(z)
     plt.ylabel('Objective value')
     plt.xlabel('Number of iteration')
     plt.show()
 
+
+def printSAValues(solution_file, sa_iterations):
+    
+    global_best = []
+    temperature = []
+    randomMove = []
+
+    # Population of the arrays
+    file = open(solution_file, 'r')
+    for line in file:
+        splitted = line.split()
+        temperature.append( float(splitted[0]) )
+        global_best.append( float(splitted[2]) )
+        randomMove.append( int(splitted[3]) )
+
+    x = np.array(sa_iterations)
+    y = np.array(global_best)
+    z = np.array(temperature)
+    v = np.array(randomMove)
+    
+    plt.title("Temperture (orange), solution objective value (blue) and randomMove (green)")
+    #plt.xticks(sa_iterations)
+    plt.plot(x,y)
+    plt.plot(z)
+    plt.plot(v)
+    plt.ylabel('Values')
+    plt.xlabel('Number of iteration')
+    plt.show()
+
+
+
 if __name__ == "__main__":
 
     solution_file = "/home/leonardo/Scrivania/BLO/cmake-build-debug/ll.sol"
     model_name = "M5"
     T = 1440
-    G = 10
+    SAT = 1380
+    G = 70
     iterations = []
+    sa_iterations = []
     minutes = []
     for i in range(1,T+1):
         minutes.append(i)
     for i in range(1, G+1):
         iterations.append(i)
+    for i in range(1, SAT+1):
+        sa_iterations.append(i)
         
     print(iterations)
     #print_power_sol(solution_file, minutes, model_name)
@@ -215,9 +248,10 @@ if __name__ == "__main__":
     #print_ev_graph(solution_file, minutes, model_name)
     #print_sb_graph(solution_file, minutes, model_name)
     #print_intemp_graph(solution_file, minutes, model_name)
-    obj_values = "/home/leonardo/Scrivania/BLO/py files/objvalues.txt"
-    print_objvalues(obj_values, iterations)
-
+    #obj_values = "/home/leonardo/Scrivania/BLO/py files/objvalues.txt"
+    #print_objvalues(obj_values, iterations)
+    sa_values = "/home/leonardo/Scrivania/BLO/py files/SAvalues.txt"
+    printSAValues(sa_values, sa_iterations)
 
 
 

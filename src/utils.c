@@ -203,7 +203,7 @@ double randomPerturbation(int i, instance *inst, double DELTA){
 double randomNeighbour(int i, instance *inst, double current_value){
 
     double price = 0.0;
-    double amplitudePi = inst->table_sm1[i].max_price - inst->table_sm1[i].min_price + 1;
+    double amplitudePi = inst->table_sm1[i].max_price - inst->table_sm1[i].min_price;
     double unite = amplitudePi / 100;
     double eps = 10 * unite;
     double min = current_value - eps;

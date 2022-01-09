@@ -1,10 +1,10 @@
 #include "../include/sa.h"
 #include "utils.h"
 #include <math.h>
-#define T0         30.0
+#define T0         15.0
 #define TFINAL     0.001
 #define a          0.1
-#define ITER       2
+#define ITER       15
 #define K          0.1
 #define alpha      0.9
 
@@ -27,6 +27,7 @@ void saUL(instance *inst, double *global_best) {
 
     double current_objval = 0.0;
     double new_objval = 0.0;
+    int isRandomMovedToNeighbour = 0;
 
     // Istanzio la soluzione iniziale
     for (int i = 0; i < inst->nof_subperiods; ++i) {
@@ -49,7 +50,7 @@ void saUL(instance *inst, double *global_best) {
             // 2.2 Genero la nuova soluzione
             for (int i = 0; i < inst->nof_subperiods; ++i) {
 
-                printf("Old position: %f \n", solution[i]);
+                //printf("Old position: %f \n", solution[i]);
                 new_solution[i] = randomNeighbour(i, inst, solution[i]);
                 printf("New position: %f \n", new_solution[i]);
             }
@@ -68,21 +69,24 @@ void saUL(instance *inst, double *global_best) {
                     solution[i] = new_solution[i];
                 }
                 printf("TROVATO VALORE MIGLIORE \n");
+                isRandomMovedToNeighbour = 0;
 
             } else {
 
                 double delta = current_objval - new_objval;
                 double r = (double)rand() / (double)RAND_MAX ;
-                if (r < exp(- delta / (K * T))){
+                if ( r <= exp( - delta / T ) ){
 
+                    printf("r : %f  exp : %f \n", r, exp(- delta / (K * T) ) );
                     current_objval = new_objval;
                     for (int i = 0; i < inst->nof_subperiods; ++i) {
                         solution[i] = new_solution[i];
                     }
                     printf("RANDOMICAMENTE SPOSTATO VERSO UN VALORE VICINO \n");
+                    isRandomMovedToNeighbour = 1;
                 }
-
             }
+            fprintf(f,"%f %d %f %d\n", T, j+1, current_objval, isRandomMovedToNeighbour);
         }
 
         T *= alpha;
@@ -90,12 +94,17 @@ void saUL(instance *inst, double *global_best) {
     }
 
 
-    free(solution);
-    fclose(f);
+
 
     // print out the global best that contains the best solution
-    for (int i = 0; i < inst->nof_subperiods; ++i)
-        printf("%i GLOBAL BEST VALUE: %f \n", i+1, global_best[i]);
+    for (int i = 0; i < inst->nof_subperiods; ++i) {
+        global_best[i] = solution[i];
+        printf("%i BEST VALUE FOUND: %f \n", i+1, solution[i]);
+    }
+
+
+    free(solution);
+    fclose(f);
 
 
 }

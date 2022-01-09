@@ -6,13 +6,7 @@
 
 #IncludeRegexTransform: 
 
-../include/utils.h
-ll.h
 ../include/ll.h
-ilcplex/cplex.h
--
-
-/home/leonardo/Scrivania/BLO/include/ll.h
 stdio.h
 -
 string.h
@@ -22,17 +16,53 @@ stdlib.h
 ilcplex/cplex.h
 -
 
+../include/plot.h
+ll.h
+../include/ll.h
+
+../include/read_input.h
+ll.h
+../include/ll.h
+
+../include/utils.h
+ll.h
+../include/ll.h
+ilcplex/cplex.h
+-
+
+/home/leonardo/Scrivania/BLO/include/pso.h
+ll.h
+/home/leonardo/Scrivania/BLO/include/ll.h
+
 /home/leonardo/Scrivania/BLO/include/sa.h
 ll.h
 /home/leonardo/Scrivania/BLO/include/ll.h
 
-/home/leonardo/Scrivania/BLO/src/sa.c
-../include/sa.h
-/home/leonardo/Scrivania/BLO/include/sa.h
+/home/leonardo/Scrivania/BLO/src/main.c
+stdio.h
+-
+string.h
+-
+stdlib.h
+-
+errno.h
+-
+stdio.h
+-
+time.h
+-
+ll.h
+/home/leonardo/Scrivania/BLO/src/ll.h
+read_input.h
+/home/leonardo/Scrivania/BLO/src/read_input.h
+plot.h
+/home/leonardo/Scrivania/BLO/src/plot.h
 utils.h
 /home/leonardo/Scrivania/BLO/src/utils.h
-math.h
--
+../include/pso.h
+/home/leonardo/Scrivania/BLO/include/pso.h
+../include/sa.h
+/home/leonardo/Scrivania/BLO/include/sa.h
 
 /opt/ibm/ILOG/CPLEX_Studio201/cplex/include/ilcplex/cplex.h
 cpxconst.h

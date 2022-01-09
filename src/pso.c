@@ -52,6 +52,8 @@ void psoUL(instance *inst, double *global_best) {
     // Repeat for G iterations
     for (int g = 0; g < inst->G; ++g) {
 
+        printf("\n--- ITERAZIONE: %d --- \n", g+1);
+
         // 2.1 Repair solution to satisfy C1 - C3 constraints
         printf("--- REPAIRING THE SWARM --- \n");
         repairSwarm(swarm, inst);
@@ -87,12 +89,30 @@ void psoUL(instance *inst, double *global_best) {
             }
         }
 
+
         objVector[g] = best_objval;
 
         // Check if I should introduce the perturbation
-        if ( (objVector[g] - objVector[g-1])/objVector[g] < THETA ) {
-            usePerturbation = 1;
+        int check = 1;
+        for (int i = 1; i < G_primo; ++i) {
+            if ( (objVector[g - i+1] - objVector[g-i]) / objVector[g - i+1] < THETA ) {
+                check = check * 1;
+            } else {
+                check = check * 0;
+            }
+
         }
+        if ( check == 1 ) {                 // la soluzione non è migliorata
+
+            double r = (double) rand() / (double) RAND_MAX;
+            if (r <= Pm){
+                usePerturbation = 1;
+                printf("\n INTRODUCO LA PERTURBAZIONE %d \n", check);
+            } else {
+                usePerturbation = 0;
+            }
+        }
+
 
         printf("\n \n La migliore particella è la %i \n \n", best_particle_index + 1);
 
@@ -135,6 +155,7 @@ void psoUL(instance *inst, double *global_best) {
             }
             printf("\n Perturbation introduced in all the particles \n");
         }
+
 
         // Print results of the iteration
         fprintf(f, "%f", best_objval);
