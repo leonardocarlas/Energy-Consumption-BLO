@@ -212,6 +212,48 @@ double randomNeighbour(int i, instance *inst, double current_value){
     return price;
 }
 
+/*
+ * Return a random sub period
+ */
+int randomSubperiod(instance *inst){
+
+    int min = 1;
+    int max = inst->nof_subperiods;
+    int subPeriod = min + (max - min) * (double) rand() / RAND_MAX;
+    return subPeriod;
+
+}
+
+void sortingSolutions(int *indexesVector, double *valuesVector, int N){
+
+    int min;
+    double t; // values exchange
+    int s; // index exchange
+
+    //t è la variabile temporanea utilizzata per lo scambio
+
+    for (int i = 0; i < N - 1; ++i) {
+
+        min = i;
+        for (int j = i+1; j < N; ++j) {
+            if ( valuesVector[j] < valuesVector[min] )
+                min = j;
+        }
+        // Scambio i valori, si trova l'elemento più piccolo dell'array e si scambia con l'elemento alla posizione i
+        t = valuesVector[min];
+        valuesVector[min] = valuesVector[i];
+        valuesVector[i] = t;
+
+        // Scambio gli indici
+        s = indexesVector[min];
+        indexesVector[min] = indexesVector[i];
+        indexesVector[i] = s;
+
+    }
+}
+
+
+
 #define CLOCK_MONOTONIC                 1
 
 double seconds() {

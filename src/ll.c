@@ -20,14 +20,14 @@ double LLopt(instance *inst, double *prices) {
 
     CPXENVptr env = CPXopenCPLEX(&status);                     // return the pointer of the envinroment
 
-    /* Turn on output to the screen */
+    /* Turn on output to the screen
 
     status = CPXsetintparam (env, CPXPARAM_ScreenOutput, CPX_ON);
     if ( status ) fprintf (stderr,"Failure to turn on screen indicator, error %d.\n", status);
 
     status = CPXsetintparam (env, CPXPARAM_Simplex_Display, 2);
     if ( status ) fprintf (stderr,"Failed to turn up simplex display level.\n");
-
+    */
     CPXLPptr lp = CPXcreateprob(env, &status, "BLO");          // env, pointer to error to comunicate, a name
 
     char **cname = ( char ** ) calloc( 1, sizeof (char *));

@@ -60,6 +60,8 @@ void saUL(instance *inst, double *global_best) {
 
             new_objval = LLopt(inst, new_solution);
             printf("NEW obj val: %f OLD obj val: %f \n", new_objval, current_objval);
+            double r = 0.0;
+            double rhs = 0.0;
 
             // 2.3 confronto le soluzioni
             if (new_objval > current_objval) {
@@ -74,19 +76,23 @@ void saUL(instance *inst, double *global_best) {
             } else {
 
                 double delta = current_objval - new_objval;
-                double r = (double)rand() / (double)RAND_MAX ;
-                if ( r <= exp( - delta / T ) ){
+                r = (double)rand() / (double)RAND_MAX ;
+                rhs = exp( - delta / T );
+                // metropolis distance
+                if ( r < rhs ){
 
-                    printf("r : %f  exp : %f \n", r, exp(- delta / (K * T) ) );
+                    printf("r : %f  exp : %f \n", r, rhs );
                     current_objval = new_objval;
                     for (int i = 0; i < inst->nof_subperiods; ++i) {
                         solution[i] = new_solution[i];
                     }
                     printf("RANDOMICAMENTE SPOSTATO VERSO UN VALORE VICINO \n");
                     isRandomMovedToNeighbour = 1;
+                } else {
+                    isRandomMovedToNeighbour = 0;
                 }
             }
-            fprintf(f,"%f %d %f %d\n", T, j+1, current_objval, isRandomMovedToNeighbour);
+            fprintf(f,"%f %d %f %f %f %d\n", T, j+1, current_objval, r, rhs, isRandomMovedToNeighbour);
         }
 
         T *= alpha;
@@ -144,7 +150,4 @@ void repairSolution(double *solution, instance *inst) {
         }
         printf("Particella riparata con l'avarage \n");
     }
-
-
-
 }

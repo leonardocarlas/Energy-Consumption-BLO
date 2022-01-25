@@ -129,6 +129,30 @@ blo/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/blo.dir/build.make CMakeFiles/blo.dir/build
 .PHONY : blo/fast
 
+src/ga.o: src/ga.c.o
+.PHONY : src/ga.o
+
+# target to build an object file
+src/ga.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/blo.dir/build.make CMakeFiles/blo.dir/src/ga.c.o
+.PHONY : src/ga.c.o
+
+src/ga.i: src/ga.c.i
+.PHONY : src/ga.i
+
+# target to preprocess a source file
+src/ga.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/blo.dir/build.make CMakeFiles/blo.dir/src/ga.c.i
+.PHONY : src/ga.c.i
+
+src/ga.s: src/ga.c.s
+.PHONY : src/ga.s
+
+# target to generate assembly for a file
+src/ga.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/blo.dir/build.make CMakeFiles/blo.dir/src/ga.c.s
+.PHONY : src/ga.c.s
+
 src/ll.o: src/ll.c.o
 .PHONY : src/ll.o
 
@@ -498,6 +522,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... blo"
+	@echo "... src/ga.o"
+	@echo "... src/ga.i"
+	@echo "... src/ga.s"
 	@echo "... src/ll.o"
 	@echo "... src/ll.i"
 	@echo "... src/ll.s"

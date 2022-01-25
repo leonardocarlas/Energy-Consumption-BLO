@@ -11,6 +11,7 @@
 #include "utils.h"
 #include "../include/pso.h"
 #include "../include/sa.h"
+#include "../include/ga.h"
 
 
 // una struct per ogni tabella, poi un array di struct
@@ -59,11 +60,13 @@ int main(int argc, char **argv) {
     //printf("\nTime to solve the BLO problem: %lf \n ", (end_time - start_time));
     **/
 
-    printf("\n--------------STARTING THE PSO--------------\n\n");
+    //printf("\n--------------STARTING THE PSO--------------\n\n");
     double *global_best = calloc(inst.nof_subperiods, sizeof(double));
-    psoUL(&inst, global_best);
+    //psoUL(&inst, global_best);
     //printf("\n--------------STARTING THE SA--------------\n\n");
     //saUL(&inst, global_best);
+    printf("\n--------------STARTING THE GA--------------\n\n");
+    gaUL(&inst, global_best);
 
 
     free_instance(&inst);

@@ -206,7 +206,7 @@ def printSAValues(solution_file, sa_iterations):
         splitted = line.split()
         temperature.append( float(splitted[0]) )
         global_best.append( float(splitted[2]) )
-        randomMove.append( int(splitted[3]) )
+        randomMove.append( int(splitted[5]) )
 
     x = np.array(sa_iterations)
     y = np.array(global_best)

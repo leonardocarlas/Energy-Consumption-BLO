@@ -55,6 +55,11 @@ double randomPerturbation(int i, instance *inst, double DELTA);
 double randomNeighbour(int i, instance *inst, double current_value);
 
 
+int randomSubperiod(instance *inst);
+
+
+void sortingSolutions(int *indexesVector, double *valuesVector, int N);
+
 
 /*!
 * Return the seconds of the current program
