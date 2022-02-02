@@ -199,7 +199,7 @@ double randomPerturbation(int i, instance *inst, double DELTA){
     return price;
 }
 
-// Calcolo epsilon come il 10 % dell'amplitude, quindi posso pescare valori in un 20% dell' amplitude
+
 double randomNeighbour(int i, instance *inst, double current_value){
 
     double price = 0.0;
@@ -226,7 +226,7 @@ int randomSubperiod(instance *inst){
 
 void sortingSolutions(int *indexesVector, double *valuesVector, int N){
 
-    int min;
+    int max;
     double t; // values exchange
     int s; // index exchange
 
@@ -234,22 +234,32 @@ void sortingSolutions(int *indexesVector, double *valuesVector, int N){
 
     for (int i = 0; i < N - 1; ++i) {
 
-        min = i;
+        max = i;
         for (int j = i+1; j < N; ++j) {
-            if ( valuesVector[j] < valuesVector[min] )
-                min = j;
+            if ( valuesVector[j] > valuesVector[max] )
+                max = j;
         }
         // Scambio i valori, si trova l'elemento più piccolo dell'array e si scambia con l'elemento alla posizione i
-        t = valuesVector[min];
-        valuesVector[min] = valuesVector[i];
+        t = valuesVector[max];
+        valuesVector[max] = valuesVector[i];
         valuesVector[i] = t;
 
         // Scambio gli indici
-        s = indexesVector[min];
-        indexesVector[min] = indexesVector[i];
+        s = indexesVector[max];
+        indexesVector[max] = indexesVector[i];
         indexesVector[i] = s;
 
     }
+}
+
+
+int randomNewIndividual(int m){
+
+    int min = 1;
+    int max = m;
+    int chosen = min + (max - min) * (double) rand() / RAND_MAX;
+    return chosen;
+
 }
 
 

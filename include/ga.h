@@ -7,6 +7,7 @@ typedef struct {
 
     double *solution;
     double objvalue;
+    int rank;
 } individual;
 
 #endif //BLO_GA_H
@@ -21,4 +22,8 @@ typedef struct {
 
 void gaUL(instance *inst, double *global_best);
 
+void generateSon(double * son, double * gen1, double * gen2, instance *inst);
 
+void deleteOldAddNew(individual ind, double * son, instance *inst );
+
+void orderPopulation(individual * pop, int n);

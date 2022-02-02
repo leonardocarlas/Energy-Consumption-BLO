@@ -12,7 +12,7 @@
 #include "../include/pso.h"
 #include "../include/sa.h"
 #include "../include/ga.h"
-
+#include "../include/lbs.h"
 
 // una struct per ogni tabella, poi un array di struct
 // ordinato con le variabili, prima aggiungo le colonne delle varibili con i bound delle variabili
@@ -65,8 +65,10 @@ int main(int argc, char **argv) {
     //psoUL(&inst, global_best);
     //printf("\n--------------STARTING THE SA--------------\n\n");
     //saUL(&inst, global_best);
-    printf("\n--------------STARTING THE GA--------------\n\n");
-    gaUL(&inst, global_best);
+    //printf("\n--------------STARTING THE GA--------------\n\n");
+    //gaUL(&inst, global_best);
+    printf("\n--------------STARTING THE LBS--------------\n\n");
+    lbsUL(&inst, global_best);
 
 
     free_instance(&inst);

@@ -51,7 +51,14 @@ double randomPrice(int i, instance *inst);
 
 double randomPerturbation(int i, instance *inst, double DELTA);
 
-
+/**
+ * Calcolo epsilon come il 10 % dell'amplitude, quindi posso pescare valori
+ * con un 20% di amplitude sul current_value
+ * @param i
+ * @param inst
+ * @param current_value
+ * @return 1 price (double)
+ */
 double randomNeighbour(int i, instance *inst, double current_value);
 
 
@@ -59,6 +66,13 @@ int randomSubperiod(instance *inst);
 
 
 void sortingSolutions(int *indexesVector, double *valuesVector, int N);
+
+/**
+ * method to draw random an individual  between 1 and size of the NewPopulation
+ * @param m
+ * @return
+ */
+int randomNewIndividual(int m);
 
 
 /*!

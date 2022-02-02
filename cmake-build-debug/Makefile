@@ -153,6 +153,30 @@ src/ga.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/blo.dir/build.make CMakeFiles/blo.dir/src/ga.c.s
 .PHONY : src/ga.c.s
 
+src/lbs.o: src/lbs.c.o
+.PHONY : src/lbs.o
+
+# target to build an object file
+src/lbs.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/blo.dir/build.make CMakeFiles/blo.dir/src/lbs.c.o
+.PHONY : src/lbs.c.o
+
+src/lbs.i: src/lbs.c.i
+.PHONY : src/lbs.i
+
+# target to preprocess a source file
+src/lbs.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/blo.dir/build.make CMakeFiles/blo.dir/src/lbs.c.i
+.PHONY : src/lbs.c.i
+
+src/lbs.s: src/lbs.c.s
+.PHONY : src/lbs.s
+
+# target to generate assembly for a file
+src/lbs.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/blo.dir/build.make CMakeFiles/blo.dir/src/lbs.c.s
+.PHONY : src/lbs.c.s
+
 src/ll.o: src/ll.c.o
 .PHONY : src/ll.o
 
@@ -525,6 +549,9 @@ help:
 	@echo "... src/ga.o"
 	@echo "... src/ga.i"
 	@echo "... src/ga.s"
+	@echo "... src/lbs.o"
+	@echo "... src/lbs.i"
+	@echo "... src/lbs.s"
 	@echo "... src/ll.o"
 	@echo "... src/ll.i"
 	@echo "... src/ll.s"

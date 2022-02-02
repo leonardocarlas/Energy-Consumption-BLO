@@ -3,14 +3,14 @@
 #include "utils.h"
 #include <math.h>
 
-
-#define POP  6
-#define GEN  5
+#define POP  20
+#define GEN  20
 #define Pm   0.3
 
 
 
 void gaUL(instance *inst, double *global_best) {
+
 
     FILE *f = fopen("/home/leonardo/Scrivania/BLO/py files/GAvalues.txt", "w");
     if (f == NULL)
@@ -19,149 +19,180 @@ void gaUL(instance *inst, double *global_best) {
         exit(1);
     }
 
-    // Random generation of the initial population
-    individual *population = calloc( POP * (inst->nof_subperiods + 1), sizeof (double ));
-    int NOFBEST = POP / 2;
-    individual *new_population = calloc( NOFBEST * (inst->nof_subperiods + 1), sizeof (double ));
-    for (int i = 0; i < NOFBEST; ++i)
-        new_population[i].solution = calloc( inst->nof_subperiods, sizeof(double));
-    int *indexesVector = calloc( POP, sizeof(int));
-    double *valuesVector = calloc( POP, sizeof(double));
-    int *indexBestVector = calloc( NOFBEST, sizeof(int));
 
-
-    // Istantiation
-    for (int p = 0; p < POP; ++p) {
-
-        population[p].solution = calloc( inst->nof_subperiods, sizeof(double ));
-
-        for (int i = 0; i < inst->nof_subperiods; ++i)
-            population[p].solution[i] = randomPrice(i, inst);
-
-        // Repair solution
-        repairSolution(population[p].solution, inst);
-
-        for (int i = 0; i < inst->nof_subperiods; ++i)
-            printf("Price: %f \n", population[p].solution[i]);
-
-        //printf("ITERATION \n");
+    int nBEST = POP / 2;
+    int nCOMB = 0;
+    for (int i = 0; i < nBEST; ++i) {
+        for (int j = 0; j < nBEST; ++j) {
+            if (j > i)
+                nCOMB++;
+        }
     }
+    int n = POP + nCOMB ;
+    printf("DIMENSIONE POPOLAZIONE: %d \n", n);
+    individual * pop = calloc( n, sizeof(individual) );
 
-
-
+    // ISTANZIAZIONE
+    for (int p = 0; p < n; ++p) {
+        pop[p].solution = calloc(inst->nof_subperiods, sizeof(double));
+        pop[p].rank = p;
+        if (p < POP) {              // popolazione iniziale
+            for (int i = 0; i < inst->nof_subperiods; ++i)
+                pop[p].solution[i] = randomPrice(i, inst);
+            repairSolution(pop[p].solution, inst);
+            pop[p].objvalue = LLopt(inst, pop[p].solution);
+        } else {                    // popolazione combinatoria
+            pop[p].objvalue = 0.0;
+        }
+        printf("Rank: %d Objvalue: %f \n", pop[p].rank, pop[p].objvalue);
+    }
 
     for (int g = 0; g < GEN; ++g) {
 
+        orderPopulation(pop, n);
 
-        // Evaluate every solution
-        for (int p = 0; p < POP; ++p) {
-
-            population[p].objvalue = LLopt(inst, population[p].solution);
-            printf("OBJECTIVE VALUE: %f \n", population[p].objvalue);
-
-            indexesVector[p] = p;
-            valuesVector[p] = population[p].objvalue;
+        for (int p = 0; p < n; ++p) {
+            printf("TEST ORDINE %f \n", pop[p].objvalue);
+            fprintf(f,"%f ", pop[p].objvalue);
         }
         fprintf(f,"\n");
 
-        // Sorting the solutions and printing
-        fprintf(f,"%d ", g);
-        sortingSolutions(indexesVector, valuesVector, POP);
-        for (int i = 0; i < POP; ++i) {
-            fprintf(f,"%f ", valuesVector[i]);
-        }
-        fprintf(f,"\n\n");
-        for (int i = 0; i < POP; ++i) {
-            for (int j = 0; j < inst->nof_subperiods; ++j) {
-                fprintf(f,"%f ", population[indexesVector[i]].solution[j] );
-            }
-            fprintf(f,"\n");
+        for (int p = 0; p < n; ++p) {
+            printf("Previous VAlue: %f %f %f %f %f %f \n",pop[p].solution[0],
+                   pop[p].solution[1], pop[p].solution[2],
+                   pop[p].solution[3], pop[p].solution[4],
+                   pop[p].solution[5]);
         }
 
-        // Selection of the NOFBEST best individuals
-        for(int i = POP - 1; i >= NOFBEST; i--) {
-
-            // printf("Index: %d Value: %f \n", indexesVector[i], valuesVector[i] );
-            indexBestVector[POP - i] = indexesVector[i];
-            printf("Index: %d \n", indexBestVector[i] );
-        }
-
-
-        // Generation of combinations of the best individuals
-        int c = 0;
-        for (int i = 0; i < NOFBEST; ++i) {
-            for (int j = 0; j < NOFBEST; ++j) {
-                if ( indexBestVector[j] > indexBestVector[i] ){
+        // Select the nBEST and combine
+        int counter = 0;
+        for (int i = 0; i < nBEST; ++i) {
+            for (int j = 0; j < nBEST; ++j) {
+                if ( pop[j].rank > pop[i].rank ) {
 
                     // Work on the combination
-                    printf("COMBINATION OF INDIVIDUAL: %d %d \n", indexBestVector[i] + 1 , indexBestVector[j] + 1);
+                    printf("COMBINATION OF INDIVIDUAL: %d %d \n", pop[i].rank , pop[j].rank );
 
-                    // Recombine individuals
-                    int cutPoint = randomSubperiod(inst) - 1;
+                    double * son = calloc(inst->nof_subperiods, sizeof (double ));
+                    generateSon(son, pop[i].solution, pop[j].solution, inst);
+                    repairSolution(son, inst);
                     for (int k = 0; k < inst->nof_subperiods; ++k) {
-                        if (k <= cutPoint)                                 // ci incollo sempre la prima fino al cutpoint
-                            new_population[c].solution[k] = population[indexBestVector[i]].solution[k];
-                        else                                                   // ci incollo sempre la seconda dopo il cutpoint
-                            new_population[c].solution[k] = population[indexBestVector[j]].solution[k];
-                        printf( "GEN 1: %f\n", population[indexBestVector[i]].solution[k]);
-                        printf( "GEN 2: %f\n", population[indexBestVector[j]].solution[k]);
-                        printf( "SON  : %f\n", new_population[c].solution[k]);
+                        printf("Price SON: %f \n", son[k]);
+                        pop[POP + counter].solution[k] = son[k];
                     }
+                    printf("SON GENERATED \n");
 
-                    // Mutation with probability
-                    double r = (double) rand() / (double ) RAND_MAX;
-                    if (r <= Pm) {
-                        int mutationPoint = randomSubperiod(inst) - 1;
-                        new_population[c].solution[mutationPoint] = randomPrice(mutationPoint, inst);
-                        printf("Mutation completed");
-                    }
+                    // assegno il son ad una soluzione scarsa
 
-                    // Repairing the new solution
-                    repairSolution(new_population[c].solution, inst);
-
-                    c++;
+                    counter++;
+                    free(son);
                 }
                 else
                     continue;
             }
         }
 
-
-
-        // Cleanings of the populations (via i vecchi peggiori e aggiungi i nuovi della popolazione)
-        for (int i = 0; i < NOFBEST; i++) {
-            population[i].solution = new_population[i].solution;
-            for (int j = 0; j < inst->nof_subperiods; ++j) {
-                printf("Individual %d Price: %f \n", i, population[i].solution[j]);
-            }
+        for (int p = 0; p < n; ++p) {
+            printf("POST VAlue: %f %f %f %f %f %f \n",pop[p].solution[0],
+                   pop[p].solution[1], pop[p].solution[2],
+                   pop[p].solution[3], pop[p].solution[4],
+                   pop[p].solution[5]);
         }
-        // free(new_population);
 
+        // Evaluate
+        for (int p = 0; p < n; ++p) {
+            pop[p].objvalue = LLopt(inst, pop[p].solution);
+        }
 
 
     }
 
-
-    // Print out the global best that contains the best solution
-    sortingSolutions(indexesVector, valuesVector, POP);
-    //printf("Best individual: %d", indexesVector[POP-1]);
-    for (int i = 0; i < POP; ++i) {
-        printf("Index Individual: %d Value: %f \n", indexesVector[i], valuesVector[i] );
-    }
-    printf("--- BEST SOLUTION: %f ---\n", population[indexesVector[POP-1]].objvalue);
-
-    for (int i = 0; i < inst->nof_subperiods; ++i) {
-        printf("Price: %f \n", population[indexesVector[POP-1]].solution[i] );
-    }
+    // Ultimo ordinamento
+    orderPopulation(pop, n);
+    // Print prima soluzione
+    printf("--- BEST SOLUTION: %f ---\n", pop[0].objvalue);
+    for (int i = 0; i < inst->nof_subperiods; ++i)
+        printf("Price: %f \n", pop[0].solution[i] );
 
 
-
-
-    free(population);
+    free(pop);
     fclose(f);
 
 
+
+
 }
+
+
+
+void orderPopulation(individual * pop, int n) {
+
+    int max_idx;
+    individual temp; //temp è la variabile temporanea utilizzata per lo scambio
+
+    for (int p = 0; p < n - 1; ++p) {
+
+        max_idx = p;
+        for (int j = p + 1; j < n; ++j)
+            if ( pop[j].objvalue > pop[max_idx].objvalue )
+                max_idx = j;
+
+        // Scambio i valori, si trova l'elemento più piccolo dell'array
+        // e si scambia con l'elemento alla posizione i
+        temp = pop[max_idx];
+        pop[max_idx] = pop[p];
+        pop[p] = temp;
+
+    }
+}
+
+
+void generateSon(double * son, double * gen1, double * gen2, instance *inst){
+
+    // Recombine individuals
+    int cutPoint = randomSubperiod(inst) - 1;
+    for (int k = 0; k < inst->nof_subperiods; ++k) {
+        if (k <= cutPoint)                                 // ci incollo sempre la prima fino al cutpoint
+            son[k] = gen1[k];
+        else                                                   // ci incollo sempre la seconda dopo il cutpoint
+            son[k] = gen2[k];
+    }
+
+    // Mutation with probability
+    double r = (double) rand() / (double ) RAND_MAX;
+    if (r <= Pm) {
+        int mutationPoint = randomSubperiod(inst) - 1;
+        son[mutationPoint] = randomPrice(mutationPoint, inst);
+        printf("Mutation completed\n");
+    }
+}
+
+
+void deleteOldAddNew(individual ind, double * son, instance *inst){
+
+    for (int i = 0; i < inst->nof_subperiods; ++i) {
+        ind.solution[i] = son[i];
+    }
+    ind.objvalue = 0.0;
+
+}
+
+
+/*
+    individual uno;
+    uno.solution = calloc(inst->nof_subperiods, sizeof (double ));
+    for (int i = 0; i < inst->nof_subperiods; ++i) {
+    uno.solution[i] = randomPrice(i, inst);
+    }
+
+    individual due = uno;
+    //due.solution = uno.solution;
+
+    if (due.solution[0] == uno.solution[0])
+    printf("UGUALI \n");
+*/
+
+
 
 
 

@@ -120,7 +120,7 @@ int model_m1(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **cna
             free(c1_rmatval);
         }
     }
-    printf("CONSTRAINT n 1: CREATED \n");
+    //printf("CONSTRAINT n 1: CREATED \n");
 
 
 
@@ -149,7 +149,7 @@ int model_m1(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **cna
             for (int r = 0; r < inst->table_sm20[j].duration; ++r) {
                 if (r == 0 || (r <= t && r <= t + 1 - inst->table_sm5[j].start_interval)) {
                     if ( sMatrix[j][t-r] == -1 ) {
-                        printf("J: %d Value: %d T: %d  R: %d \n ", j, t-r+1, t ,r  );
+                        //printf("J: %d Value: %d T: %d  R: %d \n ", j, t-r+1, t ,r  );
                     } else {
                         chard_rmatind[k] = sMatrix[j][t-r];
                         chard_rmatval[k] = -1.0 *powerRequiredShiftableStageR(inst, j, r);

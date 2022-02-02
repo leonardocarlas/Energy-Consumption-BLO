@@ -9,6 +9,14 @@ CMakeFiles/blo.dir/src/ga.c.o: \
  ../src/ga.c \
  /opt/ibm/ILOG/CPLEX_Studio201/cplex/include/ilcplex/cplex.h \
  /opt/ibm/ILOG/CPLEX_Studio201/cplex/include/ilcplex/cpxconst.h
+CMakeFiles/blo.dir/src/lbs.c.o: \
+ ../include/utils.h \
+ ../include/lbs.h \
+ ../include/ll.h \
+ ../include/sa.h \
+ ../src/lbs.c \
+ /opt/ibm/ILOG/CPLEX_Studio201/cplex/include/ilcplex/cplex.h \
+ /opt/ibm/ILOG/CPLEX_Studio201/cplex/include/ilcplex/cpxconst.h
 CMakeFiles/blo.dir/src/ll.c.o: \
  ../include/ll.h \
  ../include/models/m1.h \
@@ -28,6 +36,7 @@ CMakeFiles/blo.dir/src/main.c.o: \
  ../include/read_input.h \
  ../include/utils.h \
  ../include/ga.h \
+ ../include/lbs.h \
  ../include/pso.h \
  ../include/sa.h \
  ../src/main.c \

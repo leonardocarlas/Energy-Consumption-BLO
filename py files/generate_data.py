@@ -1,3 +1,4 @@
+from tkinter import N
 from typing import Counter
 import matplotlib.pyplot as plt
 import numpy as np
@@ -222,15 +223,49 @@ def printSAValues(solution_file, sa_iterations):
     plt.xlabel('Number of iteration')
     plt.show()
 
+def printGAValues(solution_file, iterations):
+    
+    global_best = []
+    avarage = []
+
+    # Population of the arrays
+    file = open(solution_file, 'r')
+    for line in file:
+        splitted = line.split()
+        N = len(splitted)
+        print(N)
+        global_best.append( float(splitted[0]) )
+        sum = 0
+        for i in range(0, N):
+            sum += float(splitted[i])
+        avarage.append( sum / N )
+        
+    
+
+    print(global_best)
+    print(avarage)
+    
+    x = np.array(iterations)
+    y = np.array(global_best)
+    z = np.array(avarage)
+    
+    plt.title("Best objvalues (blue line) and avarage objvalues (orange line) in each iteration")
+    plt.xticks(x)
+    plt.plot(y)
+    plt.plot(z)
+    plt.ylabel('Values')
+    plt.xlabel('Number of iteration')
+    plt.show()
+    
 
 
 if __name__ == "__main__":
 
     solution_file = "/home/leonardo/Scrivania/BLO/cmake-build-debug/ll.sol"
     model_name = "M5"
-    T = 1440
+    T = 10
     SAT = 1380
-    G = 70
+    G = 9
     iterations = []
     sa_iterations = []
     minutes = []
@@ -240,8 +275,7 @@ if __name__ == "__main__":
         iterations.append(i)
     for i in range(1, SAT+1):
         sa_iterations.append(i)
-        
-    print(iterations)
+
     #print_power_sol(solution_file, minutes, model_name)
     #print_two_powers(solution_file, minutes, model_name)
     #print_temperature_graph(solution_file, minutes, model_name)
@@ -250,8 +284,10 @@ if __name__ == "__main__":
     #print_intemp_graph(solution_file, minutes, model_name)
     #obj_values = "/home/leonardo/Scrivania/BLO/py files/objvalues.txt"
     #print_objvalues(obj_values, iterations)
-    sa_values = "/home/leonardo/Scrivania/BLO/py files/SAvalues.txt"
-    printSAValues(sa_values, sa_iterations)
+    #sa_values = "/home/leonardo/Scrivania/BLO/py files/SAvalues.txt"
+    ga_values = "/home/leonardo/Scrivania/BLO/py files/GAvalues.txt"
+    #printSAValues(sa_values, sa_iterations)
+    printGAValues(ga_values, iterations)
 
 
 

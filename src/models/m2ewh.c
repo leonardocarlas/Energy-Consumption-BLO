@@ -125,7 +125,7 @@ int model_m2ewh(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **
     free(c1_rmatind);
     free(c1_rmatbeg);
     free(c1_rhs);
-    printf("Constraint n 1 OK \n");
+    //printf("Constraint n 1 OK \n");
 
 
     /** Constraint n 2, variable temp(t)
@@ -163,7 +163,7 @@ int model_m2ewh(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **
     free(c2_rmatind);
     free(c2_rmatbeg);
     free(c2_rhs);
-    printf("Constraint n 2 OK \n");
+    //printf("Constraint n 2 OK \n");
 
 
 
@@ -196,7 +196,7 @@ int model_m2ewh(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **
     free(c3_rmatind);
     free(c3_rmatbeg);
     free(c3_rhs);
-    printf("Constraint n 3 OK \n");
+    //printf("Constraint n 3 OK \n");
 
 
 
@@ -229,7 +229,7 @@ int model_m2ewh(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **
     free(c4_rmatind);
     free(c4_rmatbeg);
     free(c4_rhs);
-    printf("Constraint n 4 OK \n");
+    //printf("Constraint n 4 OK \n");
 
 
     /** Constraint n 5, variable temp(t)
@@ -257,7 +257,7 @@ int model_m2ewh(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **
         free(c5_rmatind);
         free(c5_rmatbeg);
     }
-    printf("Constraint n 5 OK \n");
+    //printf("Constraint n 5 OK \n");
 
 
     /** Constraint n 6, variable temp(t)
@@ -298,7 +298,7 @@ int model_m2ewh(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **
             free(c6_rmatbeg);
         }
     }
-    printf("Constraint n 6 OK \n");
+    //printf("Constraint n 6 OK \n");
 
 
 

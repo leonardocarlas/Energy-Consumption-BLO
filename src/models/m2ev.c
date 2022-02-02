@@ -156,7 +156,7 @@ int model_m2ev(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **c
             free(c1_rmatbeg);
         }
     }
-    printf("CONSTRAINT n 1: CREATED \n");
+    //printf("CONSTRAINT n 1: CREATED \n");
 
 
     /** Constraint number 2: example, variable Ev
@@ -183,7 +183,7 @@ int model_m2ev(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **c
         free(c2_rmatval);
         free(c2_rmatbeg);
     }
-    printf("CONSTRAINT n 2: CREATED \n");
+    //printf("CONSTRAINT n 2: CREATED \n");
 
     /** Constraint number 3: example, variable Ev
      *  Ph2v(t) - Pmaxcharge * sh2v(t) <= 0
@@ -213,7 +213,7 @@ int model_m2ev(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **c
             free(c3_rmatbeg);
         }
     }
-    printf("CONSTRAINT EV n 3: CREATED \n");
+    //printf("CONSTRAINT EV n 3: CREATED \n");
 
     /** Constraint number 4: example, variable Ev
      *  Pv2h(t) - Pmaxdischarge * sv2h(t) <= 0
@@ -242,7 +242,7 @@ int model_m2ev(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **c
             free(c4_rmatbeg);
         }
     }
-    printf("CONSTRAINT n 4: CREATED \n");
+    //printf("CONSTRAINT n 4: CREATED \n");
 
     /** Constraint number 5: example, variable Ev
      *  sh2v(t) + sv2h(t) <= 1
@@ -271,7 +271,7 @@ int model_m2ev(instance *inst, CPXENVptr env, CPXLPptr lp, int counter, char **c
             free(c5_rmatbeg);
         }
     }
-    printf("CONSTRAINT n 5: CREATED \n");
+    //printf("CONSTRAINT n 5: CREATED \n");
 
 
 
