@@ -49,6 +49,9 @@ double pvGenerationAtTime(int t, instance *inst);
 double randomPrice(int i, instance *inst);
 
 
+double randomValue01();
+
+
 double randomPerturbation(int i, instance *inst, double DELTA);
 
 /**
@@ -62,7 +65,11 @@ double randomPerturbation(int i, instance *inst, double DELTA);
 double randomNeighbour(int i, instance *inst, double current_value);
 
 
+
+
 int randomSubperiod(instance *inst);
+
+
 
 
 void sortingSolutions(int *indexesVector, double *valuesVector, int N);
@@ -73,6 +80,14 @@ void sortingSolutions(int *indexesVector, double *valuesVector, int N);
  * @return
  */
 int randomNewIndividual(int m);
+
+/**
+ * Return the index of the maximum value contained in the array passed
+ * @param values
+ * @param n
+ * @return
+ */
+int maxObjvalue(double * values, int n);
 
 
 /*!

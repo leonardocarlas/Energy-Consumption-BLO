@@ -257,6 +257,97 @@ def printGAValues(solution_file, iterations):
     plt.xlabel('Number of iteration')
     plt.show()
     
+def printLBSValues(solution_file, iterations):
+    
+    global_best = []
+    avarage = []
+
+    # Population of the arrays
+    file = open(solution_file, 'r')
+    for line in file:
+        splitted = line.split()
+        N = len(splitted)
+        print(N)
+        global_best.append( float(splitted[-1]) )
+        sum = 0
+        for i in range(0, N-1):
+            sum += float(splitted[i])
+        avarage.append( sum / N )
+        
+    
+
+    print(global_best)
+    print(avarage)
+    
+    x = np.array(iterations)
+    y = np.array(global_best)
+    z = np.array(avarage)
+    
+    plt.title("Best objvalues (blue line) and avarage objvalues (orange line) in each iteration")
+    plt.xticks(x)
+    plt.plot(y)
+    plt.plot(z)
+    plt.ylabel('Values')
+    plt.xlabel('Number of iteration')
+    plt.show()
+
+def printCSAValues(solution_file, iterations, nNESTS, nEGGS):
+    
+    global_best = []
+    avarage = []
+    list = []
+    matrix = []
+    sum = 0
+
+    # Population of the arrays
+    file = open(solution_file, 'r')
+    c = 0
+    for line in file:
+        max = 0.0
+        splitted = line.split()
+        N = len(splitted)
+        for i in range(0, N):
+            if float(splitted[i]) > max:
+                max = float(splitted[i])
+            sum = sum + float(splitted[i])
+            if (i + 1)  % nNESTS == 0:
+                print("Avarage nido %f", sum / nEGGS)
+                list.append(sum / nEGGS)
+                sum = 0
+        
+        
+        matrix.append(list)
+        list = []
+        global_best.append( max )
+            
+        
+    
+    print(matrix)
+    print(global_best)
+    #print(avarage)
+    
+    x = np.array(iterations)
+    y = np.array(global_best)
+
+
+    z = []
+    w = []
+    v = []
+    for i in range(0, nNESTS):
+        z.append(matrix[i][0])
+        w.append(matrix[i][1])
+        v.append(matrix[i][2])
+    
+    plt.title("Best objvalues (blue line) and avarage objvalues (orange line) in each iteration")
+    plt.xticks(x)
+    plt.plot(y)
+
+    plt.plot(np.array(z))
+    plt.plot(np.array(w))
+    plt.plot(np.array(v))
+    plt.ylabel('Values')
+    plt.xlabel('Number of iteration')
+    plt.show()
 
 
 if __name__ == "__main__":
@@ -265,7 +356,7 @@ if __name__ == "__main__":
     model_name = "M5"
     T = 10
     SAT = 1380
-    G = 9
+    G = 27
     iterations = []
     sa_iterations = []
     minutes = []
@@ -285,9 +376,13 @@ if __name__ == "__main__":
     #obj_values = "/home/leonardo/Scrivania/BLO/py files/objvalues.txt"
     #print_objvalues(obj_values, iterations)
     #sa_values = "/home/leonardo/Scrivania/BLO/py files/SAvalues.txt"
-    ga_values = "/home/leonardo/Scrivania/BLO/py files/GAvalues.txt"
+    #ga_values = "/home/leonardo/Scrivania/BLO/py files/GAvalues.txt"
+    lbs_values = "/home/leonardo/Scrivania/BLO/py files/LBSvalues.txt"
+    csa_values = "/home/leonardo/Scrivania/BLO/py files/CSAvalues.txt"
     #printSAValues(sa_values, sa_iterations)
-    printGAValues(ga_values, iterations)
+    #printGAValues(ga_values, iterations)
+    #printLBSValues(lbs_values, iterations)
+    printCSAValues(csa_values, iterations, 3, 3)
 
 
 

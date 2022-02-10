@@ -189,6 +189,20 @@ double randomPrice(int i, instance *inst){
 
 }
 
+/**
+ * Return a value between in the interval [0,1]
+ * @return
+ */
+double randomValue01(){
+
+    double n = 0.0;
+    double min = 0.0;
+    double max = 1;
+    n = min + (max - min) * (double) rand() / RAND_MAX;
+    return n;
+
+}
+
 
 double randomPerturbation(int i, instance *inst, double DELTA){
 
@@ -260,6 +274,22 @@ int randomNewIndividual(int m){
     int chosen = min + (max - min) * (double) rand() / RAND_MAX;
     return chosen;
 
+}
+
+
+
+int maxObjvalue(double * values, int n){
+
+    int max_ind = 0;
+    double max = 0.0;
+    for (int i = 0; i < n; ++i) {
+        if (values[i] > max ){
+            max_ind = i;
+            max = values[i];
+        }
+
+    }
+    return max_ind;
 }
 
 

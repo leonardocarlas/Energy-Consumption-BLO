@@ -4,9 +4,9 @@
 
 #define  K  10
 #define  S  3
-#define  ITER 3
+#define  ITER 27
 
-int maxObjvalue(double * values, int n);
+
 
 void lbsUL(instance *inst, double *global_best) {
 
@@ -24,6 +24,8 @@ void lbsUL(instance *inst, double *global_best) {
     beam * kSol = calloc( K , sizeof( beam ));
     beam (* dSol)[ K ];
     dSol = calloc( S , sizeof( *dSol ));
+
+    double globalBestObjvalue = 0.0;
 
 
     for (int b = 0; b < K; ++b) {
@@ -79,6 +81,11 @@ void lbsUL(instance *inst, double *global_best) {
         for (int s = 0; s < S; ++s) {
             for (int k = 0; k < K; ++k) {
                 dSol[s][k].objvalue = LLopt(inst, dSol[s][k].solution);
+                if (dSol[s][k].objvalue > globalBestObjvalue) {
+                    globalBestObjvalue = dSol[s][k].objvalue;
+                    for (int i = 0; i < inst->nof_subperiods; ++i)
+                        global_best[i] = dSol[s][k].solution[i];
+                }
                 printf("Objevalue = %f \n", dSol[s][k].objvalue);
                 printf("POST VAlue: %f %f %f %f %f %f \n",dSol[s][k].solution[0],
                        dSol[s][k].solution[1], dSol[s][k].solution[2],
@@ -90,6 +97,7 @@ void lbsUL(instance *inst, double *global_best) {
 
 
         // Selezione e ridimensionamento
+        double * allValues = calloc(K, sizeof(double ));
         for (int k = 0; k < K; ++k) {
 
             // Selezionare l'indice
@@ -109,11 +117,16 @@ void lbsUL(instance *inst, double *global_best) {
                    kSol[k].solution[3], kSol[k].solution[4],
                    kSol[k].solution[5]);
 
+            allValues[k] = kSol[k].objvalue;
+            fprintf(f,"%f ", kSol[k].objvalue);
         }
+        int max_obj = maxObjvalue(allValues, K);
+        fprintf(f,"%f ", kSol[max_obj].objvalue);
+        fprintf(f,"\n");
 
     }
 
-
+    /*
     // Cerco la soluzione con il maggior obj value
     double * kValues = calloc(K, sizeof(double ));
     for (int k = 0; k < K; ++k)
@@ -122,22 +135,12 @@ void lbsUL(instance *inst, double *global_best) {
     printf("BEST SOLUTION: %f \n", kSol[max].objvalue);
     for (int i = 0; i < inst->nof_subperiods; ++i)
         printf("Price: %f  \n", kSol[max].solution[i]);
+    */
+
+    printf("BEST SOLUTION: %f \n", globalBestObjvalue);
 
 
 
     fclose(f);
 }
 
-int maxObjvalue(double * values, int n){
-
-    int max_ind = 0;
-    double max = 0.0;
-    for (int i = 0; i < n; ++i) {
-        if (values[i] > max ){
-            max_ind = i;
-            max = values[i];
-        }
-
-    }
-    return max_ind;
-}

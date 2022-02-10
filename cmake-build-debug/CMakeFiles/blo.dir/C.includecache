@@ -12,6 +12,10 @@ ll.h
 ilcplex/cplex.h
 -
 
+/home/leonardo/Scrivania/BLO/include/csa.h
+ll.h
+/home/leonardo/Scrivania/BLO/include/ll.h
+
 /home/leonardo/Scrivania/BLO/include/lbs.h
 ll.h
 /home/leonardo/Scrivania/BLO/include/ll.h
@@ -30,13 +34,17 @@ ilcplex/cplex.h
 ll.h
 /home/leonardo/Scrivania/BLO/include/ll.h
 
-/home/leonardo/Scrivania/BLO/src/lbs.c
+/home/leonardo/Scrivania/BLO/src/csa.c
 ../include/lbs.h
 /home/leonardo/Scrivania/BLO/include/lbs.h
 ../include/sa.h
 /home/leonardo/Scrivania/BLO/include/sa.h
+../include/csa.h
+/home/leonardo/Scrivania/BLO/include/csa.h
 utils.h
 /home/leonardo/Scrivania/BLO/src/utils.h
+math.h
+/home/leonardo/Scrivania/BLO/src/math.h
 
 /opt/ibm/ILOG/CPLEX_Studio201/cplex/include/ilcplex/cplex.h
 cpxconst.h

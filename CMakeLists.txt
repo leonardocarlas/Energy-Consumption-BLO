@@ -14,7 +14,7 @@ set(SRC
         src/models/m2ewh.c
         include/models/m2ev.h
         src/models/m2ev.c
-        include/models/mo.h src/models/mo.c include/models/m2sb.h src/models/m2sb.c src/models/m3.c include/models/m3.h src/ul.c include/ul.h include/pso.h src/pso.c src/sa.c include/sa.h src/ga.c include/ga.h src/lbs.c include/lbs.h)
+        include/models/mo.h src/models/mo.c include/models/m2sb.h src/models/m2sb.c src/models/m3.c include/models/m3.h src/ul.c include/ul.h include/pso.h src/pso.c src/sa.c include/sa.h src/ga.c include/ga.h src/lbs.c include/lbs.h src/csa.c include/csa.h)
 
 add_executable(${PROJECT_NAME} ${SRC})
 
