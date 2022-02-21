@@ -14,6 +14,7 @@
 #include "../include/ga.h"
 #include "../include/lbs.h"
 #include "../include/csa.h"
+#include "../include/de.h"
 
 // una struct per ogni tabella, poi un array di struct
 // ordinato con le variabili, prima aggiungo le colonne delle varibili con i bound delle variabili
@@ -70,8 +71,11 @@ int main(int argc, char **argv) {
     //gaUL(&inst, global_best);
     //printf("\n--------------STARTING THE LBS--------------\n\n");
     //lbsUL(&inst, global_best);
-    printf("\n--------------STARTING THE CSA--------------\n\n");
-    csaUL(&inst, global_best);
+    //printf("\n--------------STARTING THE CSA--------------\n\n");
+    //csaUL(&inst, global_best);
+    printf("\n--------------STARTING THE DE--------------\n\n");
+    deUL(&inst, global_best);
+
 
 
     for (int i = 0; i < inst.nof_subperiods; ++i)

@@ -153,6 +153,30 @@ src/csa.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/blo.dir/build.make CMakeFiles/blo.dir/src/csa.c.s
 .PHONY : src/csa.c.s
 
+src/de.o: src/de.c.o
+.PHONY : src/de.o
+
+# target to build an object file
+src/de.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/blo.dir/build.make CMakeFiles/blo.dir/src/de.c.o
+.PHONY : src/de.c.o
+
+src/de.i: src/de.c.i
+.PHONY : src/de.i
+
+# target to preprocess a source file
+src/de.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/blo.dir/build.make CMakeFiles/blo.dir/src/de.c.i
+.PHONY : src/de.c.i
+
+src/de.s: src/de.c.s
+.PHONY : src/de.s
+
+# target to generate assembly for a file
+src/de.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/blo.dir/build.make CMakeFiles/blo.dir/src/de.c.s
+.PHONY : src/de.c.s
+
 src/ga.o: src/ga.c.o
 .PHONY : src/ga.o
 
@@ -573,6 +597,9 @@ help:
 	@echo "... src/csa.o"
 	@echo "... src/csa.i"
 	@echo "... src/csa.s"
+	@echo "... src/de.o"
+	@echo "... src/de.i"
+	@echo "... src/de.s"
 	@echo "... src/ga.o"
 	@echo "... src/ga.i"
 	@echo "... src/ga.s"

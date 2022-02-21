@@ -91,6 +91,9 @@
 		<Unit filename="/home/leonardo/Scrivania/BLO/include/csa.h">
 			<Option target="blo"/>
 		</Unit>
+		<Unit filename="/home/leonardo/Scrivania/BLO/include/de.h">
+			<Option target="blo"/>
+		</Unit>
 		<Unit filename="/home/leonardo/Scrivania/BLO/include/ga.h">
 			<Option target="blo"/>
 		</Unit>
@@ -125,6 +128,9 @@
 			<Option target="blo"/>
 		</Unit>
 		<Unit filename="/home/leonardo/Scrivania/BLO/src/csa.c">
+			<Option target="blo"/>
+		</Unit>
+		<Unit filename="/home/leonardo/Scrivania/BLO/src/de.c">
 			<Option target="blo"/>
 		</Unit>
 		<Unit filename="/home/leonardo/Scrivania/BLO/src/ga.c">

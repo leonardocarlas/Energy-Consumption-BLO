@@ -294,10 +294,16 @@ def printLBSValues(solution_file, iterations):
 def printCSAValues(solution_file, iterations, nNESTS, nEGGS):
     
     global_best = []
-    avarage = []
-    list = []
-    matrix = []
+    #avarage = []
+    #list = []
+    #matrix = []
     sum = 0
+
+    z = []
+    w = []
+    v = []
+    r = []
+    t = []
 
     # Population of the arrays
     file = open(solution_file, 'r')
@@ -312,43 +318,82 @@ def printCSAValues(solution_file, iterations, nNESTS, nEGGS):
             sum = sum + float(splitted[i])
             if (i + 1)  % nNESTS == 0:
                 print("Avarage nido %f", sum / nEGGS)
-                list.append(sum / nEGGS)
+                if i >= 0 and i < 5:
+                    z.append(sum / nEGGS)
+                if i >= 5 and i < 10:
+                    w.append(sum / nEGGS)
+                if i >= 10 and i < 15:
+                    v.append(sum / nEGGS)
+                if i >= 15 and i < 20:
+                    r.append(sum / nEGGS)
+                if i >= 25 and i < 30:
+                    t.append(sum / nEGGS)
                 sum = 0
         
         
-        matrix.append(list)
-        list = []
+        #matrix.append(list)
+        #list = []
         global_best.append( max )
             
         
     
-    print(matrix)
+    #print(matrix)
     print(global_best)
     #print(avarage)
     
     x = np.array(iterations)
     y = np.array(global_best)
 
-
-    z = []
-    w = []
-    v = []
-    for i in range(0, nNESTS):
-        z.append(matrix[i][0])
-        w.append(matrix[i][1])
-        v.append(matrix[i][2])
-    
-    plt.title("Best objvalues (blue line) and avarage objvalues (orange line) in each iteration")
+    plt.title("Best objvalues (blue line) and avarage objvalues (other colors) in each iteration")
     plt.xticks(x)
     plt.plot(y)
 
     plt.plot(np.array(z))
     plt.plot(np.array(w))
     plt.plot(np.array(v))
+    plt.plot(np.array(r))
+    plt.plot(np.array(t))
     plt.ylabel('Values')
     plt.xlabel('Number of iteration')
     plt.show()
 
+def printDEValues(solution_file, iterations):
+    
+    global_best = []
+    avarage = []
+    
+
+    # Population of the arrays
+    file = open(solution_file, 'r')
+    for line in file:
+        max = 0.0
+        splitted = line.split()
+        N = len(splitted)
+        for i in range(0,N):
+            if float(splitted[i]) > max:
+                max = float(splitted[i])
+        sum = 0
+        for i in range(0, N):
+            sum += float(splitted[i])
+        avarage.append( sum / N )
+        global_best.append(max)
+        
+    
+
+    print(global_best)
+    print(avarage)
+    
+    x = np.array(iterations)
+    y = np.array(global_best)
+    z = np.array(avarage)
+    
+    plt.title("Best objvalues (blue line) and avarage objvalues (orange line) in each iteration")
+    plt.xticks(x)
+    plt.plot(y)
+    plt.plot(z)
+    plt.ylabel('Values')
+    plt.xlabel('Number of iteration')
+    plt.show()
 
 if __name__ == "__main__":
 
@@ -356,7 +401,7 @@ if __name__ == "__main__":
     model_name = "M5"
     T = 10
     SAT = 1380
-    G = 27
+    G = 70
     iterations = []
     sa_iterations = []
     minutes = []
@@ -377,12 +422,14 @@ if __name__ == "__main__":
     #print_objvalues(obj_values, iterations)
     #sa_values = "/home/leonardo/Scrivania/BLO/py files/SAvalues.txt"
     #ga_values = "/home/leonardo/Scrivania/BLO/py files/GAvalues.txt"
+    de_values = "/home/leonardo/Scrivania/BLO/py files/DEvalues.txt"
     lbs_values = "/home/leonardo/Scrivania/BLO/py files/LBSvalues.txt"
     csa_values = "/home/leonardo/Scrivania/BLO/py files/CSAvalues.txt"
     #printSAValues(sa_values, sa_iterations)
     #printGAValues(ga_values, iterations)
     #printLBSValues(lbs_values, iterations)
-    printCSAValues(csa_values, iterations, 3, 3)
+    #printCSAValues(csa_values, iterations, 5, 5)
+    printDEValues(de_values, iterations)
 
 
 

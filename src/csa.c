@@ -4,9 +4,9 @@
 #include "utils.h"
 #include "math.h"
 
-#define  nEGGS  3
-#define  nNESTS 3
-#define  GEN    1
+#define  nEGGS  5
+#define  nNESTS 5
+#define  GEN    70
 #define  B      1.5
 #define  DEVu   0.6966
 #define  Pa     0.25
