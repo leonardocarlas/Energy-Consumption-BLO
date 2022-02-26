@@ -1,4 +1,5 @@
 #include "ll.h"
+#include "root.h"
 
 /*!
  * This function will parse the command line and saves it into instance
@@ -17,3 +18,13 @@ void parse_command_line(int argc, char **argv, instance *inst);
 * @modify	saves the value read into the file into inst
 */
 void read_input(instance *inst);
+
+
+
+
+void readInput(char * filename, instance *inst);
+
+
+
+
+void readResume(char * filename, document * doc);

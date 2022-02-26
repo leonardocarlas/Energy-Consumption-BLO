@@ -201,6 +201,30 @@ src/ga.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/blo.dir/build.make CMakeFiles/blo.dir/src/ga.c.s
 .PHONY : src/ga.c.s
 
+src/grasp.o: src/grasp.c.o
+.PHONY : src/grasp.o
+
+# target to build an object file
+src/grasp.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/blo.dir/build.make CMakeFiles/blo.dir/src/grasp.c.o
+.PHONY : src/grasp.c.o
+
+src/grasp.i: src/grasp.c.i
+.PHONY : src/grasp.i
+
+# target to preprocess a source file
+src/grasp.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/blo.dir/build.make CMakeFiles/blo.dir/src/grasp.c.i
+.PHONY : src/grasp.c.i
+
+src/grasp.s: src/grasp.c.s
+.PHONY : src/grasp.s
+
+# target to generate assembly for a file
+src/grasp.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/blo.dir/build.make CMakeFiles/blo.dir/src/grasp.c.s
+.PHONY : src/grasp.c.s
+
 src/lbs.o: src/lbs.c.o
 .PHONY : src/lbs.o
 
@@ -603,6 +627,9 @@ help:
 	@echo "... src/ga.o"
 	@echo "... src/ga.i"
 	@echo "... src/ga.s"
+	@echo "... src/grasp.o"
+	@echo "... src/grasp.i"
+	@echo "... src/grasp.s"
 	@echo "... src/lbs.o"
 	@echo "... src/lbs.i"
 	@echo "... src/lbs.s"

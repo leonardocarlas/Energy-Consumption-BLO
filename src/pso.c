@@ -9,6 +9,8 @@
 #define DELTA         0.2
 #define THETA         0.001
 #define G_primo       5
+#define G             70
+#define N             20
 
 
 
@@ -16,10 +18,10 @@ void psoUL(instance *inst, double *global_best) {
 
 
     // Generate initial population
-    particle *swarm = calloc( inst->N, sizeof(particle));
+    particle *swarm = calloc( N, sizeof(particle));
     double best_objval = 0.0;
     int best_particle_index = 0;
-    double *objVector = calloc(inst->G, sizeof(double));
+    double *objVector = calloc(G, sizeof(double));
     int usePerturbation = 0;
 
     FILE *f = fopen("/home/leonardo/Scrivania/BLO/py files/objvalues.txt", "w");
@@ -29,7 +31,7 @@ void psoUL(instance *inst, double *global_best) {
         exit(1);
     }
 
-    for (int p = 0; p < inst->N; ++p) {
+    for (int p = 0; p < N; ++p) {
 
         swarm[p].position =  calloc(inst->nof_subperiods, sizeof(double));
         swarm[p].velocity =  calloc(inst->nof_subperiods, sizeof(double));
@@ -37,7 +39,7 @@ void psoUL(instance *inst, double *global_best) {
         swarm[p].best_objval = 0.0;
     }
 
-    for (int p = 0; p < inst->N; ++p) {
+    for (int p = 0; p < N; ++p) {
         printf("--- Particle: %i \n", p+1 );
         for (int i = 0; i < inst->nof_subperiods; ++i) {
 
@@ -50,7 +52,7 @@ void psoUL(instance *inst, double *global_best) {
 
 
     // Repeat for G iterations
-    for (int g = 0; g < inst->G; ++g) {
+    for (int g = 0; g < G; ++g) {
 
         printf("\n--- ITERAZIONE: %d --- \n", g+1);
 
@@ -61,7 +63,7 @@ void psoUL(instance *inst, double *global_best) {
 
 
         // 2.2 for each particle I solve the LL problem
-        for (int p = 0; p < inst->N; ++p) {
+        for (int p = 0; p < N; ++p) {
 
             printf("--- PROCESSING THE LL PROBLEM FOR THE %d Particle --- \n", p+1);
             double objval = LLopt(inst, swarm[p].position);
@@ -118,7 +120,7 @@ void psoUL(instance *inst, double *global_best) {
 
         // 2.4 calculating the speed inertia vector
         printf("--- SPEED INERTIA --- \n");
-        for (int p = 0; p < inst->N; ++p) {
+        for (int p = 0; p < N; ++p) {
 
             if (p == best_particle_index)
                 continue;
@@ -144,7 +146,7 @@ void psoUL(instance *inst, double *global_best) {
 
         // 2.5 Introduce perturbation here
         if (usePerturbation == 1) {
-            for (int p = 0; p < inst->N; ++p) {
+            for (int p = 0; p < N; ++p) {
                 for (int i = 0; i < inst->nof_subperiods; ++i) {
                     double C = randomPerturbation(i, inst, DELTA);
                     printf("PERTURBATION: %f \n", C);
@@ -159,7 +161,7 @@ void psoUL(instance *inst, double *global_best) {
 
         // Print results of the iteration
         fprintf(f, "%f", best_objval);
-        for (int p = 0; p < inst->N; ++p) {
+        for (int p = 0; p < N; ++p) {
             fprintf(f, " %f", swarm[p].actual_objval);
         }
         fprintf(f, "\n");
@@ -179,7 +181,7 @@ void psoUL(instance *inst, double *global_best) {
 
 void repairSwarm(particle *swarm, instance *inst) {
 
-    for (int p = 0; p < inst->N; ++p) {
+    for (int p = 0; p < N; ++p) {
         double sum = 0.0;
         for (int i = 0; i < inst->nof_subperiods; ++i) {
 
@@ -209,8 +211,5 @@ void repairSwarm(particle *swarm, instance *inst) {
         }
 
     }
-
-
-
 }
 

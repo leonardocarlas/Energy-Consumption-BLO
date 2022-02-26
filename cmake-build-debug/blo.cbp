@@ -97,6 +97,9 @@
 		<Unit filename="/home/leonardo/Scrivania/BLO/include/ga.h">
 			<Option target="blo"/>
 		</Unit>
+		<Unit filename="/home/leonardo/Scrivania/BLO/include/grasp.h">
+			<Option target="blo"/>
+		</Unit>
 		<Unit filename="/home/leonardo/Scrivania/BLO/include/lbs.h">
 			<Option target="blo"/>
 		</Unit>
@@ -121,6 +124,9 @@
 		<Unit filename="/home/leonardo/Scrivania/BLO/include/pso.h">
 			<Option target="blo"/>
 		</Unit>
+		<Unit filename="/home/leonardo/Scrivania/BLO/include/root.h">
+			<Option target="blo"/>
+		</Unit>
 		<Unit filename="/home/leonardo/Scrivania/BLO/include/sa.h">
 			<Option target="blo"/>
 		</Unit>
@@ -134,6 +140,9 @@
 			<Option target="blo"/>
 		</Unit>
 		<Unit filename="/home/leonardo/Scrivania/BLO/src/ga.c">
+			<Option target="blo"/>
+		</Unit>
+		<Unit filename="/home/leonardo/Scrivania/BLO/src/grasp.c">
 			<Option target="blo"/>
 		</Unit>
 		<Unit filename="/home/leonardo/Scrivania/BLO/src/lbs.c">

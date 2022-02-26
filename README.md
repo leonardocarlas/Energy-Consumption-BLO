@@ -28,5 +28,6 @@ cd Desktop/EXP/M12EVSB
 
 ./../../../../../nfsd/rop/sw/ibm/cos201/cplex/bin/x86-64_linux/cplex
 
-
-
+- v1.0 only LL problem
+- v2.0 metaheuristics to solve the UL BLO
+- v3.0 metaheuristics to solve the UL BLMF

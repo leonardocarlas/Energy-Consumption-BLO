@@ -18,6 +18,7 @@ typedef struct {
 /**
  * psoUL is the main method for the execution of the PSO algorithm on the ele. prices
  * @param inst
+ * @param global_best
  */
 void psoUL(instance *inst, double *global_best);
 
@@ -26,5 +27,9 @@ void psoUL(instance *inst, double *global_best);
  */
 void repairSwarm(particle *swarm, instance *inst);
 
-
-
+/**
+ * psoBLMFUL is the method to execute a pso resolving for the BLMF
+ * @param inst
+ * @param global_best
+ */
+void psoBLMFUL(instance * instanceVector, double * global_best);

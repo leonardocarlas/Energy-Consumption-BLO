@@ -210,8 +210,6 @@ typedef struct
 
 
     int T;
-    int N;
-    int G;
     int MAX_PG;
     double INITIAL_OUTDOOR_TEMPERATURE;
     double X_AVARAGE;

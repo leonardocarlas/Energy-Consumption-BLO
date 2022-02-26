@@ -1,4 +1,7 @@
 #define _CRT_SECURE_NO_DEPRECATE
+
+void psoBLMFUL(instance *inst, double *global_best);
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -15,6 +18,8 @@
 #include "../include/lbs.h"
 #include "../include/csa.h"
 #include "../include/de.h"
+#include "../include/grasp.h"
+#include "../include/root.h"
 
 // una struct per ogni tabella, poi un array di struct
 // ordinato con le variabili, prima aggiungo le colonne delle varibili con i bound delle variabili
@@ -34,6 +39,62 @@ int main(int argc, char **argv) {
 	}
 
 	instance inst;
+
+
+    // THINGS FOR THE BLMF
+
+    // Risolvere i problemi del path relativo
+    document doc;
+    readResume("/home/leonardo/Scrivania/BLO/data/users.txt", &doc);
+
+    instance * instanceVector = calloc( doc.nUSERS, sizeof(instance) );
+
+
+
+    for (int u = 0; u < doc.nUSERS; ++u) {
+
+
+        char * file1 = "../data/datac1.txt";
+        char * file2 = "../data/datac2.txt";
+        char * file3 = "../data/datac3.txt";
+        char * file4 = "../data/datac4.txt";
+
+        /*
+        char * name_with_extension;
+        name_with_extension = calloc(18, sizeof(char));
+        char filename[18] = "../data/datac1.txt";
+        for (int c = 0; c < sizeof(filename); ++c) {
+            printf(" %c \n", filename[c]);
+            name_with_extension[c] = filename[c];
+            if ( c == 13)
+                name_with_extension[c] = 1;
+        }
+         */
+
+        /*
+        char n = (char) (u + 1);
+        char * extension = ".txt";
+        char * name_with_extension;
+        name_with_extension = malloc(strlen(filename)+1+4);
+        strcpy(name_with_extension, filename);
+        strcat(name_with_extension, n);
+        strcat(name_with_extension, extension);
+        */
+
+        printf("-------------- INFORMATIONS INPUT FILE %d -------------- \n\n", u+1);
+        if ( u == 0 )
+            readInput( file1 , &instanceVector[u]);
+        if ( u == 1 )
+            readInput( file2 , &instanceVector[u]);
+        if ( u == 2 )
+            readInput( file3 , &instanceVector[u]);
+        if ( u == 3 )
+            readInput( file4 , &instanceVector[u]);
+
+    }
+
+
+
 
 	//Parse the command line and read the input file
 	printf("--------------INPUT FILE INFORMATIONS-------------- \n\n");
@@ -62,8 +123,11 @@ int main(int argc, char **argv) {
     //printf("\nTime to solve the BLO problem: %lf \n ", (end_time - start_time));
     **/
 
-    //printf("\n--------------STARTING THE PSO--------------\n\n");
     double *global_best = calloc(inst.nof_subperiods, sizeof(double));
+
+    //printf("\n-------------- BLO --------------\n\n");
+
+    //printf("\n--------------STARTING THE PSO--------------\n\n");
     //psoUL(&inst, global_best);
     //printf("\n--------------STARTING THE SA--------------\n\n");
     //saUL(&inst, global_best);
@@ -73,9 +137,16 @@ int main(int argc, char **argv) {
     //lbsUL(&inst, global_best);
     //printf("\n--------------STARTING THE CSA--------------\n\n");
     //csaUL(&inst, global_best);
-    printf("\n--------------STARTING THE DE--------------\n\n");
-    deUL(&inst, global_best);
+    //printf("\n--------------STARTING THE DE--------------\n\n");
+    //deUL(&inst, global_best);
+    //printf("\n--------------STARTING THE GRASP--------------\n\n");
+    //graspUL(&inst, global_best);
 
+
+    //printf("\n-------------- BLMF --------------\n\n");
+
+    printf("\n--------------STARTING THE PSO BLMF--------------\n\n");
+    psoBLMFUL(&inst, global_best);
 
 
     for (int i = 0; i < inst.nof_subperiods; ++i)
@@ -83,10 +154,14 @@ int main(int argc, char **argv) {
 
 
     free_instance(&inst);
+    free(global_best);
+    free(instanceVector);
 
     return 0;
 
 }
+
+
 
 
 
