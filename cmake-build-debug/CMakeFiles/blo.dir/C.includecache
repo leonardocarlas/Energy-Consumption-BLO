@@ -6,30 +6,12 @@
 
 #IncludeRegexTransform: 
 
-../include/ll.h
-stdio.h
--
-string.h
--
-stdlib.h
--
-ilcplex/cplex.h
--
-
 ../include/utils.h
 ll.h
 ../include/ll.h
 ilcplex/cplex.h
 -
 
-/home/leonardo/Scrivania/BLO/include/grasp.h
-ll.h
-/home/leonardo/Scrivania/BLO/include/ll.h
-
-/home/leonardo/Scrivania/BLO/include/lbs.h
-ll.h
-/home/leonardo/Scrivania/BLO/include/ll.h
-
 /home/leonardo/Scrivania/BLO/include/ll.h
 stdio.h
 -
@@ -40,35 +22,13 @@ stdlib.h
 ilcplex/cplex.h
 -
 
-/home/leonardo/Scrivania/BLO/include/sa.h
+/home/leonardo/Scrivania/BLO/include/pso.h
 ll.h
 /home/leonardo/Scrivania/BLO/include/ll.h
 
-/home/leonardo/Scrivania/BLO/src/grasp.c
-../include/grasp.h
-/home/leonardo/Scrivania/BLO/include/grasp.h
-../include/sa.h
-/home/leonardo/Scrivania/BLO/include/sa.h
-../include/lbs.h
-/home/leonardo/Scrivania/BLO/include/lbs.h
-utils.h
-/home/leonardo/Scrivania/BLO/src/utils.h
-math.h
--
-
-/home/leonardo/Scrivania/BLO/src/utils.c
-stdio.h
--
-string.h
--
-math.h
--
-time.h
--
-sys/resource.h
--
-errno.h
--
+/home/leonardo/Scrivania/BLO/src/pso.c
+../include/pso.h
+/home/leonardo/Scrivania/BLO/include/pso.h
 utils.h
 /home/leonardo/Scrivania/BLO/src/utils.h
 

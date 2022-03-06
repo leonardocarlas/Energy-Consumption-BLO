@@ -125,6 +125,8 @@ void gaUL(instance *inst, double *global_best) {
 
 
 
+
+
 void orderPopulation(individual * pop, int n) {
 
     int max_idx;

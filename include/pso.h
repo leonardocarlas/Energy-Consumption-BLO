@@ -32,4 +32,9 @@ void repairSwarm(particle *swarm, instance *inst);
  * @param inst
  * @param global_best
  */
-void psoBLMFUL(instance * instanceVector, double * global_best);
+void psoULBLMF(instance * instanceVector, instance * inst, double * global_best);
+
+
+
+int introducePerturbation( double * objVector, int g);
+

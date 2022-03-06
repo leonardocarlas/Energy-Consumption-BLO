@@ -20,7 +20,7 @@ typedef struct {
  * @param global_best
  */
 
-void gaUL(instance *inst, double *global_best);
+void gaUL(instance * inst, double * global_best);
 
 void generateSon(double * son, double * gen1, double * gen2, instance *inst);
 

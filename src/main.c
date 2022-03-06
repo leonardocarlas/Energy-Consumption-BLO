@@ -1,7 +1,4 @@
 #define _CRT_SECURE_NO_DEPRECATE
-
-void psoBLMFUL(instance *inst, double *global_best);
-
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -41,11 +38,10 @@ int main(int argc, char **argv) {
 	instance inst;
 
 
-    // THINGS FOR THE BLMF
 
-    // Risolvere i problemi del path relativo
+    // ------  THINGS FOR THE BLMF  ------
     document doc;
-    readResume("/home/leonardo/Scrivania/BLO/data/users.txt", &doc);
+    readResume("/home/leonardo/Scrivania/BLO/data/retailerDoc.txt", &doc);
 
     instance * instanceVector = calloc( doc.nUSERS, sizeof(instance) );
 
@@ -143,10 +139,9 @@ int main(int argc, char **argv) {
     //graspUL(&inst, global_best);
 
 
-    //printf("\n-------------- BLMF --------------\n\n");
+    printf("\n-------------- BLMF --------------\n\n");
+    psoULBLMF(instanceVector, &inst, global_best);
 
-    printf("\n--------------STARTING THE PSO BLMF--------------\n\n");
-    psoBLMFUL(&inst, global_best);
 
 
     for (int i = 0; i < inst.nof_subperiods; ++i)

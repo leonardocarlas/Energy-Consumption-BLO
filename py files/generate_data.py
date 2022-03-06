@@ -362,7 +362,6 @@ def printDEValues(solution_file, iterations):
     global_best = []
     avarage = []
     
-
     # Population of the arrays
     file = open(solution_file, 'r')
     for line in file:
@@ -378,8 +377,6 @@ def printDEValues(solution_file, iterations):
         avarage.append( sum / N )
         global_best.append(max)
         
-    
-
     print(global_best)
     print(avarage)
     
@@ -395,13 +392,39 @@ def printDEValues(solution_file, iterations):
     plt.xlabel('Number of iteration')
     plt.show()
 
+
+def printGRASPValues(solution_file, iterations):
+
+    global_best = []
+    
+    file = open(solution_file, 'r')
+    for line in file:
+        #splitted = line.split()
+        #print(splitted[0])
+        global_best.append(float(line))
+    
+    
+    print(global_best)
+    
+    x = np.array(iterations)
+    y = np.array(global_best)
+    
+    plt.title("Best objvalues in each iteration")
+    plt.xticks(x)
+    plt.plot(y)
+    plt.ylabel('Values')
+    plt.xlabel('Number of iteration')
+    plt.show()
+    
+
+
 if __name__ == "__main__":
 
     solution_file = "/home/leonardo/Scrivania/BLO/cmake-build-debug/ll.sol"
     model_name = "M5"
     T = 10
     SAT = 1380
-    G = 70
+    G = 30
     iterations = []
     sa_iterations = []
     minutes = []
@@ -418,59 +441,18 @@ if __name__ == "__main__":
     #print_ev_graph(solution_file, minutes, model_name)
     #print_sb_graph(solution_file, minutes, model_name)
     #print_intemp_graph(solution_file, minutes, model_name)
-    #obj_values = "/home/leonardo/Scrivania/BLO/py files/objvalues.txt"
+    #obj_values = "/home/leonardo/Scrivania/BLO/py files/PSOvalues.txt"
     #print_objvalues(obj_values, iterations)
     #sa_values = "/home/leonardo/Scrivania/BLO/py files/SAvalues.txt"
     #ga_values = "/home/leonardo/Scrivania/BLO/py files/GAvalues.txt"
     de_values = "/home/leonardo/Scrivania/BLO/py files/DEvalues.txt"
     lbs_values = "/home/leonardo/Scrivania/BLO/py files/LBSvalues.txt"
     csa_values = "/home/leonardo/Scrivania/BLO/py files/CSAvalues.txt"
+    grasp_values = "/home/leonardo/Scrivania/BLO/py files/GRASPvalues.txt"
     #printSAValues(sa_values, sa_iterations)
     #printGAValues(ga_values, iterations)
     #printLBSValues(lbs_values, iterations)
     #printCSAValues(csa_values, iterations, 5, 5)
-    printDEValues(de_values, iterations)
-
-
-
-
-
-
-def print_dirty_power_graph(solution_file, minutes):
-     
-    # Opening file
-    file = open(solution_file, 'r')
-    vector_check = []
-    
-    sb_charge_vector = []
-
-    for line in file:
-        charge_string = "PG2H"
-        if charge_string in line:
-            ausiliary_vector = []
-            vec = re.split('\s+', line)
-            time_t = int( find_between(line, "PG2H(", ")") )
-            ausiliary_vector.append( int(time_t) )
-            ausiliary_vector.append( float(vec[1]) )   
-            vector_check.append(ausiliary_vector)
-             
-    #print(vector_check)
-
-    for i in range(1,1441):
-        found = False
-        for vec in vector_check:
-            if vec[0] == i:
-                found = True
-                #print("TROVATO")
-                sb_charge_vector.append(vec[1])
-        if found == False:
-            print(str(i), " NON TROVATO")
-            sb_charge_vector.append("MISSIGNO")
-
-    with open("created_data.txt", "w") as outfile:
-        outfile.write("\n".join( str( sb_charge_vector) ))
-  
-    # Closing files
-    file.close()
-
+    #printDEValues(de_values, iterations)
+    printGRASPValues(grasp_values, iterations)
 
