@@ -160,11 +160,10 @@ def print_power_sol(solution_file, minutes, model_name):
     plt.show()
 
 
-def print_objvalues(solution_file, iterations):
+def printPSOvalues(solution_file, iterations):
     
     global_best = []
     avarage = []
-    N = 20
 
     # Population of the arrays
     file = open(solution_file, 'r')
@@ -173,9 +172,9 @@ def print_objvalues(solution_file, iterations):
         global_best.append( float(splitted[0]) )
 
         sum = 0
-        for i in range(1, N+1):
+        for i in range(1, len(splitted)):
             sum += float(splitted[i])
-        avarage.append( sum / N )
+        avarage.append( sum / len(splitted) )
     
 
     print(global_best)
@@ -193,7 +192,6 @@ def print_objvalues(solution_file, iterations):
     plt.ylabel('Objective value')
     plt.xlabel('Number of iteration')
     plt.show()
-
 
 def printSAValues(solution_file, sa_iterations):
     
@@ -392,7 +390,6 @@ def printDEValues(solution_file, iterations):
     plt.xlabel('Number of iteration')
     plt.show()
 
-
 def printGRASPValues(solution_file, iterations):
 
     global_best = []
@@ -416,6 +413,37 @@ def printGRASPValues(solution_file, iterations):
     plt.xlabel('Number of iteration')
     plt.show()
     
+def printComparison(solution_file, iterations):
+
+    one = []
+    two = []
+    three = []
+    four = []
+    
+    file = open(solution_file, 'r')
+    for line in file:
+        splitted = line.split()
+        one.append( float(splitted[0]) )
+        two.append( float(splitted[1]) )
+        three.append( float(splitted[2]) )
+        four.append( float(splitted[3]))
+
+    x = np.array(iterations)
+    y = np.array(one)
+    z = np.array(two)
+    v = np.array(three)
+    w = np.array(four)
+    
+    
+    plt.title("Best objvalues in each iteration")
+    plt.xticks(x)
+    plt.plot(y)
+    plt.plot(z)
+    plt.plot(v)
+    plt.plot(w)
+    plt.ylabel('Values')
+    plt.xlabel('Number of iteration')
+    plt.show()
 
 
 if __name__ == "__main__":
@@ -424,7 +452,7 @@ if __name__ == "__main__":
     model_name = "M5"
     T = 10
     SAT = 1380
-    G = 30
+    G = 25
     iterations = []
     sa_iterations = []
     minutes = []
@@ -442,7 +470,13 @@ if __name__ == "__main__":
     #print_sb_graph(solution_file, minutes, model_name)
     #print_intemp_graph(solution_file, minutes, model_name)
     #obj_values = "/home/leonardo/Scrivania/BLO/py files/PSOvalues.txt"
-    #print_objvalues(obj_values, iterations)
+    BLMF1values = "/home/leonardo/Scrivania/BLO/py files/PSOBLMF1values.txt"
+    BLMF2values = "/home/leonardo/Scrivania/BLO/py files/PSOBLMFvalues2.txt"
+    BLMF3values = "/home/leonardo/Scrivania/BLO/py files/PSOBLMFvalues3.txt"
+    BLMF4values = "/home/leonardo/Scrivania/BLO/py files/PSOBLMFvalues4.txt"
+    #printPSOvalues(BLMF4values, iterations)
+    overall = "/home/leonardo/Scrivania/BLO/py files/overall.txt"
+    printComparison(overall, iterations)
     #sa_values = "/home/leonardo/Scrivania/BLO/py files/SAvalues.txt"
     #ga_values = "/home/leonardo/Scrivania/BLO/py files/GAvalues.txt"
     de_values = "/home/leonardo/Scrivania/BLO/py files/DEvalues.txt"
@@ -454,5 +488,5 @@ if __name__ == "__main__":
     #printLBSValues(lbs_values, iterations)
     #printCSAValues(csa_values, iterations, 5, 5)
     #printDEValues(de_values, iterations)
-    printGRASPValues(grasp_values, iterations)
+    #printGRASPValues(grasp_values, iterations)
 

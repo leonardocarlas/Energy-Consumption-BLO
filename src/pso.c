@@ -10,7 +10,7 @@
 #define THETA         0.001
 #define G_primo       5
 #define G             25
-#define N             20
+#define N             10
 #define U             4
 
 
